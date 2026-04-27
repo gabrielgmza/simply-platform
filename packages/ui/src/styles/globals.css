@@ -1,0 +1,88 @@
+/* Estilos base compartidos del ecosistema Simply */
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  background: #0A0F1C;
+  color: #E5EAF5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+  background: radial-gradient(ellipse at top, rgba(91, 113, 240, 0.08) 0%, transparent 60%),
+              linear-gradient(180deg, #0A0F1C 0%, #060912 100%);
+  background-attachment: fixed;
+}
+
+input, select, textarea {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #E5EAF5;
+  border-radius: 12px;
+  padding: 14px 16px;
+  width: 100%;
+  font-size: 16px;
+  transition: all 0.15s;
+  outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: rgba(91, 113, 240, 0.5);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #5B71F0 0%, #4659D8 100%);
+  color: white;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.05s;
+}
+.btn-primary:hover { opacity: 0.92; }
+.btn-primary:active { transform: scale(0.99); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: #E5EAF5;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+}
+.btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
+
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 20px;
+}
+.card-elevated {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transition: all 0.2s;
+}
+.step-dot.active {
+  background: #5B71F0;
+  width: 24px;
+  border-radius: 4px;
+}
