@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 220" role="img" aria-label="Simply logo">
+  <defs>
+    <linearGradient id="silver" x1="60" y1="20" x2="240" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.45" stop-color="#f4f6fb"/>
+      <stop offset="0.72" stop-color="#b9c2d2"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="shade" x1="75" y1="25" x2="225" y2="205" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#dce2ee"/>
+      <stop offset="1" stop-color="#7e899c"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.40"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="12" flood-color="#7fb0ff" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+  <g filter="url(#glow)">
+    <path fill="url(#silver)" d="M176 31c-46-12-97-4-137 24-25 18-44 41-58 70 28 15 58 13 83-6 26-20 56-28 92-25-55 20-92 52-111 102 36 17 71 6 93-26 25-36 59-61 104-75-45-18-91-15-130 6 20-28 42-50 64-70Z" transform="translate(58 5) scale(.82)"/>
+    <path fill="url(#shade)" opacity=".78" d="M92 201c33 16 66 11 88-12 15-15 27-34 51-52-47 12-81 36-100 72-15 7-27 4-39-8Z"/>
+    <path fill="#ffffff" opacity=".70" d="M65 120c30 16 59 13 85-6 22-17 48-26 78-26-39-12-78-5-113 20-13 11-28 15-50 12Z"/>
+  </g>
+  <text x="300" y="137" fill="#ffffff" font-family="Inter, Arial, Helvetica, sans-serif" font-size="82" font-weight="400" letter-spacing="20">simply</text>
+</svg>
