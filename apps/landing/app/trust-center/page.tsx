@@ -1,5 +1,10 @@
-import Placeholder from '@/components/Placeholder';
-export const metadata = { title: 'Trust Center' };
+import PageGeneric from '@/components/PageGeneric';
+import { pages } from '@/lib/pages';
+
+const data = pages.trust;
+
+export const metadata = { title: data.title };
+
 export default function Page() {
-  return <Placeholder title="Trust Center" kicker="Confianza por diseño" />;
+  return <PageGeneric data={data} pageKey="trust" />;
 }

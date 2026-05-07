@@ -1,5 +1,10 @@
-import Placeholder from '@/components/Placeholder';
-export const metadata = { title: 'Términos y Condiciones' };
+import PageGeneric from '@/components/PageGeneric';
+import { pages } from '@/lib/pages';
+
+const data = pages.terms;
+
+export const metadata = { title: data.title };
+
 export default function Page() {
-  return <Placeholder title="Términos y Condiciones" kicker="Última actualización: 2026" />;
+  return <PageGeneric data={data} pageKey="terms" />;
 }

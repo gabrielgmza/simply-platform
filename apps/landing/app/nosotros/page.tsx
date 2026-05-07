@@ -1,5 +1,10 @@
-import Placeholder from '@/components/Placeholder';
-export const metadata = { title: 'Nosotros' };
+import PageGeneric from '@/components/PageGeneric';
+import { pages } from '@/lib/pages';
+
+const data = pages.about;
+
+export const metadata = { title: data.title };
+
 export default function Page() {
-  return <Placeholder title="Nosotros" kicker="Finanzas simples, tecnología profunda" />;
+  return <PageGeneric data={data} pageKey="about" />;
 }

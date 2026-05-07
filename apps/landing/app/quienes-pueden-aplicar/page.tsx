@@ -1,5 +1,10 @@
-import Placeholder from '@/components/Placeholder';
-export const metadata = { title: 'Quiénes pueden aplicar' };
+import PageGeneric from '@/components/PageGeneric';
+import { pages } from '@/lib/pages';
+
+const data = pages.applicants;
+
+export const metadata = { title: data.title };
+
 export default function Page() {
-  return <Placeholder title="Quiénes pueden aplicar" kicker="Elegibilidad clara" />;
+  return <PageGeneric data={data} pageKey="applicants" />;
 }

@@ -1,5 +1,10 @@
-import Placeholder from '@/components/Placeholder';
-export const metadata = { title: 'Centro de ayuda' };
+import PageGeneric from '@/components/PageGeneric';
+import { pages } from '@/lib/pages';
+
+const data = pages.help;
+
+export const metadata = { title: data.title };
+
 export default function Page() {
-  return <Placeholder title="Centro de ayuda" kicker="Soporte claro" />;
+  return <PageGeneric data={data} pageKey="help" />;
 }

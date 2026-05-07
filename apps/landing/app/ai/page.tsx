@@ -1,5 +1,10 @@
-import Placeholder from '@/components/Placeholder';
-export const metadata = { title: 'AI financiera Simply' };
+import PageGeneric from '@/components/PageGeneric';
+import { pages } from '@/lib/pages';
+
+const data = pages.ai;
+
+export const metadata = { title: data.title };
+
 export default function Page() {
-  return <Placeholder title="AI financiera Simply" kicker="AI-first con límites responsables" />;
+  return <PageGeneric data={data} pageKey="ai" />;
 }

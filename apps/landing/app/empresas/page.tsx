@@ -1,5 +1,15 @@
-import Placeholder from '@/components/Placeholder';
-export const metadata = { title: 'Simply para empresas' };
+import PageGeneric from '@/components/PageGeneric';
+import BusinessForm from '@/components/BusinessForm';
+import { pages } from '@/lib/pages';
+
+const data = pages.business;
+
+export const metadata = { title: data.title };
+
 export default function Page() {
-  return <Placeholder title="Simply para empresas" kicker="Infraestructura financiera inteligente" />;
+  return (
+    <PageGeneric data={data} pageKey="business">
+      <BusinessForm />
+    </PageGeneric>
+  );
 }

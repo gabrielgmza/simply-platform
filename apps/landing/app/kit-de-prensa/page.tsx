@@ -1,5 +1,10 @@
-import Placeholder from '@/components/Placeholder';
-export const metadata = { title: 'Prensa / Media Kit' };
+import PageGeneric from '@/components/PageGeneric';
+import { pages } from '@/lib/pages';
+
+const data = pages.press;
+
+export const metadata = { title: data.title };
+
 export default function Page() {
-  return <Placeholder title="Prensa / Media Kit" kicker="Recursos institucionales" />;
+  return <PageGeneric data={data} pageKey="press" />;
 }

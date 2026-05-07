@@ -1,5 +1,10 @@
-import Placeholder from '@/components/Placeholder';
-export const metadata = { title: 'Productos sujetos a aprobación' };
+import PageGeneric from '@/components/PageGeneric';
+import { pages } from '@/lib/pages';
+
+const data = pages.approvals;
+
+export const metadata = { title: data.title };
+
 export default function Page() {
-  return <Placeholder title="Productos sujetos a aprobación" kicker="Claridad legal y comercial" />;
+  return <PageGeneric data={data} pageKey="approvals" />;
 }

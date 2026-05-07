@@ -1,5 +1,10 @@
-import Placeholder from '@/components/Placeholder';
-export const metadata = { title: 'Diamond Black' };
+import PageGeneric from '@/components/PageGeneric';
+import { pages } from '@/lib/pages';
+
+const data = pages.diamond;
+
+export const metadata = { title: data.title };
+
 export default function Page() {
-  return <Placeholder title="Diamond Black" kicker="Acceso por invitación · Ultra exclusivo" />;
+  return <PageGeneric data={data} pageKey="diamond" />;
 }

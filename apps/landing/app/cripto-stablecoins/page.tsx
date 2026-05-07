@@ -1,5 +1,10 @@
-import Placeholder from '@/components/Placeholder';
-export const metadata = { title: 'Cripto & Stablecoins' };
+import PageGeneric from '@/components/PageGeneric';
+import { pages } from '@/lib/pages';
+
+const data = pages.crypto;
+
+export const metadata = { title: data.title };
+
 export default function Page() {
-  return <Placeholder title="Cripto & Stablecoins" kicker="Activos digitales" />;
+  return <PageGeneric data={data} pageKey="crypto" />;
 }

@@ -1,5 +1,10 @@
-import Placeholder from '@/components/Placeholder';
-export const metadata = { title: 'Política de Privacidad' };
+import PageGeneric from '@/components/PageGeneric';
+import { pages } from '@/lib/pages';
+
+const data = pages.privacy;
+
+export const metadata = { title: data.title };
+
 export default function Page() {
-  return <Placeholder title="Política de Privacidad" kicker="Última actualización: 2026" />;
+  return <PageGeneric data={data} pageKey="privacy" />;
 }
