@@ -1,9 +1,10 @@
+import React from 'react';
 type IconName =
   | 'sparkles' | 'card' | 'qr' | 'ai' | 'shield' | 'money' | 'coins'
   | 'users' | 'building' | 'globe' | 'gem' | 'plane' | 'headset'
   | 'receipt' | 'lock' | 'phone' | 'laptop' | 'network';
 
-const PATHS: Record<IconName, JSX.Element> = {
+const PATHS: Record<IconName, React.ReactElement> = {
   sparkles: <><path d="M12 2l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6Z"/><path d="M19 15l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3Z"/></>,
   card: <><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18"/><path d="M7 15h4"/></>,
   qr: <><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 15h3v3h-3zM20 14v7h-5"/></>,
