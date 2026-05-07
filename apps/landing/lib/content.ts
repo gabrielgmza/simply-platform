@@ -18,7 +18,7 @@ export const COPY_ES = {
       viewPeople: 'Ver experiencia Personas →', viewBusiness: 'Ver soluciones Empresas →', viewDiamond: 'Conocer Diamond Black →',
       joinList: 'Unirme a la lista', requestInvite: 'Solicitar invitación', requestAccess: 'Solicitar acceso', talkAdvisor: 'Hablar con un advisor',
       designBusiness: 'Diseñar solución empresarial', proposeAlliance: 'Proponer alianza',
-      goCrypto: 'Ir a app cripto ↗', goContact: 'Ir a contacto', viewConditions: 'Ver condiciones',
+      goCrypto: 'Ir a app cripto', goContact: 'Ir a contacto', viewConditions: 'Ver condiciones',
       searchResults: 'Resultado de búsqueda', availableAnswers: 'respuestas disponibles',
       infoMayVary: 'La información puede variar por país, proveedor, regulación, perfil del usuario y disponibilidad comercial.',
       searchPlaceholder: 'Buscar por producto, tarjeta, financiación, cripto, Diamond Black...',
