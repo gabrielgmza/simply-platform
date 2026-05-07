@@ -16,3 +16,24 @@ img{max-width:100%;height:auto}
 .three h2,.section h2,.split h2,.pre-section h2,.panel h1,.cta h2{font-size:clamp(28px,4.5vw,52px)}
 .panel{grid-template-columns:1.05fr .95fr;min-height:auto}
 @media(max-width:1100px){.panel{grid-template-columns:1fr}}
+
+/* === Fixes Fase 3.1 === */
+.hero{padding:24px 24px 48px;gap:32px}
+.hero h1{font-size:clamp(36px,5.5vw,64px);margin-top:18px}
+.hero p{font-size:16px}
+.hero-visual{min-height:auto;max-height:520px}
+.hero-visual img{max-height:480px;object-fit:contain}
+.three h2,.section h2,.split h2,.pre-section h2,.panel h1,.cta h2{font-size:clamp(24px,3.5vw,40px);margin:12px 0 0}
+.stats b{font-size:26px}
+.three button,.three a{padding:24px;border-radius:24px}
+.three p{font-size:14px}
+.section,.split,.pre-section,.inner{padding:28px 24px}
+.panel{padding:28px}
+.card{padding:20px;border-radius:22px}
+.card h3{font-size:18px;margin:14px 0 0}
+.card p{font-size:14px}
+.badge{width:44px;height:44px}
+.cta{padding:60px 24px}
+.app-shot{min-height:340px}
+.app-shot img{max-height:330px}
+.photo{min-height:340px}
