@@ -29,10 +29,12 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   icons: {
     icon: [
+      { url: '/assets/simply-favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon.ico', sizes: 'any' },
       { url: '/favicon.png', type: 'image/png' },
     ],
-    apple: [{ url: '/favicon.png' }],
+    shortcut: [{ url: '/assets/simply-favicon.svg', type: 'image/svg+xml' }],
+    apple: [{ url: '/assets/simply-favicon.svg', type: 'image/svg+xml' }],
   },
 };
 
