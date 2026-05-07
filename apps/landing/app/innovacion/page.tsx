@@ -1,10 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.innovation;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'Innovación',
+  description: 'Fintech AI-first con infraestructura modular y diseño premium.',
+  alternates: { canonical: '/innovacion' },
+  openGraph: { title: 'Innovación | Simply', description: 'Fintech AI-first con infraestructura modular y diseño premium.', url: 'https://gosimply.xyz/innovacion' },
+};
 
 export default function Page() {
-  return <PageGeneric data={data} pageKey="innovation" />;
+  return <SimplyLanding initialPage="innovation" />;
 }

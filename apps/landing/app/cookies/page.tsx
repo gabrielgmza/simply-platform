@@ -1,10 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.cookies;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'Política de Cookies',
+  description: 'Cómo usamos cookies y tecnologías similares.',
+  alternates: { canonical: '/cookies' },
+  openGraph: { title: 'Política de Cookies | Simply', description: 'Cómo usamos cookies y tecnologías similares.', url: 'https://gosimply.xyz/cookies' },
+};
 
 export default function Page() {
-  return <PageGeneric data={data} pageKey="cookies" />;
+  return <SimplyLanding initialPage="cookies" />;
 }

@@ -1,10 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.ai;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'AI financiera',
+  description: 'AI para riesgo, fraude, soporte, asesoría y automatización con límites responsables.',
+  alternates: { canonical: '/ai' },
+  openGraph: { title: 'AI financiera | Simply', description: 'AI para riesgo, fraude, soporte, asesoría y automatización con límites responsables.', url: 'https://gosimply.xyz/ai' },
+};
 
 export default function Page() {
-  return <PageGeneric data={data} pageKey="ai" />;
+  return <SimplyLanding initialPage="ai" />;
 }

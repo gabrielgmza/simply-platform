@@ -1,20 +1,16 @@
 import Link from 'next/link';
 
-export const metadata = { title: 'Página no encontrada' };
-
 export default function NotFound() {
   return (
-    <section className="inner">
-      <div className="panel">
-        <div>
-          <span className="kicker">404</span>
-          <h1>No encontramos esta página</h1>
-          <p>Puede que el enlace haya cambiado o que la sección esté en construcción.</p>
-          <div className="row">
-            <Link className="btn primary" href="/">Volver al inicio</Link>
-          </div>
-        </div>
+    <main className="min-h-screen bg-black text-white grid place-items-center px-6">
+      <div className="text-center max-w-md">
+        <div className="text-blue-500 text-7xl font-bold tracking-tight">404</div>
+        <h1 className="mt-4 text-3xl font-semibold">Página no encontrada</h1>
+        <p className="mt-3 text-zinc-400">La página que buscás no existe o fue movida.</p>
+        <Link href="/" className="mt-8 inline-block bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-2xl font-semibold transition">
+          ← Volver al inicio
+        </Link>
       </div>
-    </section>
+    </main>
   );
 }

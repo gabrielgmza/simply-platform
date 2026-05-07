@@ -1,10 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.trust;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'Trust Center',
+  description: 'KYC/KYB, monitoreo, prevención de fraude, roles y proveedores regulados.',
+  alternates: { canonical: '/trust-center' },
+  openGraph: { title: 'Trust Center | Simply', description: 'KYC/KYB, monitoreo, prevención de fraude, roles y proveedores regulados.', url: 'https://gosimply.xyz/trust-center' },
+};
 
 export default function Page() {
-  return <PageGeneric data={data} pageKey="trust" />;
+  return <SimplyLanding initialPage="securityPage" />;
 }

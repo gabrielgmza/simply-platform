@@ -1,10 +1,6 @@
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import CookieBanner from '@/components/CookieBanner';
-import { SITE_URL } from '@/lib/routes';
 import './globals.css';
 
 const inter = Inter({
@@ -14,40 +10,34 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: { default: 'Simply | Tu dinero, sin fricción', template: '%s | Simply' },
-  description:
-    'Simply: plataforma financiera AI-first para personas, empresas, cripto, tarjetas, inversiones, financiación y Diamond Black.',
+  metadataBase: new URL('https://gosimply.xyz'),
+  title: { default: 'Simply | Tu dinero, sin fricción.', template: '%s | Simply' },
+  description: 'Una plataforma financiera AI-first para personas y empresas: pagos, tarjeta Visa, cripto, stablecoins, financiación, rewards, seguridad avanzada y operaciones inteligentes en un solo ecosistema.',
+  applicationName: 'Simply',
+  keywords: ['Simply', 'PaySur', 'fintech', 'Visa', 'cripto', 'stablecoins', 'pre-registro', 'Diamond Black', 'AI'],
+  authors: [{ name: 'PaySur INC' }],
+  creator: 'PaySur INC',
   openGraph: {
-    title: 'Simply | Tu dinero, sin fricción',
-    description: 'Plataforma financiera AI-first para personas y empresas.',
-    url: SITE_URL,
-    siteName: 'Simply',
-    locale: 'es_AR',
     type: 'website',
+    locale: 'es_AR',
+    url: 'https://gosimply.xyz',
+    siteName: 'Simply',
+    title: 'Simply | Tu dinero, sin fricción.',
+    description: 'Plataforma financiera AI-first para personas y empresas.',
   },
-  twitter: { card: 'summary_large_image', title: 'Simply | Tu dinero, sin fricción' },
-  icons: { icon: '/favicon.png', apple: '/favicon.png' },
+  twitter: { card: 'summary_large_image', title: 'Simply | Tu dinero, sin fricción.', description: 'Plataforma financiera AI-first.' },
   robots: { index: true, follow: true },
-};
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  themeColor: '#000000',
+  icons: {
+    icon: [{ url: '/favicon.png', type: 'image/png' }],
+    apple: [{ url: '/favicon.png' }],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={inter.variable}>
-      <body>
-        <main>
-          <Header />
-          <div className="bg" />
-          <div className="page-wrap">{children}</div>
-          <Footer />
-          <CookieBanner />
-        </main>
+      <body className="font-sans antialiased bg-black text-white">
+        {children}
         <Analytics />
       </body>
     </html>

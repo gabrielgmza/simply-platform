@@ -1,31 +1,13 @@
-import Link from 'next/link';
-import { faqContent } from '@/lib/pages';
-import { common } from '@/lib/content';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-export const metadata = { title: faqContent.title };
+export const metadata: Metadata = {
+  title: 'Preguntas frecuentes',
+  description: 'Respuestas rápidas sobre Simply, productos, condiciones y seguridad.',
+  alternates: { canonical: '/faq' },
+  openGraph: { title: 'Preguntas frecuentes | Simply', description: 'Respuestas rápidas sobre Simply, productos, condiciones y seguridad.', url: 'https://gosimply.xyz/faq' },
+};
 
 export default function Page() {
-  return (
-    <section className="inner">
-      <Link className="back" href="/">{common.back}</Link>
-      <div className="panel">
-        <div>
-          <span className="kicker">{faqContent.k}</span>
-          <h1>{faqContent.title}</h1>
-          <p>
-            Guía rápida sobre Simply, productos, condiciones, seguridad, empresas,
-            Diamond Black, cripto y contacto.
-          </p>
-        </div>
-      </div>
-      <div className="faq-list">
-        {faqContent.items.map(([q, a], i) => (
-          <details key={q} open={i === 0}>
-            <summary>{q}</summary>
-            <p>{a}</p>
-          </details>
-        ))}
-      </div>
-    </section>
-  );
+  return <SimplyLanding initialPage="faq" />;
 }

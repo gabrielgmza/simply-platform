@@ -5,50 +5,41 @@ export const alt = 'Simply | Tu dinero, sin fricción';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-export default async function Image() {
+export default async function OG() {
   return new ImageResponse(
     (
       <div
         style={{
-          background:
-            'radial-gradient(circle at 75% 6%, rgba(37,99,235,0.45), transparent 35%), radial-gradient(circle at 12% 38%, rgba(37,99,235,0.25), transparent 40%), linear-gradient(180deg, #000 0%, #030303 100%)',
           width: '100%',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: '90px',
+          alignItems: 'flex-start',
+          padding: '80px',
+          background: 'linear-gradient(135deg, #000 0%, #050a1a 50%, #0a1530 100%)',
           color: 'white',
-          fontFamily: 'system-ui, -apple-system, sans-serif',
+          fontFamily: 'sans-serif',
         }}
       >
         <div
           style={{
-            fontSize: 30,
-            opacity: 0.75,
-            letterSpacing: '0.34em',
+            fontSize: 56,
+            letterSpacing: '0.4em',
+            color: '#fff',
             textTransform: 'lowercase',
-            marginBottom: 36,
+            marginBottom: 40,
           }}
         >
           simply
         </div>
-        <div style={{ display: 'flex', fontSize: 110, fontWeight: 900, letterSpacing: '-0.05em', lineHeight: 0.95 }}>
+        <div style={{ fontSize: 96, fontWeight: 600, lineHeight: 1, letterSpacing: '-0.04em' }}>
           Tu dinero,
         </div>
-        <div
-          style={{
-            display: 'flex',
-            fontSize: 110,
-            fontWeight: 900,
-            letterSpacing: '-0.05em',
-            lineHeight: 0.95,
-            color: '#2f7cff',
-          }}
-        >
+        <div style={{ fontSize: 96, fontWeight: 600, lineHeight: 1, letterSpacing: '-0.04em', color: '#3b82f6' }}>
           sin fricción.
         </div>
-        <div style={{ display: 'flex', fontSize: 30, opacity: 0.7, marginTop: 44 }}>
+        <div style={{ fontSize: 28, color: '#a1a1aa', marginTop: 32, maxWidth: 900 }}>
           AI-first fintech · Personas · Empresas · Cripto
         </div>
       </div>

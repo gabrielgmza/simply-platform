@@ -1,10 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.press;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'Prensa / Media Kit',
+  description: 'Recursos institucionales, boilerplate y contacto de prensa.',
+  alternates: { canonical: '/kit-de-prensa' },
+  openGraph: { title: 'Prensa / Media Kit | Simply', description: 'Recursos institucionales, boilerplate y contacto de prensa.', url: 'https://gosimply.xyz/kit-de-prensa' },
+};
 
 export default function Page() {
-  return <PageGeneric data={data} pageKey="press" />;
+  return <SimplyLanding initialPage="press" />;
 }

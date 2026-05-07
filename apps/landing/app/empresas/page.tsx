@@ -1,15 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import BusinessForm from '@/components/BusinessForm';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.business;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'Empresas',
+  description: 'Pagos masivos, gastos inteligentes, multi-divisa, stablecoins, factoring y RBF en una sola plataforma.',
+  alternates: { canonical: '/empresas' },
+  openGraph: { title: 'Empresas | Simply', description: 'Pagos masivos, gastos inteligentes, multi-divisa, stablecoins, factoring y RBF en una sola plataforma.', url: 'https://gosimply.xyz/empresas' },
+};
 
 export default function Page() {
-  return (
-    <PageGeneric data={data} pageKey="business">
-      <BusinessForm />
-    </PageGeneric>
-  );
+  return <SimplyLanding initialPage="business" />;
 }

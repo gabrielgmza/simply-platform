@@ -1,10 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.people;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'Personas',
+  description: 'Tarjeta Visa, QR, fondos comunes con rentabilidad diaria, cashback hasta 1% y financiación hasta 48 cuotas.',
+  alternates: { canonical: '/personas' },
+  openGraph: { title: 'Personas | Simply', description: 'Tarjeta Visa, QR, fondos comunes con rentabilidad diaria, cashback hasta 1% y financiación hasta 48 cuotas.', url: 'https://gosimply.xyz/personas' },
+};
 
 export default function Page() {
-  return <PageGeneric data={data} pageKey="people" />;
+  return <SimplyLanding initialPage="people" />;
 }

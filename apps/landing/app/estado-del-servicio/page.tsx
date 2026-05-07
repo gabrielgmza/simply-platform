@@ -1,10 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.status;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'Estado del servicio',
+  description: 'Estado informativo de módulos y disponibilidad.',
+  alternates: { canonical: '/estado-del-servicio' },
+  openGraph: { title: 'Estado del servicio | Simply', description: 'Estado informativo de módulos y disponibilidad.', url: 'https://gosimply.xyz/estado-del-servicio' },
+};
 
 export default function Page() {
-  return <PageGeneric data={data} pageKey="status" />;
+  return <SimplyLanding initialPage="status" />;
 }

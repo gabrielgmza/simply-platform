@@ -1,126 +1,329 @@
-import { EMAIL, COMPANY } from './routes';
+import { COMPANY_NAME, CONTACT_EMAIL } from './routes';
 
-export const ADDRESS = '651 North Broad Street, Middletown, Delaware, Estados Unidos';
+const COMPANY_ADDRESS_ES = '651 North Broad Street, Middletown, Delaware, Estados Unidos';
 
-export const nav = {
-  people: 'Personas',
-  business: 'Empresas',
-  diamond: 'Diamond Black',
-  ai: 'AI',
-  crypto: 'Cripto',
-  partners: 'Partners',
-  login: 'Ingresar',
-  pre: 'Pre-registro',
-};
-
-export const common = {
-  back: '← Volver a Simply',
-  contact: 'Contacto',
-  official: 'Canal oficial: email',
-  legal: 'Contenido informativo. Productos sujetos a aprobación, disponibilidad, regulación, proveedor, jurisdicción e integraciones habilitadas.',
-  rights: 'Todos los derechos reservados.',
-};
-
-export const hero = {
-  badge: 'AI-first fintech · Personas · Empresas · Cripto',
-  a: 'Tu dinero,',
-  b: 'sin fricción.',
-  text: 'Una plataforma financiera AI-first para personas y empresas: pagos, tarjeta Visa, cripto, stablecoins, financiación, rewards, seguridad avanzada, inversiones y operaciones inteligentes en un solo ecosistema, disponible para Android, iOS y Web.',
-  bullets: ['AI en operaciones', 'Seguridad avanzada', 'Experiencia multimoneda', 'Diseño global'],
-  stats: [
-    ['24/7', 'monitoreo y seguridad'],
-    ['AI', 'operación inteligente'],
-    ['1%', 'cashback estándar*'],
-    ['48', 'cuotas estándar*'],
-  ] as const,
-};
-
-export const homeCards = [
-  ['Personas', 'Pagá, invertí, protegé compras, optimizá gastos y accedé a beneficios desde una experiencia premium.'],
-  ['Empresas', 'Controlá gastos, cobros, pagos masivos, facturación*, multi-divisa, fraude, stablecoins, factoring* y financiación.'],
-  ['Diamond Black', 'Acceso por invitación para clientes de alto patrimonio: concierge 24/7, viajes de élite y beneficios seleccionados.'],
-] as const;
-
-export const ecosystem = {
-  title: 'Un ecosistema financiero, no una app más.',
-  text: 'Cuenta, tarjeta, cripto, stablecoins, AI, seguridad, beneficios y financiación conectados en una experiencia simple de usar y potente por dentro.',
-  items: [
-    ['Cuenta digital', 'Saldos, movimientos, control y apertura de cuenta en USA*, según disponibilidad.'],
-    ['Tarjeta Visa', 'Física, virtual y de un solo uso para comprar con más control.'],
-    ['Cripto & stablecoins', 'Activos digitales para operaciones cotidianas, tesorería y pagos, según disponibilidad.'],
-    ['AI financiera', 'Riesgo, fraude, soporte, optimización de gastos y asesoría inteligente.'],
-  ] as const,
-};
-
-export const appSection = {
-  k: 'App Simply',
-  title: 'Una app premium, clara y lista para operar.',
-  text: 'Pantallas diseñadas para administrar dinero, tarjetas, gastos, analítica y acceso de forma simple. Simply está pensado para operar desde Android, iOS y Web.',
-  platforms: [
-    ['Android', 'App móvil para usuarios Android, con acceso a cuenta, tarjeta, pagos, AI y beneficios según disponibilidad.'],
-    ['iOS', 'App móvil para iPhone con experiencia premium, seguridad y control financiero.'],
-    ['Web', 'Acceso web responsive para operar, gestionar información y usar Simply desde navegador.'],
-  ] as const,
-};
-
-export const prereg = {
-  title: 'Pre-registro Simply',
-  text: 'Acceso anticipado a tarjeta Visa, QR, fondos comunes de inversión con rentabilidad diaria*, cashback hasta 1%*, Rewards y financiación hasta 48 cuotas mensuales*. Sujeto a aprobación.',
-  benefits: [
-    ['Tarjeta Visa', 'Física o virtual, según disponibilidad.'],
-    ['QR', 'Pagos y cobros con integraciones habilitadas.'],
-    ['Fondos comunes', 'Inversiones con rentabilidad diaria*, según proveedor y perfil.'],
-    ['Cashback hasta 1%*', 'Beneficios por consumo según campaña.'],
-    ['Rewards', 'Puntos, recompensas y beneficios.'],
-    ['Hasta 48 cuotas*', 'Financiación mensual sujeta a aprobación.'],
-  ] as const,
-  fields: {
-    person: 'Soy persona',
-    business: 'Soy empresa',
-    name: 'Nombre y apellido',
-    email: 'Email',
-    phone: 'Teléfono',
-    country: 'País',
-    city: 'Ciudad',
-    company: 'Empresa',
-    send: 'Enviar pre-registro',
-    ok: 'Pre-registro recibido.',
+export const COPY_ES = {
+  common: {
+    back: '← Volver a Simply', login: 'Ingresar', preregister: 'Pre-registro', crypto: 'Cripto', demo: 'Hablar con ventas', privateAccess: 'Solicitar invitación',
+    nav: { people: 'Personas', business: 'Empresas', ai: 'AI', crypto: 'Cripto', partners: 'Partners', diamond: 'Diamond Black', preregister: 'Pre-registro' },
+    footerTitles: { products: 'Productos', company: 'Empresa', help: 'Ayuda', legal: 'Legal' },
+    pages: { digital: 'Cuenta digital', cards: 'Tarjetas', transfers: 'Transferencias', analytics: 'Analítica', financialAI: 'AI financiera', cryptoPage: 'Cripto & Stablecoins', about: 'Nosotros', innovation: 'Innovación', securityPage: 'Trust Center', careers: 'Trabajá con nosotros', press: 'Prensa / Media Kit', partners: 'Partners', investors: 'Inversores / Aliados estratégicos', applicants: 'Quiénes pueden aplicar', approvals: 'Sujeto a aprobación', help: 'Centro de ayuda', contact: 'Contacto', faq: 'FAQ', status: 'Estado del servicio', privacy: 'Privacidad', terms: 'Términos', cookies: 'Cookies', compliance: 'Cumplimiento' },
+    country: 'País / mercado', city: 'Ciudad', contactMethod: 'Preferencia de contacto', countries: ['Argentina', 'Brasil', 'Chile', 'Colombia', 'México', 'Estados Unidos', 'Global'],
+    shortLegal: 'Productos sujetos a aprobación, disponibilidad, regulación, jurisdicción, proveedores e integraciones habilitadas.',
+    legalReview: 'Contenido informativo. Debe ser revisado por asesoría legal antes de su publicación definitiva.',
+    ui: {
+      appKicker: '02 · App Simply', appTitle: 'Una app premium, clara y lista para operar.',
+      appText: 'Pantallas diseñadas para administrar dinero, tarjetas, gastos, analítica y acceso de forma simple, con una experiencia dark premium y foco en velocidad de uso. Simply está pensado para operar desde Android, iOS y Web.',
+      securityKicker: '03 · Seguridad inteligente', preregKicker: '04 · Pre-registro',
+      viewPeople: 'Ver experiencia Personas →', viewBusiness: 'Ver soluciones Empresas →', viewDiamond: 'Conocer Diamond Black →',
+      joinList: 'Unirme a la lista', requestInvite: 'Solicitar invitación', requestAccess: 'Solicitar acceso', talkAdvisor: 'Hablar con un advisor',
+      designBusiness: 'Diseñar solución empresarial', proposeAlliance: 'Proponer alianza',
+      goCrypto: 'Ir a app cripto ↗', goContact: 'Ir a contacto', viewConditions: 'Ver condiciones',
+      searchResults: 'Resultado de búsqueda', availableAnswers: 'respuestas disponibles',
+      infoMayVary: 'La información puede variar por país, proveedor, regulación, perfil del usuario y disponibilidad comercial.',
+      searchPlaceholder: 'Buscar por producto, tarjeta, financiación, cripto, Diamond Black...',
+      clearFilters: 'Limpiar filtros', topics: 'Temas',
+      noResultsTitle: 'No encontramos resultados', noResultsText: 'Probá con otra palabra clave o limpiá los filtros.',
+      officialSupport: `Para soporte oficial, escribí a ${CONTACT_EMAIL}. Simply no ofrece atención telefónica como canal oficial.`,
+      commercialHelpTitle: '¿Necesitás ayuda comercial?', commercialHelpText: 'Para empresas, partners, prensa o consultas de producto, usá el formulario de contacto.',
+      approvalTitle: 'Productos sujetos a aprobación', approvalText: 'Revisá condiciones generales de financiación, cashback, inversiones, cuenta en USA, cripto, empresas y Diamond Black.',
+      tableProduct: 'Producto', tableCondition: 'Condición principal',
+      contactNote: `Escribinos a ${CONTACT_EMAIL} o usá el formulario.`,
+      name: 'Nombre', reasonSupport: 'Soporte', reasonSales: 'Comercial', reasonPress: 'Prensa', reasonPartners: 'Partners', reasonPrivacy: 'Privacidad',
+      message: 'Mensaje', sendContact: 'Enviar contacto',
+      contactSuccess: 'Mensaje recibido. Te contactaremos por email a la brevedad.',
+      copyright: 'Todos los derechos reservados.', viewApprovals: 'Ver productos sujetos a aprobación',
+      cookiesTitle: 'Cookies', cookiesText: 'Usamos cookies técnicas y analíticas para mejorar la experiencia.',
+      accept: 'Aceptar', reject: 'Rechazar', configure: 'Configurar',
+      investmentsKicker: 'Inversiones y control', investmentsTitle: 'Fondos, gastos y beneficios en una sola experiencia.',
+      investmentsText: 'Combiná fondos comunes de inversión con rentabilidad diaria*, cashback estándar de hasta 1%*, AI asesora, control de gastos y herramientas de seguridad para operar con más claridad.',
+      diamondBase: 'Beneficios base', diamondBaseTitle: 'Privilegios diseñados para miembros Diamond Black.',
+      diamondPrivileges: 'Diamond Black privileges', diamondPrivilegesTitle: 'Un servicio privado para vivir, viajar y operar con otro nivel de acceso.',
+      diamondPrivilegesText: 'Beneficios curados para clientes seleccionados: protección avanzada, experiencias únicas, viajes de élite y concierge personal 24/7.',
+      diamondLegal: '*El acceso a Diamond Black, sus beneficios, coberturas, seguros, garantías, viajes, experiencias, concierge, productos y condiciones está sujeto a perfil, elegibilidad, disponibilidad, jurisdicción, regulación, proveedor, convenio y aprobación.',
+      platformTitle: 'Disponible en Android, iOS y Web',
+      platformText: 'Una misma experiencia para operar desde el celular o desde el navegador, con diseño responsive y continuidad entre dispositivos.',
+      platformCards: [
+        ['Android', 'App móvil para usuarios Android, con acceso a cuenta, tarjeta, pagos, AI y beneficios según disponibilidad.'],
+        ['iOS', 'App móvil para iPhone, diseñada con experiencia premium, seguridad y control financiero desde el dispositivo.'],
+        ['Web', 'Acceso web responsive para operar, gestionar información y usar Simply desde navegador.'],
+      ] as const,
+    },
   },
+  home: {
+    badge: 'AI-first fintech · Personas · Empresas · Cripto', titleA: 'Tu dinero,', titleB: 'sin fricción.',
+    subtitle: 'Una plataforma financiera AI-first para personas y empresas: pagos, tarjeta Visa, cripto, stablecoins, financiación, rewards, seguridad avanzada y operaciones inteligentes en un solo ecosistema, disponible para Android, iOS y Web.',
+    heroBullets: ['AI en operaciones', 'Seguridad avanzada', 'Experiencia multimoneda', 'Diseño global'],
+    stats: [['24/7', 'monitoreo y seguridad'], ['AI', 'operación inteligente'], ['1%', 'cashback estándar*'], ['48', 'cuotas estándar*']] as const,
+    peopleTitle: 'Personas', peopleText: 'Pagá, invertí, protegé compras, optimizá gastos y accedé a beneficios desde una experiencia premium.',
+    businessTitle: 'Empresas', businessText: 'Controlá gastos, cobros, pagos masivos, facturación*, multi-divisa, fraude, stablecoins, factoring* y financiación desde una capa financiera inteligente.',
+    diamondTitle: 'Diamond Black', diamondText: 'Acceso por invitación para clientes de alto patrimonio: concierge 24/7, viajes de élite, beneficios seleccionados y experiencia privada.',
+    ecosystemTitle: 'Un ecosistema financiero, no una app más.',
+    ecosystemText: 'Cuenta, tarjeta, cripto, stablecoins, AI, seguridad, beneficios y financiación conectados en una experiencia simple de usar y potente por dentro.',
+    ecosystem: [
+      ['Cuenta digital', 'Saldo, movimientos, control y apertura de cuenta en USA*, según disponibilidad.'],
+      ['Tarjeta Visa', 'Física, virtual y de un solo uso para comprar con más control.'],
+      ['Cripto & stablecoins', 'Activos digitales para operaciones cotidianas, tesorería y pagos, según disponibilidad.'],
+      ['AI financiera', 'Riesgo, fraude, soporte, optimización de gastos y asesoría inteligente.'],
+    ] as const,
+    securityTitle: 'Seguridad, AI y control operativo.',
+    securityText: 'Validación, monitoreo, trazabilidad, prevención de fraude, controles de cumplimiento y análisis inteligente de comportamiento para proteger personas, empresas y operaciones.',
+    preregTitle: 'Pre-registro Simply',
+    preregSubtitle: 'Acceso anticipado a tarjeta Visa, QR, fondos comunes de inversión con rentabilidad diaria*, cashback de hasta 1%*, Programa Rewards y financiación de hasta 48 cuotas mensuales*. Sujeto a aprobación, disponibilidad y condiciones comerciales.',
+    preregBenefits: [
+      ['VISA', 'Tarjeta Visa', 'Física o virtual, según disponibilidad.'],
+      ['QR', 'QR', 'Pagos y cobros con integraciones habilitadas.'],
+      ['FCI', 'Fondos comunes', 'Inversiones con rentabilidad diaria*, según proveedor y perfil.'],
+      ['1%', 'Cashback hasta 1%*', 'Beneficios por consumo según campaña.'],
+      ['RW', 'Rewards', 'Puntos, recompensas y beneficios.'],
+      ['48', 'Hasta 48 cuotas*', 'Financiación mensual sujeta a aprobación.'],
+    ] as const,
+    preregFields: {
+      person: 'Soy persona', business: 'Soy empresa', interest: 'Interés principal',
+      interests: ['Cuenta / tarjeta', 'Financiación', 'Empresas', 'Diamond Black', 'Cripto / stablecoins'],
+      company: 'Empresa', name: 'Nombre y apellido', email: 'Email', phone: 'Teléfono',
+      country: 'País', city: 'Ciudad', contact: 'Canal oficial de contacto', contactOptions: ['Email'],
+      submit: 'Enviar pre-registro', success: 'Pre-registro recibido. Te contactaremos por email.',
+      terms: 'Acepto los términos y condiciones', privacy: 'Acepto la política de privacidad',
+      approval: 'Entiendo que los beneficios y financiación están sujetos a aprobación',
+      commercial: 'Acepto recibir comunicaciones comerciales de Simply',
+    },
+    ctaTitle: 'El futuro financiero, más simple.', ctaText: 'Sumate al pre-registro y accedé primero al ecosistema Simply.',
+    footerTag: 'Finanzas simples, inteligentes y seguras para personas, empresas y operaciones globales.',
+    legalNote: '*La financiación, cashback, fondos comunes de inversión, rewards, apertura de cuenta en USA, seguros, optimización fiscal AI, facturación, conciliación, factoring, Revenue-Based Financing, stablecoins, multi-divisa, Diamond Black y otros servicios están sujetos a aprobación, disponibilidad, jurisdicción, regulación, proveedores e integraciones habilitadas. Las inversiones no constituyen asesoramiento financiero.',
+  },
+  people: {
+    title: 'Simply para personas', kicker: 'Control financiero premium',
+    intro: 'Pagos, tarjeta Visa, QR, fondos comunes de inversión con rentabilidad diaria*, cashback de hasta 1%*, financiación de hasta 48 cuotas mensuales*, asistencias, seguridad, apertura de cuenta en USA* y AI asesora en una experiencia premium de uso diario.',
+    useCasesTitle: 'Casos de uso',
+    useCases: [
+      ['Viajero frecuente', 'Tarjeta, seguros on-demand, cuenta en USA*, cripto y alertas inteligentes.'],
+      ['Compra online', 'Tarjetas de un solo uso, protección de compras y control de suscripciones.'],
+      ['Inversiones', 'Fondos comunes de inversión con rentabilidad diaria*, analítica y organización fiscal AI*.'],
+      ['Organización diaria', 'Gastos, suscripciones, rewards, cashback hasta 1%* y AI asesora en una sola app.'],
+    ] as const,
+    groups: [
+      { title: 'Uso diario', items: [
+        ['Cuenta digital', 'Saldo, movimientos, transferencias y alertas en tiempo real.'],
+        ['Tarjeta Visa', 'Tarjeta física, virtual y control desde la app.'],
+        ['QR y pagos', 'Pagos simples según integraciones habilitadas.'],
+        ['Cuenta en USA*', 'Apertura sujeta a elegibilidad, validación, jurisdicción y proveedores.'],
+      ] as const },
+      { title: 'Seguridad y tarjetas', items: [
+        ['Tarjetas de un solo uso', 'Tarjetas virtuales que se desactivan después de una compra para sitios desconocidos.'],
+        ['Seguridad personal', 'Monitoreo, autenticación reforzada y análisis de actividad inusual.'],
+        ['Control de suscripciones', 'Alertas sobre cobros recurrentes y servicios no utilizados.'],
+        ['Protección de compras', 'Herramientas para reducir riesgo en compras digitales.'],
+      ] as const },
+      { title: 'AI y optimización', items: [
+        ['AI asesora', 'Asistencia para entender movimientos, oportunidades y alertas personalizadas.'],
+        ['Optimización de gastos', 'Detecta suscripciones inactivas, vencimientos y alternativas más convenientes.'],
+        ['Optimización fiscal AI*', 'Estimación y organización de información fiscal financiera, sujeta a revisión profesional.'],
+        ['Analítica personal', 'Categorías, tendencias, hábitos y señales financieras.'],
+      ] as const },
+      { title: 'Asistencias, inversiones y beneficios', items: [
+        ['Seguros embebidos on-demand*', 'Coberturas por días u horas, según ubicación, evento y disponibilidad.'],
+        ['Pack de asistencias', 'Hogar, mascotas, instalaciones, mantenimiento y servicios cotidianos.'],
+        ['Fondos comunes de inversión*', 'Acceso a FCI con rentabilidad diaria, sujeto a proveedor, regulación y perfil del cliente.'],
+        ['Cashback hasta 1%*', 'Beneficios por consumo estándar según campañas y condiciones.'],
+        ['Hasta 48 cuotas mensuales*', 'Financiación para clientes estándar, sujeta a aprobación y condiciones comerciales.'],
+        ['Rewards', 'Puntos, beneficios y recompensas dentro del ecosistema.'],
+      ] as const },
+    ],
+    diamondTeaser: { title: 'Diamond Black', kicker: 'Acceso por invitación', text: 'Una experiencia privada para clientes de alto patrimonio: concierge 24/7, viajes de élite, protección avanzada, cashback hasta 1.5%* y hasta 60 cuotas mensuales*.' },
+  },
+  diamond: {
+    title: 'Diamond Black', kicker: 'Acceso por invitación · Ultra exclusivo',
+    intro: 'Una propuesta ultra exclusiva para clientes de alto patrimonio que buscan discreción, prioridad, atención personalizada y una experiencia financiera superior dentro del ecosistema Simply.',
+    features: [
+      ['Atención prioritaria', 'Canales preferenciales por email y acompañamiento personalizado sujeto a disponibilidad.'],
+      ['Cashback hasta 1.5%*', 'Beneficio diferencial para clientes Diamond Black, sujeto a campaña, comercio y condiciones.'],
+      ['Hasta 60 cuotas mensuales*', 'Financiación preferencial sujeta a evaluación, aprobación y condiciones comerciales.'],
+      ['Fondos comunes de inversión*', 'Acceso a FCI con rentabilidad diaria, sujeto a proveedor, regulación y perfil del cliente.'],
+      ['Arquitectura patrimonial digital', 'Una forma más sofisticada de ordenar productos, información y oportunidades.'],
+      ['AI patrimonial', 'Asistencia inteligente para identificar alertas relevantes, ordenar información financiera y detectar oportunidades.'],
+    ] as const,
+    categories: [
+      { title: 'Protección & seguros', items: [
+        ['Coberturas médicas masivas', 'Seguros de viaje con coberturas superiores a USD/EUR 50.000, incluyendo repatriaciones y traslados sanitarios, sujeto a proveedor y aprobación.'],
+        ['Garantías extremas', 'Protección de compras contra robo o daño accidental y extensión de garantías de fabricante hasta por un año adicional, según condiciones.'],
+      ] as const },
+      { title: 'Experiencias', items: [
+        ['Preventas exclusivas', 'Acceso anticipado a boletos para conciertos, eventos privados, lanzamientos y experiencias seleccionadas.'],
+        ['Personal shoppers', 'Asistencia personalizada en tiendas exclusivas, boutiques de diseñador y compras de alta gama.'],
+      ] as const },
+      { title: 'Viajes de élite', items: [
+        ['Beneficios en hoteles', 'Upgrades de habitación, desayuno, créditos para spa, early check-in o late check-out, según disponibilidad del hotel.'],
+        ['Salas VIP', 'Acceso a lounges y salas exclusivas en aeropuertos seleccionados, sujeto a convenio y disponibilidad.'],
+      ] as const },
+      { title: 'Concierge 24/7', items: [
+        ['Planificación de viajes', 'Itinerarios personalizados, alquiler de yates o jets privados, coordinación de traslados premium y gestión de visas.'],
+        ['Gestión de estilo de vida', 'Organización de eventos privados, compra y envío de regalos o localización de artículos de lujo.'],
+        ['Reservas exclusivas', 'Gestión de mesas en restaurantes con listas de espera, entradas para eventos agotados y experiencias de difícil acceso.'],
+      ] as const },
+    ],
+  },
+  business: {
+    title: 'Simply para empresas', kicker: 'Infraestructura financiera inteligente',
+    intro: 'El sistema financiero operativo para empresas que quieren pagar, cobrar, auditar, invertir excedentes en fondos comunes con rentabilidad diaria*, financiarse, operar multi-divisa y reducir fraude desde una sola plataforma.',
+    useCasesTitle: 'Casos de uso',
+    useCases: [
+      ['Comercios y franquicias', 'Cobros QR, conciliación, pagos a aliados, facturación* y control de fraude.'],
+      ['Equipos comerciales', 'Tarjetas virtuales, gastos inteligentes, roles, límites y aprobaciones.'],
+      ['Financieras y mutuales', 'Riesgo, comportamiento malicioso, salud financiera de clientes y pagos masivos.'],
+      ['Importadores/exportadores', 'Multi-divisa, stablecoins, proveedores, cuenta en USA* y tesorería.'],
+      ['Marketplaces', 'Pagos a vendedores, validación de proveedores, factoring* y reportes.'],
+      ['Empresas con empleados', 'Gastos, tickets, ERP, usuarios, permisos y auditoría operativa.'],
+    ] as const,
+    groups: [
+      { title: 'Gestión financiera', items: [
+        ['Gestión de gastos inteligente', 'Tarjetas virtuales para empleados, foto del ticket y justificación automática.'],
+        ['Dashboard empresarial', 'Saldos, movimientos, métricas, alertas, conciliación y reportes.'],
+        ['Fondos comunes de inversión*', 'Inversión de excedentes con rentabilidad diaria, sujeta a proveedor, regulación y perfil de la empresa.'],
+        ['Generación de facturas*', 'Emisión y organización de comprobantes según país e integraciones.'],
+      ] as const },
+      { title: 'Operaciones y pagos', items: [
+        ['Pagos masivos', 'Pagos trazables a proveedores, colaboradores, aliados o clientes.'],
+        ['Cobros QR', 'Pagos y conciliación desde una experiencia clara.'],
+        ['Multi-divisa en tiempo real', 'Operación entre monedas con mayor transparencia y control de margen.'],
+        ['Stablecoins cotidianas', 'Tesorería, pagos o liquidaciones con stablecoins, según regulación.'],
+      ] as const },
+      { title: 'Riesgo y fraude', items: [
+        ['Validación de proveedores', 'Revisión de cuentas destino, señales de riesgo y posibles vínculos con fraude.'],
+        ['Control de fraude empresarial', 'Reglas, alertas y monitoreo de riesgos internos y externos.'],
+        ['Comportamiento malicioso', 'Detección de patrones anómalos y abuso operativo.'],
+        ['Salud financiera de clientes', 'Analítica en tiempo real para estimar riesgo, exposición y deterioro.'],
+      ] as const },
+      { title: 'Financiación e integraciones', items: [
+        ['Revenue-Based Financing*', 'Financiación repagada como porcentaje de ventas diarias.'],
+        ['Factoring con un click*', 'Anticipo de facturas pendientes desde la plataforma.'],
+        ['Conciliación automática*', 'Reconocimiento de facturas y pagos en ERP sin intervención humana.'],
+        ['Múltiples usuarios y roles', 'Permisos, límites, jerarquías, aprobaciones y accesos por función.'],
+      ] as const },
+    ],
+    demoFields: { company: 'Empresa', name: 'Nombre', email: 'Email corporativo', message: 'Qué necesitás resolver', submit: 'Solicitar evaluación empresarial', success: 'Solicitud recibida. El equipo comercial se pondrá en contacto.' },
+  },
+  ai: {
+    title: 'AI financiera Simply', kicker: 'AI-first, con límites responsables',
+    intro: 'Simply usa AI para mejorar riesgo, soporte, fraude, automatización, análisis de comportamiento y asesoría. La AI ayuda a operar mejor; no reemplaza controles humanos, cumplimiento ni decisiones reguladas cuando correspondan.',
+    modules: [
+      ['AI Advisor para personas', 'Optimización de gastos, suscripciones, alertas, lectura financiera simple y sugerencias de ahorro.'],
+      ['AI Advisor para empresas', 'Asistencia por usuario, limitada por permisos, rol, área y políticas internas.'],
+      ['AI Risk Engine', 'Señales tempranas, scoring interno, exposición, salud financiera y comportamiento.'],
+      ['AI Fraud Engine', 'Patrones anómalos, proveedores riesgosos, abuso operativo y actividad sospechosa.'],
+      ['AI Concierge Diamond Black', 'Soporte de estilo de vida, viajes, beneficios, reservas y experiencias con límites humanos.'],
+      ['Responsabilidad', 'La AI asiste, pero no reemplaza decisiones reguladas, aprobación crediticia, compliance ni revisión humana cuando corresponda.'],
+    ] as const,
+  },
+  crypto: {
+    title: 'Cripto & Stablecoins', kicker: 'Activos digitales para operaciones reales',
+    intro: 'Simply conecta la experiencia financiera tradicional con cripto y stablecoins para pagos, tesorería, cobertura operativa y transferencias, sujeto a regulación, disponibilidad e integraciones habilitadas.',
+    items: [
+      ['Stablecoins cotidianas', 'Uso para pagos, tesorería, liquidaciones o resguardo operativo, según disponibilidad.'],
+      ['Operación cripto', 'Acceso a la experiencia cripto de Simply desde app.gosimply.xyz.'],
+      ['Cumplimiento', 'Monitoreo, validaciones, trazabilidad y políticas según jurisdicción.'],
+      ['Riesgos', 'Los activos digitales pueden tener riesgos regulatorios, operativos y de contraparte.'],
+    ] as const,
+  },
+  partners: {
+    title: 'Partners', kicker: 'Ecosistema abierto',
+    intro: 'Simply puede integrarse con bancos, PSPs, comercios, brokers, aseguradoras, proveedores cripto, ERPs, emisores, adquirentes y aliados tecnológicos para expandir productos financieros con una experiencia simple.',
+    items: [
+      ['Bancos y PSPs', 'Rieles financieros, cuentas, pagos, adquirencia y procesamiento.'],
+      ['Brokers e inversiones', 'Productos de inversión ofrecidos por entidades autorizadas.'],
+      ['Aseguradoras', 'Seguros embebidos, asistencias y coberturas on-demand.'],
+      ['Cripto providers', 'On/off ramp, stablecoins, custodia, swaps o infraestructura blockchain.'],
+      ['Comercios y empresas', 'Pagos, QR, beneficios, financiación y herramientas de riesgo.'],
+      ['Tecnología', 'ERP, datos, verificación, compliance, AI, antifraude y automatización.'],
+    ] as const,
+  },
+  approvals: {
+    title: 'Productos sujetos a aprobación', kicker: 'Claridad legal y comercial',
+    intro: 'Algunos productos pueden depender de evaluación crediticia, KYC/KYB, regulación, proveedores, país, integraciones, documentación y políticas internas.',
+    rows: [
+      ['Financiación estándar hasta 48 cuotas', 'Evaluación crediticia, políticas comerciales, proveedor y regulación.'],
+      ['Financiación Diamond Black hasta 60 cuotas', 'Invitación, evaluación, políticas comerciales, proveedor y regulación.'],
+      ['Cashback estándar hasta 1%', 'Campaña, perfil, comercio, disponibilidad y condiciones vigentes.'],
+      ['Cashback Diamond Black hasta 1.5%', 'Perfil, invitación, campaña, comercio, disponibilidad y condiciones vigentes.'],
+      ['Cuenta en USA', 'Elegibilidad, documentación, proveedor bancario, KYC/KYB y jurisdicción.'],
+      ['Factoring / RBF', 'Aprobación, riesgo, ventas, facturas, elegibilidad y disponibilidad.'],
+      ['Seguros embebidos', 'Proveedor asegurador, ubicación, producto, regulación y aceptación.'],
+      ['Fondos comunes de inversión', 'Rentabilidad diaria sujeta a proveedor autorizado, perfil, jurisdicción, riesgo y regulación. No constituye asesoramiento financiero.'],
+      ['Stablecoins / cripto', 'Regulación, proveedor, disponibilidad, controles y riesgos operativos.'],
+      ['Diamond Black', 'Perfil, invitación, elegibilidad, proveedor, convenio, jurisdicción y aprobación.'],
+    ] as const,
+  },
+  pages: {
+    digital: { title: 'Cuenta digital', kicker: 'Dinero organizado, disponible y simple.', body: 'Centralizá saldos, movimientos, transferencias, tarjetas y actividad desde una experiencia clara.', bullets: ['Saldo y movimientos', 'Controles de actividad', 'Alertas', 'Apertura USA*'] },
+    cards: { title: 'Tarjetas', kicker: 'Control total desde la app.', body: 'Tarjetas físicas, virtuales y de un solo uso según disponibilidad. Controlá límites, consumos, seguridad y compras online.', bullets: ['Tarjeta virtual', 'Un solo uso', 'Límites', 'Bloqueo', 'Alertas'] },
+    transfers: { title: 'Transferencias', kicker: 'Mové dinero sin vueltas.', body: 'Enviá y recibí fondos con experiencia trazable y clara.', bullets: ['Trazabilidad', 'Confirmaciones', 'Historial', 'Seguridad'] },
+    analytics: { title: 'Analítica financiera', kicker: 'Entendé tu dinero.', body: 'Gastos, ingresos, hábitos, suscripciones y señales financieras en tiempo real.', bullets: ['Categorías', 'Tendencias', 'Alertas', 'Resumen financiero'] },
+    financialAI: { title: 'AI financiera', kicker: 'Automatización responsable.', body: 'AI para riesgo, fraude, soporte, asesoría, optimización de gastos y análisis de comportamiento.', bullets: ['Riesgo', 'Fraude', 'Soporte', 'Asesoría', 'Automatización'] },
+    innovation: { title: 'Innovación', kicker: 'Fintech AI-first.', body: 'Simply combina infraestructura financiera, diseño premium, cripto, stablecoins, riesgo, automatización y AI operativa para construir una compañía financiera moderna, escalable y global.', bullets: ['AI operativa', 'Cripto', 'Stablecoins', 'Riesgo', 'Automatización', 'Escala global'], metrics: [['AI-first', 'modelo operativo'], ['24/7', 'monitoreo'], ['API', 'arquitectura integrable'], ['Global', 'visión multi-mercado']], sections: [['AI como capa operativa', 'La inteligencia artificial se aplica como una capa transversal para soporte, monitoreo, análisis de riesgo, prevención de fraude, clasificación de operaciones, asistencia a usuarios y mejora de procesos internos.'], ['Infraestructura modular', 'La plataforma está pensada por módulos: cuenta, tarjeta, pagos, QR, cripto, stablecoins, inversiones, financiación, seguridad, empresas, partners y Diamond Black.'], ['Diseño financiero premium', 'La experiencia busca reducir fricción sin perder control: interfaces oscuras, navegación simple, datos claros y acciones rápidas.'], ['Datos, riesgo y comportamiento', 'Simply prioriza señales operativas, trazabilidad y análisis de comportamiento para anticipar riesgos y mejorar decisiones.'], ['Escalabilidad internacional', 'El producto está diseñado para adaptarse a distintos mercados, proveedores, regulaciones, idiomas y monedas.']], blocks: [['Qué nos diferencia', 'No pensamos Simply como una billetera aislada. La pensamos como una capa financiera inteligente que une personas, empresas, AI, cripto, pagos, financiación, inversiones y beneficios.'], ['Principio central', 'La innovación solo tiene valor si mejora la experiencia, reduce riesgo, aumenta transparencia o simplifica una operación real.']] },
+    securityPage: { title: 'Trust Center', kicker: 'Confianza por diseño.', body: 'La confianza no es una sección: es una arquitectura. Simply combina KYC/KYB, monitoreo, prevención de fraude, roles, auditoría, trazabilidad, protección de datos y proveedores regulados cuando corresponde.', bullets: ['KYC/KYB', 'Monitoreo transaccional', 'Fraude', 'Roles y permisos', 'Auditoría', 'Trazabilidad', 'Protección de datos', 'Proveedores regulados'], metrics: [['KYC/KYB', 'validaciones'], ['AI', 'detección de patrones'], ['Roles', 'control empresarial'], ['Audit', 'trazabilidad']], sections: [['Identidad y elegibilidad', 'Los productos pueden requerir validación de identidad, documentación, perfil transaccional, validación empresarial, listas de control y verificación de elegibilidad.'], ['Prevención de fraude', 'El sistema puede analizar señales de comportamiento, operaciones inusuales, proveedores riesgosos, patrones anómalos y potencial abuso operativo.'], ['Roles y permisos', 'En empresas, los accesos pueden separarse por rol, área, límite, permisos, jerarquías y aprobación interna.'], ['Protección de datos', 'Aplicamos criterios de minimización, controles de acceso, monitoreo, registro de actividad y buenas prácticas de seguridad de información.'], ['Auditoría y trazabilidad', 'Las operaciones, cambios, aprobaciones y eventos relevantes deben poder registrarse para revisión y control interno.'], ['Proveedores regulados', 'Cuando un producto requiere una licencia o autorización específica, Simply puede operar con terceros habilitados, regulados o autorizados según jurisdicción.']], blocks: [['AI responsable', 'La AI ayuda a detectar patrones, priorizar alertas y asistir procesos. No reemplaza controles humanos, decisiones reguladas ni revisión de cumplimiento cuando corresponda.'], ['Transparencia comercial', 'Los productos sujetos a aprobación se comunican como tales: disponibilidad, condiciones, límites y elegibilidad pueden variar por país, perfil, proveedor y regulación.']] },
+    careers: { title: 'Trabajá con nosotros', kicker: 'Construí finanzas más simples.', body: 'Buscamos personas con mentalidad de construcción, criterio operativo y ambición global para crear una fintech AI-first con foco en personas, empresas, cripto, riesgo y experiencia premium.', bullets: ['Ingeniería', 'Producto', 'Compliance', 'Riesgo', 'Operaciones', 'Diseño', 'Growth', 'AI operations'], metrics: [['Remote', 'cultura flexible'], ['AI-first', 'forma de trabajo'], ['Global', 'visión de producto'], ['Owner', 'mentalidad de construcción']], sections: [['Perfiles que buscamos', 'Ingeniería full-stack, mobile, cloud, seguridad, data, AI operations, producto, diseño, compliance, riesgo, operaciones financieras, growth, partnerships y soporte premium.'], ['Cómo trabajamos', 'Equipos pequeños, foco en ejecución, documentación clara, automatización, responsabilidad individual y decisiones basadas en datos.'], ['Cultura', 'Valoramos criterio, honestidad, velocidad, obsesión por el usuario, cuidado por el detalle y capacidad de construir sistemas escalables.'], ['Áreas clave', 'Personas, Empresas, Diamond Black, Trust Center, Cripto & Stablecoins, AI financiera, Partners e infraestructura operativa.'], ['Cómo aplicar', `Enviá tu perfil, portfolio o LinkedIn a ${CONTACT_EMAIL} con el asunto "Careers Simply" y contanos qué área querés construir.`]], blocks: [['No buscamos empleados promedio', 'Buscamos builders: personas que detectan problemas, proponen soluciones, documentan, ejecutan y mejoran el sistema.'], ['AI como herramienta diaria', 'Usamos AI para investigar, escribir, prototipar, analizar datos, auditar procesos y acelerar decisiones, siempre con criterio humano.']] },
+    press: { title: 'Prensa / Media Kit', kicker: 'Recursos institucionales.', body: 'Simply es una fintech AI-first desarrollada por PaySur INC, enfocada en infraestructura financiera simple, segura y global para personas, empresas, cripto, stablecoins, financiación, inversiones, seguridad y AI operativa.', bullets: ['Boilerplate', 'Logo SVG', 'Logo PNG', 'Contacto de prensa'], metrics: [['PaySur INC', 'razón social'], ['Simply', 'marca fintech'], ['AI-first', 'posicionamiento'], ['Global', 'visión']], sections: [['Boilerplate corto', 'Simply es una plataforma financiera AI-first que integra cuenta digital, tarjeta Visa, pagos, cripto, stablecoins, inversiones, financiación, seguridad avanzada y herramientas para empresas en un solo ecosistema.'], ['Boilerplate institucional', 'Simply, desarrollada por PaySur INC, nace para simplificar la relación entre personas, empresas y dinero mediante infraestructura financiera, diseño premium, automatización, AI operativa, prevención de fraude y productos sujetos a aprobación según mercado, proveedor y regulación.'], ['Uso del logo', 'Mantener proporciones, no deformar, no alterar colores sin autorización, no usar sobre fondos complejos sin contraste suficiente y respetar área de protección.'], ['Contacto de prensa', `Para prensa, alianzas, entrevistas o recursos institucionales: ${CONTACT_EMAIL}.`]], blocks: [['Razón social', `${COMPANY_NAME} · ${COMPANY_ADDRESS_ES}.`], ['Nota legal', 'La información pública no constituye oferta financiera, asesoramiento de inversión, aprobación crediticia ni disponibilidad garantizada de productos.']] },
+    help: { title: 'Centro de ayuda', kicker: 'Soporte claro, por email y autoservicio.', body: 'Encontrá respuestas sobre pre-registro, cuenta, tarjeta Visa, QR, inversiones, financiación, empresas, Diamond Black, cripto, privacidad, seguridad y productos sujetos a aprobación.', bullets: ['Pre-registro', 'Cuenta', 'Tarjetas', 'Financiación', 'Empresas', 'Diamond Black', 'Cripto', 'Privacidad'], metrics: [['Email', 'único canal oficial'], ['24/7', 'consulta online'], ['AI', 'guías y asistencia'], ['Trust', 'seguridad y control']], sections: [['Pre-registro', 'Podés sumarte a la lista de acceso anticipado como persona o empresa. El pre-registro no implica aprobación ni disponibilidad inmediata de productos.'], ['Cuenta y tarjeta', 'La cuenta digital, tarjeta Visa física o virtual, QR, transferencias y herramientas de control están sujetas a disponibilidad, validación e integraciones habilitadas.'], ['Inversiones', 'Los fondos comunes de inversión con rentabilidad diaria dependen de proveedor autorizado, regulación, perfil del cliente y disponibilidad por mercado. La información no constituye asesoramiento financiero.'], ['Financiación', 'La financiación estándar puede llegar hasta 48 cuotas mensuales* y Diamond Black hasta 60 cuotas mensuales*, siempre sujeto a evaluación, aprobación y condiciones comerciales.'], ['Cripto & Stablecoins', 'La experiencia cripto redirige a app.gosimply.xyz. Los activos digitales pueden implicar riesgos regulatorios, operativos, de contraparte y de mercado.'], ['Privacidad y seguridad', 'Podés consultar nuestras políticas de privacidad, términos, cookies, cumplimiento y Trust Center desde el footer. Aplicamos principios de trazabilidad, monitoreo y control.'], ['Contacto', `Simply no ofrece atención telefónica como canal oficial. Para soporte, prensa, alianzas o consultas comerciales, escribí a ${CONTACT_EMAIL} o usá el formulario de contacto.`]], blocks: [['Antes de contactarnos', 'Revisá las preguntas frecuentes, productos sujetos a aprobación, términos, privacidad y Trust Center. Muchas respuestas dependen del país, proveedor, regulación y perfil del usuario.'], ['Canal oficial', `El canal oficial de contacto es email: ${CONTACT_EMAIL}. No solicitamos claves, códigos, frases semilla, contraseñas ni información sensible por canales no verificados.`]] },
+    contact: { title: 'Contacto', kicker: 'Hablemos.', body: 'Consultas comerciales, soporte, prensa, alianzas o privacidad.', bullets: ['Soporte', 'Ventas', 'Prensa', 'Partners', 'Privacidad'] },
+    status: { title: 'Estado del servicio', kicker: 'Transparencia operativa.', body: 'Estado informativo de módulos y disponibilidad.', bullets: ['Sitio web: operativo', 'App cripto: operativa', 'Pre-registro: activo', 'Productos seleccionados: sujetos a aprobación', 'Diamond Black: acceso por invitación'] },
+    cookies: { title: 'Política de Cookies', kicker: 'Medición, seguridad y experiencia.', body: 'Simply puede utilizar cookies y tecnologías similares para operar el sitio, recordar preferencias, medir uso, mejorar rendimiento, prevenir fraude y entender la efectividad de campañas.', metrics: [['Técnicas', 'funcionamiento'], ['Analíticas', 'medición'], ['Preferencias', 'experiencia'], ['Seguridad', 'protección']], bullets: ['Necesarias', 'Analítica', 'Preferencias', 'Seguridad', 'Marketing', 'Consentimiento', 'Gestión', 'Terceros'], sections: [['1. Qué son las cookies', 'Las cookies son pequeños archivos o tecnologías similares que se almacenan en el navegador o dispositivo para recordar información, reconocer visitas y habilitar funciones.'], ['2. Cookies necesarias', 'Permiten operar el sitio, mantener seguridad, recordar configuraciones esenciales, prevenir abuso y habilitar navegación básica.'], ['3. Cookies analíticas', 'Ayudan a entender visitas, páginas consultadas, interacción, rendimiento, errores y conversión de formularios. Pueden usarse de forma agregada o pseudonimizada.'], ['4. Cookies de preferencia', 'Permiten recordar idioma, país, preferencias de interfaz, aceptación o rechazo de cookies y configuraciones de experiencia.'], ['5. Cookies de seguridad', 'Pueden usarse para detectar actividad inusual, abuso, bots, intentos de fraude, sesiones anómalas o uso no autorizado.'], ['6. Gestión del consentimiento', 'El usuario puede aceptar, rechazar o configurar cookies no esenciales cuando el sitio lo permita. También puede eliminarlas o bloquearlas desde el navegador.']], blocks: [['Control del usuario', 'Podés gestionar cookies desde el banner del sitio o desde la configuración de tu navegador.'], ['Contacto', `Consultas sobre cookies: ${CONTACT_EMAIL}.`]] },
+    compliance: { title: 'Cumplimiento', kicker: 'Operación responsable.', body: 'Simply incorpora principios de cumplimiento, prevención de fraude, validación de identidad, trazabilidad, monitoreo, roles, auditoría y adaptación regulatoria por mercado.', metrics: [['KYC', 'personas'], ['KYB', 'empresas'], ['Fraude', 'monitoreo'], ['AML', 'prevención']], bullets: ['KYC', 'KYB', 'AML', 'Fraude', 'Auditoría', 'Roles', 'Trazabilidad', 'Proveedores regulados'], sections: [['1. Enfoque', 'El cumplimiento se diseña como una capa operativa: identificación, validación, monitoreo, registro, revisión de riesgos, controles internos, proveedores habilitados y adaptación a cada jurisdicción.'], ['2. KYC', 'Para personas, Simply puede requerir identificación, datos de contacto, validación documental, verificación biométrica, listas de control, perfil transaccional y revisión de elegibilidad.'], ['3. KYB', 'Para empresas, pueden solicitarse datos societarios, autoridades, beneficiarios finales, actividad económica, documentación fiscal, estructura de propiedad, validación de cuenta y análisis de riesgo.'], ['4. AML/CFT', 'Simply puede aplicar controles de prevención de lavado de activos, financiamiento del terrorismo, sanciones, listas restrictivas, monitoreo transaccional y reporte o bloqueo cuando corresponda.'], ['5. Prevención de fraude', 'Podemos analizar patrones de uso, anomalías, comportamiento malicioso, proveedores riesgosos, dispositivos, IP, operaciones inusuales, abuso de promociones o inconsistencias documentales.'], ['6. Restricciones', 'Podemos rechazar, limitar, suspender o cerrar solicitudes o servicios por riesgo, incumplimiento, falta de documentación, actividad sospechosa, sanciones o incompatibilidad regulatoria.']], blocks: [['No somos atajo regulatorio', 'Los productos sujetos a regulación se estructuran con proveedores, validaciones y condiciones aplicables según cada jurisdicción.'], ['Canal oficial', `Consultas de cumplimiento: ${CONTACT_EMAIL}.`]] },
+    investors: { title: 'Inversores / Aliados estratégicos', kicker: 'Infraestructura fintech AI-first', body: 'Simply combina personas, empresas, cripto, stablecoins, Diamond Black, AI operativa y una arquitectura preparada para escalar con partners estratégicos, proveedores regulados y mercados internacionales.', bullets: ['Visión global', 'Vertical personas', 'Vertical empresas', 'Diamond Black', 'AI-first', 'Cripto & stablecoins', 'Partners regulados', 'Escalabilidad'], metrics: [['B2C', 'personas'], ['B2B', 'empresas'], ['AI', 'operación'], ['Partners', 'infraestructura']], sections: [['Tesis', 'El mercado financiero está migrando hacia experiencias integradas, móviles, AI-first, multimoneda y con partners especializados por producto. Simply busca ser una capa de experiencia e inteligencia financiera sobre esa infraestructura.'], ['Vertical Personas', 'Cuenta, tarjeta, QR, fondos comunes de inversión*, cashback*, rewards, financiación*, asistencias, AI asesora y cripto/stablecoins según disponibilidad.'], ['Vertical Empresas', 'Gastos inteligentes, tarjetas de empleados, pagos masivos, multiusuario, roles, ERP, conciliación*, facturación*, factoring*, RBF*, stablecoins y control de fraude.'], ['Diamond Black', 'Producto de posicionamiento premium para clientes de alto patrimonio, con concierge, beneficios de viaje, protección, cashback diferencial y experiencia privada por invitación.'], ['Estrategia de partners', 'Bancos, PSPs, brokers, aseguradoras, proveedores cripto, emisores, adquirentes, ERPs, KYC/KYB, fraude, compliance y data providers.']], blocks: [['Qué buscamos', 'Aliados estratégicos, proveedores regulados, partners de infraestructura, capital inteligente, acuerdos de distribución, integraciones tecnológicas y expansión comercial.'], ['Contacto', `Para conversaciones estratégicas: ${CONTACT_EMAIL}.`]] },
+    applicants: { title: 'Quiénes pueden aplicar', kicker: 'Elegibilidad clara', body: 'Simply está pensado para distintos perfiles, siempre sujeto a validaciones, regulación, disponibilidad e integraciones habilitadas.', bullets: ['Personas', 'Empresas', 'Comercios', 'Partners', 'Usuarios cripto', 'Clientes Diamond Black', 'Aliados tecnológicos', 'Proveedores financieros'] },
+  },
+  faqPage: {
+    title: 'Preguntas frecuentes', kicker: 'Respuestas rápidas',
+    intro: 'Una guía clara sobre Simply, sus productos, condiciones, seguridad, empresas, Diamond Black, cripto y canales de contacto.',
+    topics: [['all', 'Todas'], ['general', 'General'], ['account', 'Cuenta y tarjeta'], ['financing', 'Financiación e inversiones'], ['business', 'Empresas'], ['diamond', 'Diamond Black'], ['crypto', 'Cripto'], ['security', 'Seguridad y legales']] as const,
+    categories: [
+      { id: 'general', title: 'General', items: [
+        ['¿Qué es Simply?', 'Simply es una plataforma financiera AI-first para personas y empresas. Puede incluir cuenta digital, tarjeta Visa, QR, pagos, cripto, stablecoins, inversiones, financiación, rewards, seguridad avanzada y soluciones empresariales según disponibilidad.'],
+        ['¿Simply ya está disponible?', 'La web permite pre-registro y acceso informativo. Algunos productos pueden estar disponibles, otros en acceso anticipado o sujetos a aprobación, proveedor, regulación y mercado.'],
+        ['¿Simply es una billetera digital?', 'Simply no se plantea solo como una billetera. Es un ecosistema financiero que puede integrar cuenta, tarjeta, pagos, inversiones, financiación, AI, empresas, cripto y beneficios.'],
+        ['¿Qué significa AI-first?', 'Significa que la inteligencia artificial se incorpora como capa operativa para soporte, riesgo, fraude, análisis, automatización y asesoría, con límites responsables y revisión humana cuando corresponda.'],
+      ] as const },
+      { id: 'account', title: 'Cuenta, tarjeta y pagos', items: [
+        ['¿Qué productos puede tener una cuenta Simply?', 'Puede incluir cuenta digital, tarjeta Visa física o virtual, QR, transferencias, analítica, alertas, control de gastos y beneficios, según país e integraciones habilitadas.'],
+        ['¿La tarjeta Visa es física o virtual?', 'Puede ser física o virtual según disponibilidad, proveedor, perfil, país y aprobación.'],
+        ['¿Qué son las tarjetas de un solo uso?', 'Son tarjetas virtuales pensadas para compras en sitios no habituales. Se desactivan luego de un uso para reducir riesgos de suscripciones ocultas o uso indebido.'],
+        ['¿Hay apertura de cuenta en USA?', 'Puede existir como producto sujeto a elegibilidad, documentación, proveedor bancario, KYC/KYB, jurisdicción y disponibilidad.'],
+      ] as const },
+      { id: 'financing', title: 'Financiación, cashback e inversiones', items: [
+        ['¿Cuántas cuotas sin interés ofrece Simply?', 'Para clientes estándar puede llegar hasta 48 cuotas mensuales*. Para Diamond Black puede llegar hasta 60 cuotas mensuales*. Siempre sujeto a evaluación, aprobación, proveedor y condiciones comerciales.'],
+        ['¿Cuál es el cashback?', 'Para clientes estándar, hasta 1%*. Para Diamond Black, hasta 1.5%*. Depende de campañas, comercios, perfil, disponibilidad y condiciones vigentes.'],
+        ['¿Qué son los fondos comunes con rentabilidad diaria?', 'Son productos de inversión que pueden ofrecer rentabilidad diaria, sujetos a proveedor autorizado, regulación, perfil del cliente y disponibilidad por mercado.'],
+        ['¿Simply da asesoramiento financiero?', 'No. La información de la web es informativa y no constituye asesoramiento financiero, fiscal, legal, de inversión ni recomendación personalizada.'],
+      ] as const },
+      { id: 'business', title: 'Empresas', items: [
+        ['¿Qué ofrece Simply para empresas?', 'Puede incluir pagos masivos, gastos inteligentes, tarjetas para empleados, roles, permisos, facturación*, conciliación*, riesgo, fraude, multi-divisa, stablecoins, factoring* y Revenue-Based Financing*.'],
+        ['¿Se puede usar con varios usuarios?', 'Sí. La propuesta empresarial contempla múltiples usuarios, roles, permisos, límites, jerarquías y aprobaciones según configuración.'],
+        ['¿Qué es la gestión de gastos inteligente?', 'Permite usar tarjetas virtuales para empleados y justificar gastos con una foto del ticket, reduciendo rendiciones manuales.'],
+        ['¿Simply se integra con ERP o sistemas internos?', 'Puede integrarse con ERPs, PSPs, bancos, comercios, sistemas internos y proveedores, según alcance técnico y disponibilidad.'],
+      ] as const },
+      { id: 'diamond', title: 'Diamond Black', items: [
+        ['¿Qué es Diamond Black?', 'Es una experiencia privada por invitación para clientes seleccionados de alto patrimonio, con beneficios premium, concierge, viajes de élite, protección, cashback diferencial y atención prioritaria por email.'],
+        ['¿Cómo se accede a Diamond Black?', 'El acceso está sujeto a invitación, perfil, elegibilidad, disponibilidad, proveedor, jurisdicción y aprobación.'],
+        ['¿Qué beneficios puede incluir?', 'Puede incluir concierge 24/7, salas VIP, beneficios en hoteles, preventas, personal shoppers, coberturas médicas de viaje, garantías extendidas, cashback hasta 1.5%* y financiación hasta 60 cuotas mensuales*.'],
+        ['¿Diamond Black garantiza beneficios?', 'No. Los beneficios dependen de proveedores, convenios, disponibilidad, jurisdicción, aceptación y condiciones vigentes.'],
+      ] as const },
+      { id: 'crypto', title: 'Cripto & Stablecoins', items: [
+        ['¿Qué hace el botón Cripto?', 'Redirige a la experiencia cripto de Simply en app.gosimply.xyz.'],
+        ['¿Simply permite operar stablecoins?', 'La propuesta contempla stablecoins para operaciones cotidianas, tesorería, pagos o liquidaciones, sujeto a regulación, proveedores e integraciones.'],
+        ['¿Qué riesgos tienen los activos digitales?', 'Pueden existir riesgos regulatorios, operativos, de contraparte, liquidez, custodia y mercado. La disponibilidad depende de jurisdicción y proveedor.'],
+      ] as const },
+      { id: 'security', title: 'Seguridad, privacidad y contacto', items: [
+        ['¿Cómo protege Simply la seguridad?', 'Puede utilizar KYC/KYB, monitoreo, prevención de fraude, roles, permisos, auditoría, trazabilidad, protección de datos y proveedores regulados cuando corresponda.'],
+        ['¿Simply usa AI para fraude?', 'Sí. La AI puede ayudar a detectar patrones, priorizar alertas, identificar actividad inusual y asistir procesos, sin reemplazar controles humanos o decisiones reguladas cuando correspondan.'],
+        ['¿Cuál es el canal oficial de contacto?', `El canal oficial es email: ${CONTACT_EMAIL}. Simply no ofrece atención telefónica como canal oficial.`],
+        ['¿Qué información nunca debo compartir?', 'No compartas contraseñas, códigos de verificación, claves privadas, frases semilla, datos sensibles o accesos por canales no verificados.'],
+      ] as const },
+    ],
+  },
+  about: { title: 'Nosotros', kicker: 'Finanzas simples, tecnología profunda.', intro: 'Simply nace para rediseñar la relación entre personas, empresas y dinero. Una plataforma financiera debe ser clara, inmediata, segura y estar disponible cuando el usuario la necesita.', metrics: [['AI-first', 'compañía'], ['B2C + B2B', 'ecosistema'], ['Global', 'visión'], ['PaySur INC', 'razón social']], sections: [['Misión', 'Simplificar el acceso a servicios financieros modernos mediante una experiencia digital clara, segura e inteligente.'], ['Visión', 'Construir una de las compañías financieras más innovadoras del mundo, con AI integrada en gran parte de sus operaciones.'], ['Qué construimos', 'Un ecosistema que puede incluir cuenta digital, tarjeta Visa, pagos, QR, cripto, stablecoins, fondos comunes de inversión*, financiación*, cashback*, rewards, soluciones empresariales, Trust Center y Diamond Black.'], ['Para personas', 'Diseñamos una experiencia simple para administrar dinero, pagar, invertir, entender gastos, recibir alertas y acceder a beneficios.'], ['Para empresas', 'Construimos herramientas para operar con más control: pagos masivos, gastos de empleados, facturación*, conciliación*, multi-divisa, stablecoins, fraude y roles.'], ['Confianza', 'Validación, controles internos, trazabilidad operativa, proveedores habilitados, comunicación transparente y adaptación regulatoria por mercado.'], ['Empresa', `Simply es una marca operada por ${COMPANY_NAME}, con domicilio en ${COMPANY_ADDRESS_ES}.`]], blocks: [['No queremos complejidad financiera disfrazada de tecnología', 'Queremos que lo complejo ocurra detrás: integraciones, proveedores, validaciones, riesgo, monitoreo, datos y automatización. El usuario debe ver claridad, control y velocidad.'], ['Nuestro estándar', 'Si una función no mejora la experiencia, no reduce riesgo, no aumenta control o no simplifica una operación real, no debería estar en el producto.']], valuesTitle: 'Principios', values: ['Simpleza radical', 'Seguridad por diseño', 'AI responsable', 'Transparencia comercial', 'Escalabilidad global', 'Experiencia premium', 'Cumplimiento', 'Velocidad operativa'] },
+  privacy: { title: 'Política de Privacidad', updated: 'Última actualización: 2026', intro: `Esta Política explica cómo Simply, marca operada por ${COMPANY_NAME}, puede recopilar, utilizar, almacenar, proteger y compartir información de visitantes, prospectos, usuarios, empresas, aliados y clientes potenciales. El canal oficial de contacto es email: ${CONTACT_EMAIL}.`, metrics: [['PaySur INC', 'responsable'], ['Email', 'canal oficial'], ['AI', 'uso responsable'], ['Trust', 'seguridad por diseño']], bullets: ['Datos de contacto', 'Validaciones KYC/KYB', 'Seguridad', 'AI operativa', 'Proveedores', 'Derechos del usuario', 'Retención', 'Transferencias internacionales'], sections: [['1. Responsable', `Simply es una marca operada por ${COMPANY_NAME}, con domicilio en ${COMPANY_ADDRESS_ES}. Para consultas de privacidad, el canal oficial es ${CONTACT_EMAIL}.`], ['2. Información que podemos recopilar', 'Podemos recopilar datos de identificación, contacto, email, teléfono, país, ciudad, empresa, interés comercial, datos de dispositivo, IP, cookies, actividad en el sitio, formularios, preferencias, validaciones de identidad, documentación KYC/KYB, información financiera o transaccional cuando corresponda.'], ['3. Finalidades', 'Usamos información para gestionar pre-registros, responder consultas, evaluar solicitudes, mejorar la experiencia, prevenir fraude, analizar riesgo, cumplir obligaciones legales, operar productos, enviar comunicaciones aceptadas, medir rendimiento, proteger la plataforma y coordinar servicios con proveedores habilitados.'], ['4. AI y automatización', 'Simply puede utilizar AI para soporte, clasificación de consultas, análisis operativo, prevención de fraude, priorización de alertas, mejora de procesos y asistencia interna. La AI no reemplaza decisiones reguladas, revisión humana, cumplimiento ni aprobación crediticia cuando correspondan.'], ['5. Seguridad', 'Aplicamos controles de acceso, trazabilidad, monitoreo, segmentación, auditoría, medidas técnicas y organizativas razonables y buenas prácticas para proteger información contra acceso no autorizado, pérdida, abuso o alteración.'], ['6. Derechos', `Según jurisdicción, el usuario puede solicitar acceso, rectificación, actualización, eliminación, oposición, limitación, portabilidad o revocación de consentimiento escribiendo a ${CONTACT_EMAIL}.`]], blocks: [['Información sensible', 'No solicitamos contraseñas, códigos, claves privadas, frases semilla ni accesos por canales no verificados.'], ['Aviso', 'Esta política es informativa y debe ser revisada por asesoría legal antes de publicación definitiva en producción.']] },
+  terms: { title: 'Términos y Condiciones', updated: 'Última actualización: 2026', intro: `Estos Términos regulan el acceso y uso del sitio, pre-registro, formularios, contenidos, aplicaciones, experiencias digitales y servicios asociados a Simply, marca operada por ${COMPANY_NAME}.`, metrics: [['Simply', 'marca'], ['PaySur INC', 'operador'], ['Productos', 'sujetos a aprobación'], ['Email', 'canal oficial']], bullets: ['Uso del sitio', 'Pre-registro', 'Productos sujetos a aprobación', 'AI', 'Cripto', 'Empresas', 'Diamond Black', 'Limitación de responsabilidad'], sections: [['1. Aceptación', 'Al acceder, navegar, enviar formularios o utilizar servicios asociados a Simply, el usuario acepta estos Términos, la Política de Privacidad, Cookies, Cumplimiento y condiciones específicas que puedan aplicar.'], ['2. Operador', `Simply es una marca operada por ${COMPANY_NAME}, con domicilio en ${COMPANY_ADDRESS_ES}. El canal oficial de contacto es ${CONTACT_EMAIL}.`], ['3. Pre-registro', 'El pre-registro permite manifestar interés comercial y no constituye apertura de cuenta, aprobación crediticia, garantía de acceso, disponibilidad de producto ni relación contractual definitiva.'], ['4. Productos sujetos a aprobación', 'Financiación, cashback, cuenta en USA, inversiones, seguros, factoring, RBF, stablecoins, cripto, Diamond Black y otros productos pueden depender de evaluación, KYC/KYB, proveedor, regulación, país, perfil, documentación y políticas internas.'], ['5. Uso permitido', 'Está prohibido usar Simply para fraude, lavado de activos, financiamiento del terrorismo, evasión, abuso de sistemas, actividades ilícitas, suplantación de identidad, manipulación, ataques, scraping no autorizado o violación de derechos de terceros.'], ['6. Limitación de responsabilidad', `En la máxima medida permitida, Simply y ${COMPANY_NAME} no serán responsables por daños indirectos, lucro cesante, pérdida de datos, decisiones tomadas con base en información del sitio o indisponibilidad de servicios de terceros.`]], blocks: [['Aviso importante', 'Ningún contenido del sitio constituye oferta financiera, asesoramiento legal, fiscal, contable, de inversión ni aprobación crediticia.'], ['Canal oficial', `El canal oficial de contacto es email: ${CONTACT_EMAIL}. Simply no ofrece atención telefónica como canal oficial.`]] },
 };
 
-export const cookiesText = 'Simply puede utilizar cookies y tecnologías similares para operar el sitio, recordar preferencias, medir uso, mejorar rendimiento y prevenir fraude.';
-
-export const footerCols: ReadonlyArray<readonly [string, ReadonlyArray<readonly [string, string]>]> = [
-  ['Productos', [
-    ['/personas', 'Personas'],
-    ['/empresas', 'Empresas'],
-    ['/diamond-black', 'Diamond Black'],
-    ['/ai', 'AI'],
-    ['/cripto-stablecoins', 'Cripto'],
-  ]],
-  ['Empresa', [
-    ['/nosotros', 'Nosotros'],
-    ['/innovacion', 'Innovación'],
-    ['/trust-center', 'Trust Center'],
-    ['/partners', 'Partners'],
-    ['/inversores-aliados-estrategicos', 'Inversores / aliados'],
-    ['/trabaja-con-nosotros', 'Trabaja con nosotros'],
-    ['/kit-de-prensa', 'Kit de prensa'],
-  ]],
-  ['Ayuda', [
-    ['/quienes-pueden-aplicar', 'Quiénes pueden aplicar'],
-    ['/sujeto-a-aprobacion', 'Sujeto a aprobación'],
-    ['/centro-de-ayuda', 'Centro de ayuda'],
-    ['/faq', 'FAQ'],
-    ['/estado-del-servicio', 'Estado del servicio'],
-    ['/contacto', 'Contacto'],
-  ]],
-  ['Legal', [
-    ['/privacidad', 'Privacidad'],
-    ['/terminos', 'Términos'],
-    ['/cookies', 'Cookies'],
-    ['/cumplimiento', 'Cumplimiento'],
-  ]],
-];
-
-export { EMAIL, COMPANY };
+export const CONTENT = { es: COPY_ES, en: COPY_ES, pt: COPY_ES };
+export type Content = typeof COPY_ES;
+export { COMPANY_ADDRESS_ES };

@@ -1,10 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.compliance;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'Cumplimiento',
+  description: 'KYC, KYB, AML, prevención de fraude y trazabilidad.',
+  alternates: { canonical: '/cumplimiento' },
+  openGraph: { title: 'Cumplimiento | Simply', description: 'KYC, KYB, AML, prevención de fraude y trazabilidad.', url: 'https://gosimply.xyz/cumplimiento' },
+};
 
 export default function Page() {
-  return <PageGeneric data={data} pageKey="compliance" />;
+  return <SimplyLanding initialPage="compliance" />;
 }

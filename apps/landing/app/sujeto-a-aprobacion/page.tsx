@@ -1,10 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.approvals;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'Sujeto a aprobación',
+  description: 'Productos sujetos a aprobación, regulación y proveedores.',
+  alternates: { canonical: '/sujeto-a-aprobacion' },
+  openGraph: { title: 'Sujeto a aprobación | Simply', description: 'Productos sujetos a aprobación, regulación y proveedores.', url: 'https://gosimply.xyz/sujeto-a-aprobacion' },
+};
 
 export default function Page() {
-  return <PageGeneric data={data} pageKey="approvals" />;
+  return <SimplyLanding initialPage="approvals" />;
 }

@@ -1,12 +1,12 @@
-import type { MetadataRoute } from 'next';
-import { ROUTES, SITE_URL } from '@/lib/routes';
+import { MetadataRoute } from 'next';
+import { REAL_ROUTES, SITE_URL } from '@/lib/routes';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  return Object.values(ROUTES).map((path) => ({
-    url: `${SITE_URL}${path === '/' ? '' : path}`,
+  return Object.values(REAL_ROUTES).map((route) => ({
+    url: `${SITE_URL}${route}`,
     lastModified: now,
-    changeFrequency: path === '/' ? 'weekly' : 'monthly',
-    priority: path === '/' ? 1 : 0.7,
+    changeFrequency: 'weekly' as const,
+    priority: route === '/' ? 1 : 0.7,
   }));
 }

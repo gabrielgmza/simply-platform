@@ -1,10 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.terms;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'Términos y Condiciones',
+  description: 'Términos de uso del sitio, productos y servicios Simply.',
+  alternates: { canonical: '/terminos' },
+  openGraph: { title: 'Términos y Condiciones | Simply', description: 'Términos de uso del sitio, productos y servicios Simply.', url: 'https://gosimply.xyz/terminos' },
+};
 
 export default function Page() {
-  return <PageGeneric data={data} pageKey="terms" />;
+  return <SimplyLanding initialPage="terms" />;
 }

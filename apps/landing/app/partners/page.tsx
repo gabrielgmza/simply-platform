@@ -1,10 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.partners;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'Partners',
+  description: 'Ecosistema abierto: bancos, PSPs, brokers, aseguradoras, cripto providers y ERPs.',
+  alternates: { canonical: '/partners' },
+  openGraph: { title: 'Partners | Simply', description: 'Ecosistema abierto: bancos, PSPs, brokers, aseguradoras, cripto providers y ERPs.', url: 'https://gosimply.xyz/partners' },
+};
 
 export default function Page() {
-  return <PageGeneric data={data} pageKey="partners" />;
+  return <SimplyLanding initialPage="partners" />;
 }

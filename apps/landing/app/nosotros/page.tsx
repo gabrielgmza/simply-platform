@@ -1,10 +1,13 @@
-import PageGeneric from '@/components/PageGeneric';
-import { pages } from '@/lib/pages';
+import type { Metadata } from 'next';
+import SimplyLanding from '@/components/SimplyLanding';
 
-const data = pages.about;
-
-export const metadata = { title: data.title };
+export const metadata: Metadata = {
+  title: 'Nosotros',
+  description: 'Simply nace para rediseñar la relación entre personas, empresas y dinero.',
+  alternates: { canonical: '/nosotros' },
+  openGraph: { title: 'Nosotros | Simply', description: 'Simply nace para rediseñar la relación entre personas, empresas y dinero.', url: 'https://gosimply.xyz/nosotros' },
+};
 
 export default function Page() {
-  return <PageGeneric data={data} pageKey="about" />;
+  return <SimplyLanding initialPage="about" />;
 }

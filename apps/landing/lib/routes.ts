@@ -1,32 +1,32 @@
-export const ROUTES = {
+export const REAL_ROUTES = {
   home: '/',
   people: '/personas',
   business: '/empresas',
   diamond: '/diamond-black',
   ai: '/ai',
-  crypto: '/cripto-stablecoins',
+  cryptoPage: '/cripto-stablecoins',
   partners: '/partners',
+  securityPage: '/trust-center',
   about: '/nosotros',
   innovation: '/innovacion',
-  trust: '/trust-center',
   investors: '/inversores-aliados-estrategicos',
   careers: '/trabaja-con-nosotros',
   press: '/kit-de-prensa',
+  applicants: '/quienes-pueden-aplicar',
+  approvals: '/sujeto-a-aprobacion',
   help: '/centro-de-ayuda',
   faq: '/faq',
+  status: '/estado-del-servicio',
   privacy: '/privacidad',
   terms: '/terminos',
   cookies: '/cookies',
   compliance: '/cumplimiento',
-  approvals: '/sujeto-a-aprobacion',
-  applicants: '/quienes-pueden-aplicar',
-  status: '/estado-del-servicio',
   contact: '/contacto',
 } as const;
 
-export type RouteKey = keyof typeof ROUTES;
+export type PageKey = keyof typeof REAL_ROUTES;
 
-export const COMPANY = 'PaySur INC';
-export const EMAIL = 'contacto@gosimply.xyz';
-export const CRYPTO_URL = 'https://app.gosimply.xyz/';
 export const SITE_URL = 'https://gosimply.xyz';
+export const COMPANY_NAME = 'PaySur INC';
+export const CONTACT_EMAIL = 'contacto@gosimply.xyz';
+export const CRYPTO_URL = 'https://app.gosimply.xyz/';
