@@ -18,3 +18,38 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/*
+  Production asset overrides.
+  The original WEBP files had white/checker backgrounds baked in. These CSS
+  replacements force the transparent SVG versions without touching layout.
+  In the next cleanup pass, replace the constants in SimplyLanding.tsx directly.
+*/
+img[src="/assets/logo-simply.webp"] {
+  content: url('/assets/logo-simply-transparent.svg');
+}
+
+img[src="/assets/app-home.webp"] {
+  content: url('/assets/app-home-transparent.svg');
+}
+
+img[src="/assets/app-cards.webp"] {
+  content: url('/assets/app-cards-transparent.svg');
+}
+
+img[src="/assets/app-analytics.webp"] {
+  content: url('/assets/app-analytics-transparent.svg');
+}
+
+img[src="/assets/app-onboarding.webp"] {
+  content: url('/assets/app-onboarding-transparent.svg');
+}
+
+img[src="/assets/logo-simply-transparent.svg"],
+img[src="/assets/simply-favicon.svg"],
+img[src="/assets/app-home-transparent.svg"],
+img[src="/assets/app-cards-transparent.svg"],
+img[src="/assets/app-analytics-transparent.svg"],
+img[src="/assets/app-onboarding-transparent.svg"] {
+  background: transparent !important;
+}
