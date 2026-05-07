@@ -28,13 +28,9 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image', title: 'Simply | Tu dinero, sin fricción.', description: 'Plataforma financiera AI-first.' },
   robots: { index: true, follow: true },
   icons: {
-    icon: [
-      { url: '/assets/simply-favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon.png', type: 'image/png' },
-    ],
-    shortcut: [{ url: '/assets/simply-favicon.svg', type: 'image/svg+xml' }],
-    apple: [{ url: '/assets/simply-favicon.svg', type: 'image/svg+xml' }],
+    icon: [{ url: '/favicon.png', type: 'image/png' }, { url: '/favicon.ico', sizes: 'any' }],
+    shortcut: [{ url: '/favicon.png', type: 'image/png' }],
+    apple: [{ url: '/favicon.png', type: 'image/png' }],
   },
 };
 
