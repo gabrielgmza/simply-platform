@@ -4,3 +4,15 @@
 .footer-grid a{display:block;color:#71717a;margin:0 0 12px;text-decoration:none}
 .footer-grid a:hover{color:#fff}
 .navlinks a{cursor:pointer}
+
+/* === Fixes Fase 2 === */
+:root{font-family:var(--font-inter),Inter,system-ui,-apple-system,sans-serif}
+html,body{overflow-x:hidden;max-width:100vw}
+img{max-width:100%;height:auto}
+.panel{overflow:hidden}
+.photo{overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.hero h1{font-size:clamp(44px,7vw,84px)}
+.three h2,.section h2,.split h2,.pre-section h2,.panel h1,.cta h2{font-size:clamp(28px,4.5vw,52px)}
+.panel{grid-template-columns:1.05fr .95fr;min-height:auto}
+@media(max-width:1100px){.panel{grid-template-columns:1fr}}
