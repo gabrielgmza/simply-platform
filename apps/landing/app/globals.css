@@ -19,30 +19,58 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Header logo: keep using the original Simply logo asset without forcing a fake replacement. */
 img[src="/assets/logo-simply.webp"] {
-  content: url('/assets/logo-simply-transparent.svg');
+  background: transparent !important;
 }
 
+/*
+  App section replacement.
+  The previous four app mockups were broken/missing after deploy, so these
+  selectors replace them with real, already deployed, photorealistic use-case
+  images while preserving the section layout.
+*/
 img[src="/assets/app-home.webp"] {
-  content: url('/assets/app-home-transparent.svg');
+  content: url('/assets/people-invest.webp');
+  width: 100%;
+  height: 100%;
+  object-fit: cover !important;
+  object-position: center;
+  background: #050505 !important;
 }
 
 img[src="/assets/app-cards.webp"] {
-  content: url('/assets/app-cards-transparent.svg');
+  content: url('/assets/standard-card.webp');
+  width: 100%;
+  height: 100%;
+  object-fit: cover !important;
+  object-position: center;
+  background: #050505 !important;
 }
 
 img[src="/assets/app-analytics.webp"] {
-  content: url('/assets/app-analytics-transparent.svg');
+  content: url('/assets/business-dashboard.webp');
+  width: 100%;
+  height: 100%;
+  object-fit: cover !important;
+  object-position: center;
+  background: #050505 !important;
 }
 
 img[src="/assets/app-onboarding.webp"] {
-  content: url('/assets/app-onboarding-transparent.svg');
+  content: url('/assets/hero-web.webp');
+  width: 100%;
+  height: 100%;
+  object-fit: cover !important;
+  object-position: center;
+  background: #050505 !important;
 }
 
-img[src="/assets/logo-simply-transparent.svg"],
-img[src="/assets/app-home-transparent.svg"],
-img[src="/assets/app-cards-transparent.svg"],
-img[src="/assets/app-analytics-transparent.svg"],
-img[src="/assets/app-onboarding-transparent.svg"] {
-  background: transparent !important;
+/* Make all visual cards in that section feel intentional, not like broken phone mockups. */
+img[src="/assets/app-home.webp"],
+img[src="/assets/app-cards.webp"],
+img[src="/assets/app-analytics.webp"],
+img[src="/assets/app-onboarding.webp"] {
+  border-radius: 1.75rem;
+  box-shadow: 0 28px 90px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.08);
 }
