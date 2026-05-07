@@ -174,8 +174,8 @@ function SectionTitle({ kicker, title, text }: { kicker: string; title: string; 
   return (
     <div>
       <div className="text-blue-400 text-sm mb-4">{kicker}</div>
-      <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">{title}</h2>
-      {text && <p className="mt-6 text-zinc-400 text-lg leading-relaxed max-w-3xl">{text}</p>}
+      <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">{title}</h2>
+      {text && <p className="mt-5 text-zinc-400 text-base leading-relaxed max-w-3xl">{text}</p>}
     </div>
   );
 }
@@ -243,8 +243,8 @@ function PhotoPanel({ src, alt, glow = 'blue', className = '' }: { src: string; 
     ? 'border-[#8a6a1f]/35 shadow-[0_35px_120px_rgba(176,138,45,0.18)]'
     : 'border-blue-500/25 shadow-[0_35px_120px_rgba(37,99,235,0.20)]';
   return (
-    <div className={`relative rounded-[2rem] overflow-hidden border ${frame} bg-black group ${className}`}>
-      <img src={src} alt={alt} className="w-full h-full object-cover object-center transition duration-700 group-hover:scale-[1.025]" loading="lazy" />
+    <div className={`relative rounded-[2rem] overflow-hidden border ${frame} bg-black aspect-[4/3] w-full ${className}`}>
+      <img src={src} alt={alt} className="absolute inset-0 w-full h-full object-cover object-center transition duration-700 hover:scale-[1.025]" loading="lazy" />
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(180deg,rgba(255,255,255,0.035),transparent_42%,rgba(0,0,0,0.16))]" />
     </div>
   );
@@ -525,10 +525,10 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-6 md:pt-10 pb-12 md:pb-16 grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
         <div>
           <div className="inline-flex mb-6 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-blue-300 text-sm">{h.badge}</div>
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-semibold leading-[0.95] tracking-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-[3.5rem] font-semibold leading-[1.05] tracking-tight">
             {h.titleA}<br/><span className="text-blue-500">{h.titleB}</span>
           </h1>
-          <p className="mt-7 text-lg text-zinc-400 max-w-xl leading-relaxed">{h.subtitle}</p>
+          <p className="mt-5 text-base text-zinc-400 max-w-xl leading-relaxed">{h.subtitle}</p>
           <div className="mt-9 flex flex-wrap gap-4">
             <Button onClick={scrollToPrereg}>{t.common.preregister}</Button>
             <Button onClick={() => openPage('people')} variant="secondary">{t.common.nav.people}</Button>
@@ -546,12 +546,8 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
             ))}
           </div>
         </div>
-        <div className="relative min-h-[430px] md:min-h-[500px] lg:min-h-[560px] grid place-items-center overflow-hidden rounded-[2.5rem] bg-[radial-gradient(circle_at_50%_45%,rgba(37,99,235,0.22),transparent_42%)]">
-          <div className="absolute left-8 top-10 hidden xl:block">
-            <span className="text-6xl font-black italic text-white tracking-tight drop-shadow-[0_0_32px_rgba(255,255,255,0.22)]">VISA</span>
-            <div className="mt-1 text-xs tracking-[0.42em] text-blue-200/55 uppercase">habilitado</div>
-          </div>
-          <AppRender src={APP_HOME} alt="Simply app" className="h-[520px] md:h-[620px] w-full" />
+        <div className="relative min-h-[480px] md:min-h-[560px] grid place-items-center overflow-hidden">
+          <PhoneMockup />
         </div>
       </section>
 
@@ -589,7 +585,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
 
       <section className="max-w-7xl mx-auto px-6 py-16">
         <SectionTitle kicker={t.common.ui.appKicker} title={t.common.ui.appTitle} text={t.common.ui.appText} />
-        <div className="mt-10"><AppShowcase /></div>
+        <div className="mt-10 grid md:grid-cols-2 gap-8 place-items-center"><PhoneMockup /><PhoneMockup privateMode /></div>
         <div className="mt-10 rounded-[2rem] border border-zinc-800 bg-zinc-950/70 p-6 md:p-8">
           <div className="text-blue-400 text-sm mb-3">Android · iOS · Web</div>
           <h3 className="text-3xl md:text-4xl font-semibold tracking-tight">{t.common.ui.platformTitle}</h3>
@@ -608,7 +604,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
 
       <section className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-12 items-center">
         <SectionTitle kicker={t.common.ui.securityKicker} title={h.securityTitle} text={h.securityText} />
-        <PhotoPanel src={BUSINESS_IMAGE} alt="Seguridad, AI y control operativo" glow="blue" className="min-h-[360px] md:min-h-[500px]" />
+        <PhotoPanel src={BUSINESS_IMAGE} alt="Seguridad, AI y control operativo" glow="blue" />
       </section>
 
       <section id="preregistro" className="scroll-mt-28 max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-[1.05fr_0.95fr] gap-12 items-center">
@@ -662,8 +658,8 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
 
       <section className="px-6 py-24 text-center bg-[radial-gradient(circle_at_50%_0%,rgba(37,99,235,0.32),transparent_35%)]">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-semibold tracking-tight">{h.ctaTitle}</h2>
-          <p className="mt-6 text-zinc-400 text-lg">{h.ctaText}</p>
+          <h2 className="text-3xl md:text-5xl font-semibold tracking-tight">{h.ctaTitle}</h2>
+          <p className="mt-5 text-zinc-400 text-base">{h.ctaText}</p>
           <div className="mt-9 flex justify-center gap-4 flex-wrap">
             <Button onClick={scrollToPrereg}>{t.common.preregister}</Button>
             <Button href={CRYPTO_URL} variant="secondary">{t.common.nav.crypto} ↗</Button>
@@ -682,8 +678,8 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
           <div className="grid lg:grid-cols-[1fr_0.7fr] gap-10 items-center">
             <div>
               <div className="text-blue-400 text-sm">{data.updated || data.kicker}</div>
-              <h1 className="mt-4 text-4xl md:text-6xl font-semibold tracking-tight">{data.title}</h1>
-              <p className="mt-6 text-zinc-400 leading-relaxed text-lg max-w-3xl">{data.intro || data.body}</p>
+              <h1 className="mt-4 text-3xl md:text-5xl font-semibold tracking-tight">{data.title}</h1>
+              <p className="mt-5 text-zinc-400 leading-relaxed text-base max-w-3xl">{data.intro || data.body}</p>
               {legal && <p className="mt-5 text-xs text-zinc-600">{t.common.legalReview}</p>}
             </div>
             {data.metrics && (
@@ -751,12 +747,12 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
           <SectionTitle kicker={t.people.kicker} title={t.people.title} text={t.people.intro} />
           <Button onClick={scrollToPrereg} className="mt-8">{t.common.ui.joinList}</Button>
         </div>
-        <div className="relative grid place-items-center rounded-[2.5rem] bg-[radial-gradient(circle_at_50%_45%,rgba(37,99,235,0.24),transparent_46%)] min-h-[520px] overflow-hidden">
-          <AppRender src={APP_CARDS} alt="Simply tarjetas" className="h-[590px] w-full" />
+        <div className="relative grid place-items-center min-h-[520px] overflow-hidden">
+          <PhoneMockup />
         </div>
       </section>
       <section className="max-w-7xl mx-auto px-6 pb-16 grid lg:grid-cols-2 gap-12 items-center">
-        <PhotoPanel src={PEOPLE_INVEST_IMAGE} alt="Simply para personas" glow="blue" className="min-h-[360px] md:min-h-[500px]" />
+        <PhotoPanel src={PEOPLE_INVEST_IMAGE} alt="Simply para personas" glow="blue" />
         <SectionTitle kicker={t.common.ui.investmentsKicker} title={t.common.ui.investmentsTitle} text={t.common.ui.investmentsText} />
       </section>
       <section className="max-w-7xl mx-auto px-6 pb-14">
@@ -775,7 +771,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
         <div className="rounded-[2.4rem] border border-[#8a6a1f]/25 bg-[linear-gradient(135deg,#070707,#111,#1a1408)] p-8 md:p-10 grid lg:grid-cols-[1fr_0.8fr] gap-8 items-center">
           <div>
             <div className="text-[#d9c08a] text-sm mb-4">{t.people.diamondTeaser.kicker}</div>
-            <h2 className="text-4xl md:text-5xl font-semibold">{t.people.diamondTeaser.title}</h2>
+            <h2 className="text-3xl md:text-4xl font-semibold">{t.people.diamondTeaser.title}</h2>
             <p className="mt-5 text-zinc-400 leading-relaxed">{t.people.diamondTeaser.text}</p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Button variant="gold" onClick={() => openPage('diamond')}>{t.common.ui.viewDiamond}</Button>
@@ -799,7 +795,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
             <Button onClick={() => openPage('contact')}>{t.common.ui.designBusiness}</Button>
           </div>
         </div>
-        <PhotoPanel src={BUSINESS_IMAGE} alt="Simply para empresas" glow="blue" className="min-h-[360px] md:min-h-[520px]" />
+        <PhotoPanel src={BUSINESS_IMAGE} alt="Simply para empresas" glow="blue" />
       </section>
       <section className="max-w-7xl mx-auto px-6 pb-14">
         <h2 className="text-3xl font-semibold mb-5">{t.business.useCasesTitle}</h2>
@@ -839,8 +835,8 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
           <div className="relative grid lg:grid-cols-[0.9fr_1.1fr] gap-10 items-center">
             <div>
               <div className="inline-flex rounded-full border border-[#b08a2d]/35 bg-[#b08a2d]/10 px-4 py-2 text-sm text-[#e7d3a1]">{t.diamond.kicker}</div>
-              <h1 className="mt-4 text-5xl md:text-7xl font-semibold tracking-tight text-white">{t.diamond.title}</h1>
-              <p className="mt-6 text-zinc-300 text-lg leading-relaxed max-w-2xl">{t.diamond.intro}</p>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold tracking-tight text-white">{t.diamond.title}</h1>
+              <p className="mt-5 text-zinc-300 text-base leading-relaxed max-w-2xl">{t.diamond.intro}</p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Button variant="gold" onClick={scrollToPrereg}>{t.common.ui.requestAccess}</Button>
                 <button onClick={() => openPage('contact')} className="rounded-2xl px-6 py-3 font-semibold border border-[#8a6a1f]/40 text-[#e7d3a1] bg-black/30 transition hover:border-[#d7b35a]/70 hover:bg-[#b08a2d]/10 hover:shadow-[0_0_30px_rgba(176,138,45,0.20)] hover:-translate-y-0.5">{t.common.ui.talkAdvisor}</button>
@@ -848,7 +844,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
             </div>
             <div className="grid gap-5">
               <div className="flex justify-center"><CardMockup diamond /></div>
-              <PhotoPanel src={DIAMOND_LIFESTYLE_IMAGE} alt="Diamond Black lifestyle" glow="gold" className="min-h-[320px]" />
+              <PhotoPanel src={DIAMOND_LIFESTYLE_IMAGE} alt="Diamond Black lifestyle" glow="gold" />
             </div>
           </div>
         </div>
@@ -906,7 +902,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
         <button onClick={goHome} className="text-blue-400 text-sm mb-5">{t.common.back}</button>
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <SectionTitle kicker={t.ai.kicker} title={t.ai.title} text={t.ai.intro} />
-          <AppRender src={APP_ANALYTICS} alt="AI y analítica" className="h-[560px] w-full" />
+          <div className="grid place-items-center min-h-[520px]"><PhoneMockup /></div>
         </div>
         <div className="mt-10"><CardGrid items={t.ai.modules} columns="md:grid-cols-2 xl:grid-cols-3" /></div>
       </section>
@@ -939,7 +935,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
             <SectionTitle kicker={t.partners.kicker} title={t.partners.title} text={t.partners.intro} />
             <Button onClick={() => openPage('contact')} className="mt-8">{t.common.ui.proposeAlliance}</Button>
           </div>
-          <PhotoPanel src={PARTNERS_IMAGE} alt="Simply Partners" glow="blue" className="min-h-[360px] md:min-h-[520px]" />
+          <PhotoPanel src={PARTNERS_IMAGE} alt="Simply Partners" glow="blue" />
         </div>
         <div className="mt-10"><CardGrid items={t.partners.items} columns="md:grid-cols-2 xl:grid-cols-3" /></div>
       </section>
@@ -1025,7 +1021,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
             <div className="grid lg:grid-cols-[1fr_0.75fr] gap-10 items-center">
               <div>
                 <div className="text-blue-400 text-sm">{faq.kicker}</div>
-                <h1 className="mt-4 text-4xl md:text-6xl font-semibold tracking-tight">{faq.title}</h1>
+                <h1 className="mt-4 text-3xl md:text-5xl font-semibold tracking-tight">{faq.title}</h1>
                 <p className="mt-6 text-zinc-400 leading-relaxed text-lg max-w-3xl">{faq.intro}</p>
               </div>
               <div className="rounded-[2rem] border border-blue-500/20 bg-blue-600/[0.06] p-6">
