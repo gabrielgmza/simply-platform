@@ -11,21 +11,21 @@ const SOCIALS: [string, string][] = [['X', '#'], ['Instagram', '#'], ['LinkedIn'
 const COMPANY_ADDRESS_ES = '651 North Broad Street, Middletown, Delaware, Estados Unidos';
 const COMPANY_ADDRESS_EN = '651 North Broad Street, Middletown, Delaware, United States';
 
-const SIMPLY_MARK = '/assets/simply-mark.png';
-const STANDARD_CARD_IMAGE = '/assets/standard-card.png';
-const DIAMOND_CARD_IMAGE = '/assets/diamond-card.png';
-const HERO_WEB_IMAGE = '/assets/hero-web.png';
-const BUSINESS_DASHBOARD_IMAGE = '/assets/business-dashboard.png';
-const PARTNERS_TECH_IMAGE = '/assets/partners-tech.png';
-const DIAMOND_HERO_IMAGE = '/assets/diamond-hero.png';
+const SIMPLY_LOGO_HORIZONTAL = '/assets/logo-simply.webp';
+const STANDARD_CARD_IMAGE = '/assets/standard-card.webp';
+const DIAMOND_CARD_IMAGE = '/assets/diamond-card.webp';
+const HERO_WEB_IMAGE = '/assets/hero-web.webp';
+const BUSINESS_DASHBOARD_IMAGE = '/assets/business-dashboard.webp';
+const PARTNERS_TECH_IMAGE = '/assets/partners-tech.webp';
+const DIAMOND_HERO_IMAGE = '/assets/diamond-hero.webp';
 const PEOPLE_INVEST_IMAGE = '/assets/people-invest.webp';
 const BUSINESS_IMAGE = '/assets/business-office.webp';
 const PARTNERS_IMAGE = '/assets/partners-office.webp';
 const DIAMOND_LIFESTYLE_IMAGE = '/assets/diamond-lifestyle.webp';
-const APP_HOME = '/assets/app-home.png';
-const APP_CARDS = '/assets/app-cards.png';
-const APP_ANALYTICS = '/assets/app-analytics.png';
-const APP_ONBOARDING = '/assets/app-onboarding.png';
+const APP_HOME = '/assets/app-home.webp';
+const APP_CARDS = '/assets/app-cards.webp';
+const APP_ANALYTICS = '/assets/app-analytics.webp';
+const APP_ONBOARDING = '/assets/app-onboarding.webp';
 
 const ROUTE_TO_PAGE = Object.fromEntries(
   Object.entries(REAL_ROUTES).map(([page, route]) => [route, page]),
@@ -138,14 +138,17 @@ function IconBadge({ children, gold = false, size = 'md' }: { children?: React.R
   );
 }
 
+const SIMPLY_MARK = '/assets/logo-simply.webp';
+
 function Logo({ compact = false, className = '' }: { compact?: boolean; className?: string }) {
-  const markSize = compact ? 'h-8 w-8' : 'h-9 w-9 sm:h-10 sm:w-10';
   return (
-    <div className={cx('flex items-center gap-3', className)}>
-      <span className={`${markSize} relative grid place-items-center overflow-visible shrink-0`}>
-        <img src={SIMPLY_MARK} alt="Simply" className="absolute h-[210%] w-[210%] object-contain object-center drop-shadow-[0_0_18px_rgba(255,255,255,0.18)]" draggable="false" />
-      </span>
-      {!compact && <span className="tracking-[0.34em] text-sm lowercase text-white/90">simply</span>}
+    <div className={cx('flex items-center', className)}>
+      <img
+        src={SIMPLY_LOGO_HORIZONTAL}
+        alt="Simply"
+        className={compact ? 'h-7 w-auto' : 'h-8 sm:h-9 w-auto'}
+        draggable={false}
+      />
     </div>
   );
 }
@@ -236,7 +239,7 @@ function CardMockup({ compact = false, diamond = false }: { compact?: boolean; d
     : 'border-blue-500/25 shadow-[0_42px_110px_rgba(37,99,235,0.20)]';
   return (
     <div className={`relative w-full ${compact ? 'max-w-[460px]' : 'max-w-[560px]'} aspect-[4/3] rounded-[2rem] overflow-hidden border ${frame} bg-black hover:-translate-y-2 transition duration-500`}>
-      <img src={src} alt={label} className="absolute inset-0 h-full w-full object-cover object-center" loading="lazy" />
+      <img decoding="async" src={src} alt={label} className="absolute inset-0 h-full w-full object-cover object-center" loading="lazy" />
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_35%,rgba(0,0,0,0.10))]" />
     </div>
   );
@@ -248,7 +251,7 @@ function PhotoPanel({ src, alt, glow = 'blue', className = '' }: { src: string; 
     : 'border-blue-500/25 shadow-[0_35px_120px_rgba(37,99,235,0.20)]';
   return (
     <div className={`relative rounded-[2rem] overflow-hidden border ${frame} bg-black aspect-[4/3] w-full ${className}`}>
-      <img src={src} alt={alt} className="absolute inset-0 w-full h-full object-cover object-center transition duration-700 hover:scale-[1.025]" loading="lazy" />
+      <img decoding="async" src={src} alt={alt} className="absolute inset-0 w-full h-full object-cover object-center transition duration-700 hover:scale-[1.025]" loading="lazy" />
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(180deg,rgba(255,255,255,0.035),transparent_42%,rgba(0,0,0,0.16))]" />
     </div>
   );
@@ -257,7 +260,7 @@ function PhotoPanel({ src, alt, glow = 'blue', className = '' }: { src: string; 
 function AppRender({ src, alt, className = '' }: { src: string; alt: string; className?: string; glow?: 'blue' | 'gold' }) {
   return (
     <div className={`relative grid place-items-center ${className}`}>
-      <img src={src} alt={alt} className="relative z-10 max-h-full max-w-full object-contain transition duration-700 hover:scale-[1.025]" loading="lazy" />
+      <img decoding="async" src={src} alt={alt} className="relative z-10 max-h-full max-w-full object-contain transition duration-700 hover:scale-[1.025]" loading="lazy" />
     </div>
   );
 }
@@ -529,11 +532,11 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
             {h.titleA}<br/><span className="text-blue-500">{h.titleB}</span>
           </h1>
           <p className="mt-5 text-base text-zinc-400 max-w-xl leading-relaxed">{h.subtitle}</p>
-          <div className="mt-9 flex flex-wrap gap-4">
-            <Button onClick={scrollToPrereg}>{t.common.preregister}</Button>
-            <Button onClick={() => openPage('people')} variant="secondary">{t.common.nav.people}</Button>
-            <Button onClick={() => openPage('business')} variant="secondary">{t.common.nav.business}</Button>
-            <Button href={CRYPTO_URL} variant="secondary">{t.common.nav.crypto}</Button>
+          <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Button onClick={scrollToPrereg} className="px-7 py-4 text-base">{t.common.preregister}</Button>
+            <button onClick={() => openPage('people')} className="text-zinc-400 hover:text-white text-sm transition">{t.common.nav.people} →</button>
+            <button onClick={() => openPage('business')} className="text-zinc-400 hover:text-white text-sm transition">{t.common.nav.business} →</button>
+            <a href={CRYPTO_URL} className="text-zinc-400 hover:text-white text-sm transition">{t.common.nav.crypto} →</a>
           </div>
           <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm text-zinc-400">
             {h.heroBullets.map((x) => (
@@ -546,8 +549,9 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
             ))}
           </div>
         </div>
-        <div className="relative min-h-[400px] md:min-h-[500px] grid place-items-center overflow-hidden">
-          <AppRender src={HERO_WEB_IMAGE} alt="Simply ecosistema" className="w-full max-h-[560px]" />
+        <div className="relative min-h-[440px] md:min-h-[560px] grid place-items-center overflow-hidden">
+          <div className="absolute inset-12 rounded-full blur-3xl opacity-50" style={{ background: 'rgba(37,99,235,0.32)' }} />
+          <img decoding="async" fetchPriority="high" src={APP_ONBOARDING} alt="Simply app" className="relative z-10 max-h-[560px] w-auto object-contain transition duration-700 hover:scale-[1.025]" loading="eager" />
         </div>
       </section>
 
@@ -588,7 +592,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {[[APP_HOME, 'Inicio'], [APP_CARDS, 'Tarjeta'], [APP_ANALYTICS, 'Analítica'], [APP_ONBOARDING, 'Onboarding']].map(([src, alt]) => (
             <div key={alt} className="rounded-[2rem] border border-zinc-800 bg-[radial-gradient(circle_at_50%_0%,rgba(37,99,235,0.18),transparent_38%),linear-gradient(180deg,#05070d,#020202)] p-5 min-h-[420px] grid place-items-center hover:border-blue-500/45 transition">
-              <img src={src} alt={`Simply ${alt}`} className="max-h-[380px] object-contain" loading="lazy" />
+              <img decoding="async" src={src} alt={`Simply ${alt}`} className="max-h-[380px] object-contain" loading="lazy" />
             </div>
           ))}
         </div>
@@ -611,7 +615,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
       <section className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-12 items-center">
         <SectionTitle kicker={t.common.ui.securityKicker} title={h.securityTitle} text={h.securityText} />
         <div className="relative aspect-[16/10] w-full rounded-[2rem] overflow-hidden border border-blue-500/25 shadow-[0_35px_120px_rgba(37,99,235,0.20)] bg-black">
-          <img src={BUSINESS_DASHBOARD_IMAGE} alt="Seguridad, AI y control operativo" className="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
+          <img decoding="async" src={BUSINESS_DASHBOARD_IMAGE} alt="Seguridad, AI y control operativo" className="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
         </div>
       </section>
 
@@ -756,12 +760,12 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
           <Button onClick={scrollToPrereg} className="mt-8">{t.common.ui.joinList}</Button>
         </div>
         <div className="relative grid place-items-center min-h-[480px] overflow-hidden">
-          <img src={APP_HOME} alt="Simply app" className="max-h-[520px] object-contain" loading="lazy" />
+          <img decoding="async" src={APP_HOME} alt="Simply app" className="max-h-[520px] object-contain" loading="lazy" />
         </div>
       </section>
       <section className="max-w-7xl mx-auto px-6 pb-16 grid lg:grid-cols-2 gap-12 items-center">
         <div className="relative aspect-[16/10] w-full rounded-[2rem] overflow-hidden border border-blue-500/25 shadow-[0_35px_120px_rgba(37,99,235,0.20)] bg-black">
-          <img src={PEOPLE_INVEST_IMAGE} alt="Simply para personas" className="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
+          <img decoding="async" src={PEOPLE_INVEST_IMAGE} alt="Simply para personas" className="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
         </div>
         <SectionTitle kicker={t.common.ui.investmentsKicker} title={t.common.ui.investmentsTitle} text={t.common.ui.investmentsText} />
       </section>
@@ -806,7 +810,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
           </div>
         </div>
         <div className="relative aspect-[16/10] w-full rounded-[2rem] overflow-hidden border border-blue-500/25 shadow-[0_35px_120px_rgba(37,99,235,0.20)] bg-black">
-          <img src={BUSINESS_DASHBOARD_IMAGE} alt="Simply empresas dashboard" className="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
+          <img decoding="async" src={BUSINESS_DASHBOARD_IMAGE} alt="Simply empresas dashboard" className="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
         </div>
       </section>
       <section className="max-w-7xl mx-auto px-6 pb-14">
@@ -855,7 +859,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
               </div>
             </div>
             <div className="relative aspect-[16/10] w-full rounded-[2rem] overflow-hidden border border-[#8a6a1f]/35 shadow-[0_35px_120px_rgba(176,138,45,0.18)] bg-black">
-              <img src={DIAMOND_HERO_IMAGE} alt="Diamond Black lifestyle" className="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
+              <img decoding="async" src={DIAMOND_HERO_IMAGE} alt="Diamond Black lifestyle" className="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
             </div>
           </div>
         </div>
@@ -914,7 +918,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <SectionTitle kicker={t.ai.kicker} title={t.ai.title} text={t.ai.intro} />
           <div className="grid place-items-center min-h-[480px]">
-            <img src={APP_ANALYTICS} alt="AI y analítica" className="max-h-[520px] object-contain" loading="lazy" />
+            <img decoding="async" src={APP_ANALYTICS} alt="AI y analítica" className="max-h-[520px] object-contain" loading="lazy" />
           </div>
         </div>
         <div className="mt-10"><CardGrid items={t.ai.modules} columns="md:grid-cols-2 xl:grid-cols-3" /></div>
@@ -949,7 +953,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
             <Button onClick={() => openPage('contact')} className="mt-8">{t.common.ui.proposeAlliance}</Button>
           </div>
           <div className="relative aspect-[16/10] w-full rounded-[2rem] overflow-hidden border border-blue-500/25 shadow-[0_35px_120px_rgba(37,99,235,0.20)] bg-black">
-            <img src={PARTNERS_TECH_IMAGE} alt="Simply Partners ecosistema" className="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
+            <img decoding="async" src={PARTNERS_TECH_IMAGE} alt="Simply Partners ecosistema" className="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
           </div>
         </div>
         <div className="mt-10"><CardGrid items={t.partners.items} columns="md:grid-cols-2 xl:grid-cols-3" /></div>

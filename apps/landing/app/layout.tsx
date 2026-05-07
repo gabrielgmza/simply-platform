@@ -28,7 +28,10 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image', title: 'Simply | Tu dinero, sin fricción.', description: 'Plataforma financiera AI-first.' },
   robots: { index: true, follow: true },
   icons: {
-    icon: [{ url: '/favicon.png', type: 'image/png' }],
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.png', type: 'image/png' },
+    ],
     apple: [{ url: '/favicon.png' }],
   },
 };
