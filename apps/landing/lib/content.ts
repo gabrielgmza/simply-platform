@@ -93,8 +93,8 @@ export const COPY_ES = {
     legalNote: '*La financiación, cashback, fondos comunes de inversión, rewards, apertura de cuenta en USA, seguros, optimización fiscal AI, facturación, conciliación, factoring, Revenue-Based Financing, stablecoins, multi-divisa, Diamond Black y otros servicios están sujetos a aprobación, disponibilidad, jurisdicción, regulación, proveedores e integraciones habilitadas. Las inversiones no constituyen asesoramiento financiero.',
   },
   people: {
-    title: 'Simply para personas', kicker: 'Control financiero premium',
-    intro: 'Pagos, tarjeta Visa, QR, fondos comunes de inversión con rentabilidad diaria*, cashback de hasta 1%*, financiación de hasta 48 cuotas mensuales*, asistencias, seguridad, apertura de cuenta en USA* y AI asesora en una experiencia premium de uso diario.',
+    title: 'Diseñado para tu vida.', kicker: 'Simply para personas',
+    intro: 'Una sola app para mover tu dinero, invertir, pagar, ahorrar y vivir mejor. Tarjeta Visa, QR, fondos comunes con rentabilidad diaria, cashback hasta 1% y financiación hasta 48 cuotas — todo simple, todo en un lugar.',
     useCasesTitle: 'Casos de uso',
     useCases: [
       ['Viajero frecuente', 'Tarjeta, seguros on-demand, cuenta en USA*, cripto y alertas inteligentes.'],

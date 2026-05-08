@@ -26,6 +26,8 @@ const APP_HOME = '/assets/app-home.webp';
 const APP_CARDS = '/assets/app-cards.webp';
 const APP_ANALYTICS = '/assets/app-analytics.webp';
 const APP_ONBOARDING = '/assets/app-onboarding.webp';
+const HERO_STANDARD = '/assets/hero-standard.webp';
+const AI_WORKING = '/assets/ai-working.webp';
 const LIFESTYLE_PAYMENT = '/assets/lifestyle-payment.webp';
 const LIFESTYLE_AI = '/assets/lifestyle-ai-savings.webp';
 const LIFESTYLE_DIAMOND = '/assets/lifestyle-diamond.webp';
@@ -150,7 +152,7 @@ function Logo({ compact = false, className = '' }: { compact?: boolean; classNam
       <img
         src={SIMPLY_LOGO_HORIZONTAL}
         alt="Simply"
-        className={compact ? 'h-7 w-auto' : 'h-8 sm:h-9 w-auto'}
+        className={compact ? 'h-9 w-auto' : 'h-11 sm:h-12 w-auto'}
         draggable={false}
       />
     </div>
@@ -553,9 +555,8 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
             ))}
           </div>
         </div>
-        <div className="relative min-h-[440px] md:min-h-[560px] grid place-items-center overflow-hidden">
-          <div className="absolute inset-12 rounded-full blur-3xl opacity-50" style={{ background: 'rgba(37,99,235,0.32)' }} />
-          <img decoding="async" fetchPriority="high" src={APP_ONBOARDING} alt="Simply app" className="relative z-10 max-h-[560px] w-auto object-contain transition duration-700 hover:scale-[1.025]" loading="eager" />
+        <div className="relative grid place-items-center overflow-hidden">
+          <img decoding="async" fetchPriority="high" src={HERO_STANDARD} alt="Simply app, tarjeta y dashboard" className="w-full h-auto object-contain transition duration-700 hover:scale-[1.02]" loading="eager" />
         </div>
       </section>
 
@@ -773,15 +774,9 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
           <SectionTitle kicker={t.people.kicker} title={t.people.title} text={t.people.intro} />
           <Button onClick={scrollToPrereg} className="mt-8">{t.common.ui.joinList}</Button>
         </div>
-        <div className="relative grid place-items-center min-h-[480px] overflow-hidden">
-          <img decoding="async" src={APP_HOME} alt="Simply app" className="max-h-[520px] object-contain" loading="lazy" />
+        <div className="relative grid place-items-center overflow-hidden">
+          <img decoding="async" src={HERO_STANDARD} alt="Simply tarjeta, app y dashboard" className="w-full h-auto object-contain transition duration-700 hover:scale-[1.02]" loading="lazy" />
         </div>
-      </section>
-      <section className="max-w-7xl mx-auto px-6 pb-16 grid lg:grid-cols-2 gap-12 items-center">
-        <div className="relative aspect-[16/10] w-full rounded-[2rem] overflow-hidden border border-blue-500/25 shadow-[0_35px_120px_rgba(37,99,235,0.20)] bg-black">
-          <img decoding="async" src={PEOPLE_INVEST_IMAGE} alt="Simply para personas" className="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
-        </div>
-        <SectionTitle kicker={t.common.ui.investmentsKicker} title={t.common.ui.investmentsTitle} text={t.common.ui.investmentsText} />
       </section>
       <section className="max-w-7xl mx-auto px-6 pb-14">
         <h2 className="text-3xl font-semibold mb-5">{t.people.useCasesTitle}</h2>
@@ -931,8 +926,8 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
         <button onClick={goHome} className="text-blue-400 text-sm mb-5">{t.common.back}</button>
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <SectionTitle kicker={t.ai.kicker} title={t.ai.title} text={t.ai.intro} />
-          <div className="grid place-items-center min-h-[480px]">
-            <img decoding="async" src={APP_ANALYTICS} alt="AI y analítica" className="max-h-[520px] object-contain" loading="lazy" />
+          <div className="relative aspect-[16/9] w-full rounded-[2rem] overflow-hidden border border-blue-500/25 shadow-[0_35px_120px_rgba(37,99,235,0.20)] bg-black">
+            <img decoding="async" src={AI_WORKING} alt="Simply AI Advisor en uso" className="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
           </div>
         </div>
         <div className="mt-10"><CardGrid items={t.ai.modules} columns="md:grid-cols-2 xl:grid-cols-3" /></div>
