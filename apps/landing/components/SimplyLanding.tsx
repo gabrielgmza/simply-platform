@@ -26,6 +26,10 @@ const APP_HOME = '/assets/app-home.webp';
 const APP_CARDS = '/assets/app-cards.webp';
 const APP_ANALYTICS = '/assets/app-analytics.webp';
 const APP_ONBOARDING = '/assets/app-onboarding.webp';
+const LIFESTYLE_PAYMENT = '/assets/lifestyle-payment.webp';
+const LIFESTYLE_AI = '/assets/lifestyle-ai-savings.webp';
+const LIFESTYLE_DIAMOND = '/assets/lifestyle-diamond.webp';
+const LIFESTYLE_TRAVEL = '/assets/lifestyle-travel.webp';
 
 const ROUTE_TO_PAGE = Object.fromEntries(
   Object.entries(REAL_ROUTES).map(([page, route]) => [route, page]),
@@ -590,9 +594,19 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
       <section className="max-w-7xl mx-auto px-6 py-16">
         <SectionTitle kicker={t.common.ui.appKicker} title={t.common.ui.appTitle} text={t.common.ui.appText} />
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {[[APP_HOME, 'Inicio'], [APP_CARDS, 'Tarjeta'], [APP_ANALYTICS, 'Analítica'], [APP_ONBOARDING, 'Onboarding']].map(([src, alt]) => (
-            <div key={alt} className="rounded-[2rem] border border-zinc-800 bg-[radial-gradient(circle_at_50%_0%,rgba(37,99,235,0.18),transparent_38%),linear-gradient(180deg,#05070d,#020202)] p-5 min-h-[420px] grid place-items-center hover:border-blue-500/45 transition">
-              <img decoding="async" src={src} alt={`Simply ${alt}`} className="max-h-[380px] object-contain" loading="lazy" />
+          {([
+            [LIFESTYLE_PAYMENT, 'Pagos QR', 'Cobrá y pagá en cualquier comercio.'],
+            [LIFESTYLE_AI, 'AI ahorro', 'Detectamos oportunidades cada mes.'],
+            [LIFESTYLE_DIAMOND, 'Diamond Black', 'Beneficios premium globales.'],
+            [LIFESTYLE_TRAVEL, 'Multi-divisa', 'Tu dinero, sin fronteras.'],
+          ] as const).map(([src, title, desc]) => (
+            <div key={title} className="group relative rounded-[2rem] border border-zinc-800 overflow-hidden aspect-[3/4] hover:border-blue-500/45 transition">
+              <img decoding="async" src={src} alt={`Simply ${title}`} className="absolute inset-0 w-full h-full object-cover object-center transition duration-700 group-hover:scale-[1.04]" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
+              <div className="absolute bottom-0 left-0 right-0 p-5">
+                <h3 className="text-lg font-semibold text-white">{title}</h3>
+                <p className="mt-1 text-xs text-zinc-300 leading-relaxed">{desc}</p>
+              </div>
             </div>
           ))}
         </div>
