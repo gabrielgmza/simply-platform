@@ -1,9 +1,27 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import './globals.css';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export const metadata: Metadata = {
-  title: "Simply — Movimiento de dinero global",
-  description: "Envía dinero, cripto y FX a más de 7 países. Una sola plataforma.",
+  metadataBase: new URL('https://app.gosimply.xyz'),
+  title: { default: 'Simply — Movimiento de dinero global', template: '%s | Simply' },
+  description: 'Envía dinero, cripto y FX a más de 7 países. Una sola plataforma.',
+  applicationName: 'Simply',
+  icons: {
+    icon: [
+      { url: '/assets/favicon-simply-dark.svg', type: 'image/svg+xml' },
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    apple: [{ url: '/assets/favicon-simply-dark.svg', type: 'image/svg+xml' }],
+  },
 };
 
 export default function RootLayout({
@@ -12,25 +30,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
-      <body>
-        <div className="min-h-screen flex flex-col">
-          <header className="px-6 py-5 border-b border-white/5">
-            <div className="max-w-md mx-auto flex items-center justify-between">
-              <a href="/" className="text-xl font-semibold tracking-tight">
-                Simply
-              </a>
-              <a href="/historial" className="text-sm text-white/60 hover:text-white">
-                Historial
-              </a>
-            </div>
-          </header>
-          <main className="flex-1 px-6 py-8">
+    <html lang="es" className={inter.variable}>
+      <body className="font-sans antialiased bg-black text-white">
+        {/* Background gradiente igual landing */}
+        <div
+          aria-hidden
+          className="fixed inset-0 pointer-events-none -z-0 bg-[radial-gradient(circle_at_75%_8%,rgba(45,127,249,0.28),transparent_25%),radial-gradient(circle_at_15%_38%,rgba(45,127,249,0.13),transparent_22%),linear-gradient(180deg,#000,#030303)]"
+        />
+
+        <div className="relative z-10 min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-1 pt-24 md:pt-28 px-6 pb-16">
             <div className="max-w-md mx-auto">{children}</div>
           </main>
-          <footer className="px-6 py-6 border-t border-white/5 text-center text-xs text-white/40">
-            Simply by PaySur · Multi-provider · Cripto + Fiat
-          </footer>
+          <Footer />
         </div>
       </body>
     </html>

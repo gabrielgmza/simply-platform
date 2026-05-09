@@ -12,7 +12,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { Button, Card, MoneyDisplay, useSession } from "@simply/ui";
 
-// Cargar Stripe una vez fuera del componente (mejor práctica de Stripe)
+// Cargar gateway de pago una vez fuera del componente
 const stripePromise: Promise<Stripe | null> | null =
   typeof window !== "undefined" && process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
     ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
@@ -130,7 +130,7 @@ export default function ConfirmarPage() {
   if (!stripePromise)
     return (
       <div className="text-center py-12 text-red-400">
-        Stripe no está configurado. Falta NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.
+        El sistema de pagos no está configurado correctamente.
       </div>
     );
 
@@ -163,10 +163,6 @@ export default function ConfirmarPage() {
         <div className="flex justify-between text-sm">
           <span className="text-white/50">Tipo de cambio</span>
           <span>{pending.quote.breakdown.finalRate?.toFixed(4)}</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-white/50">Provider</span>
-          <span>{pending.quote.providerId}</span>
         </div>
         <div className="border-t border-white/10 pt-3">
           <div className="flex justify-between items-center">
@@ -265,7 +261,6 @@ function CheckoutForm({ order }: { order: string }) {
         router.push(`/exito/${order}`);
         return;
       }
-      // requires_action u otro estado: Stripe ya redirigió o el flujo continúa
       setError(`Estado del pago: ${paymentIntent?.status || "desconocido"}`);
     } catch (e: any) {
       setError(e.message);
@@ -291,7 +286,7 @@ function CheckoutForm({ order }: { order: string }) {
       </Button>
 
       <p className="text-center text-xs text-white/40">
-        Pago procesado de forma segura por Stripe
+        Pago procesado de forma segura
       </p>
     </div>
   );

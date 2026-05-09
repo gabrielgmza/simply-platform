@@ -2,4 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "@simply/ui/styles.css";
+html,
+body {
+  background: #000;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-in {
+  animation: pageIn 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-page-in {
+    animation: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Override: inputs/selects con fondo gris para contraste visible
+   sobre el background oscuro nuevo (coherente con landing).
+   ───────────────────────────────────────────────────────────── */
+main input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+main select,
+main textarea {
+  background-color: rgb(24 24 27) !important;
+  color: rgb(244 244 245) !important;
+  border: 1px solid rgb(63 63 70) !important;
+  border-radius: 0.75rem !important;
+}
+
+main input::placeholder,
+main textarea::placeholder {
+  color: rgb(113 113 122) !important;
+}
+
+main input:focus,
+main select:focus,
+main textarea:focus {
+  border-color: rgb(59 130 246) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 0.18) !important;
+}
+
+main input:disabled,
+main select:disabled,
+main textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+main select option {
+  background-color: rgb(24 24 27);
+  color: rgb(244 244 245);
+}

@@ -207,9 +207,6 @@ export default function Home() {
                 highlight
               />
             </div>
-            <div className="text-xs text-white/40 text-right">
-              vía {quote.providerId}
-            </div>
           </div>
         )}
       </CardElevated>

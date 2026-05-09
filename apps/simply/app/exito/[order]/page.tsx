@@ -65,10 +65,6 @@ export default function ExitoPage() {
           <span className="text-white/50">Destino recibe</span>
           <MoneyDisplay amount={parseFloat(tx.beneficiaryReceives)} currency={destCode} size="sm" highlight />
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-white/50">Provider</span>
-          <span>{tx.providerId}</span>
-        </div>
       </Card>
 
       {tx.status === "awaiting_funding" && (

@@ -16,7 +16,6 @@ export default function HistorialPage() {
       router.push("/");
       return;
     }
-    // TODO: fetch /api/v1/transfer-engine/customer/:id cuando el endpoint esté expuesto
     setItems([]);
   }, [loaded, session, router]);
 
@@ -43,9 +42,15 @@ export default function HistorialPage() {
       ) : (
         <div className="space-y-3">
           {items.map((it) => (
-            <a key={it.order} href={`/exito/${it.order}`} className="card block hover:border-white/10">
+            <a
+              key={it.order}
+              href={`/exito/${it.order}`}
+              className="card block hover:border-white/10"
+            >
               <div className="flex justify-between items-center">
-                <span className="text-sm">{it.providerId}</span>
+                <span className="text-sm text-white/80">
+                  Orden #{String(it.order).slice(-6)}
+                </span>
                 <StatusBadge status={it.status} />
               </div>
             </a>

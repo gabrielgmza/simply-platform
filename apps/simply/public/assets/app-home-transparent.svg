@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1086 1448" role="img" aria-label="Simply app home">
+  <defs><clipPath id="c"><path d="M182 40 C290 18 612 72 705 148 C776 207 933 1262 790 1396 C668 1510 249 1394 188 1270 C122 1136 72 190 182 40 Z"/></clipPath></defs>
+  <image href="/assets/app-home.webp" x="0" y="0" width="1086" height="1448" clip-path="url(#c)" preserveAspectRatio="xMidYMid meet"/>
+</svg>
