@@ -8,6 +8,8 @@ export interface Session {
   firstName?: string;
   lastName?: string;
   pendingQuote?: any;
+  profileStatus?: 'LEAD' | 'GUEST' | 'REGISTERED' | 'VERIFIED_BASIC' | 'VERIFIED_FULL';
+  accountLevel?: string;
 }
 
 export function getSession(): Session | null {

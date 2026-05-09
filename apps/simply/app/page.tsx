@@ -10,11 +10,15 @@ import {
   Input,
   Select,
   MoneyDisplay,
+  useSession,
 } from "@simply/ui";
 import { DESTINATIONS, SOURCE_CURRENCIES } from "@/lib/destinations";
 
+const VERIFIED_STATUSES = ["VERIFIED_BASIC", "VERIFIED_FULL"];
+
 export default function Home() {
   const router = useRouter();
+  const { session, loaded } = useSession();
   const [amount, setAmount] = useState<string>("100");
   const [sourceCurrency, setSourceCurrency] = useState("USD");
   const [destinationId, setDestinationId] = useState("bank_co");
@@ -26,7 +30,6 @@ export default function Home() {
   const num = parseFloat(amount);
   const valid = num >= 1 && destination.enabled;
 
-  // Auto-cotizar
   useEffect(() => {
     if (!valid) {
       setQuote(null);
@@ -72,13 +75,26 @@ export default function Home() {
             category: destination.category,
             label: destination.label,
           },
-        })
+        }),
       );
     }
-    router.push("/login");
+    // Routing inteligente:
+    // - Sin sesión → registro (email + OTP)
+    // - Sesión pero KYC incompleto → registro (continúa el wizard donde quedó)
+    // - Sesión y KYC OK → destinatario directo
+    if (!loaded) return;
+    if (!session) {
+      router.push("/registro");
+      return;
+    }
+    const status = (session as any).profileStatus;
+    if (status && VERIFIED_STATUSES.includes(status)) {
+      router.push("/destinatario");
+    } else {
+      router.push("/registro");
+    }
   }
 
-  // Agrupar destinos para el select
   const grouped = {
     bank_latam: DESTINATIONS.filter((d) => d.category === "bank_latam"),
     bank_us: DESTINATIONS.filter((d) => d.category === "bank_us"),
@@ -231,7 +247,6 @@ function sourceCurrencyToAsset(code: string) {
   if (meta?.crypto) {
     return { kind: "crypto", symbol: code, network: meta.network };
   }
-  // FIAT: deducimos el país probable
   const country = code === "USD" ? "US" : code === "CLP" ? "CL" : code === "COP" ? "CO" : "US";
   return { kind: "fiat", currency: code, country };
 }
