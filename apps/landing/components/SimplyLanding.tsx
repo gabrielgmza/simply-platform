@@ -28,6 +28,7 @@ const APP_ANALYTICS = '/assets/app-analytics.webp';
 const APP_ONBOARDING = '/assets/app-onboarding.webp';
 const HERO_STANDARD = '/assets/hero-standard.webp';
 const AI_WORKING = '/assets/ai-working.webp';
+const PERSONAS_CAFE = '/assets/personas-cafe.webp';
 const LIFESTYLE_PAYMENT = '/assets/lifestyle-payment.webp';
 const LIFESTYLE_AI = '/assets/lifestyle-ai-savings.webp';
 const LIFESTYLE_DIAMOND = '/assets/lifestyle-diamond.webp';
@@ -521,7 +522,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
     <main className="min-h-screen bg-black text-white font-sans overflow-hidden">
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_75%_8%,rgba(45,127,249,0.28),transparent_25%),radial-gradient(circle_at_15%_38%,rgba(45,127,249,0.13),transparent_22%),linear-gradient(180deg,#000,#030303)]" />
       <Header />
-      <div className="relative z-10 pt-16 md:pt-20 scroll-smooth">{children}</div>
+      <div key={page} className="relative z-10 pt-16 md:pt-20 scroll-smooth animate-page-in">{children}</div>
       <Footer />
       <CookieBanner />
       <MobileCTA />
@@ -555,7 +556,7 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
             ))}
           </div>
         </div>
-        <div className="relative grid place-items-center overflow-hidden">
+        <div className="relative rounded-[2rem] overflow-hidden border border-zinc-800/60 shadow-[0_35px_120px_rgba(37,99,235,0.18)]">
           <img decoding="async" fetchPriority="high" src={HERO_STANDARD} alt="Simply app, tarjeta y dashboard" className="w-full h-auto object-contain transition duration-700 hover:scale-[1.02]" loading="eager" />
         </div>
       </section>
@@ -774,8 +775,8 @@ export default function SimplyLanding({ initialPage = 'home' }: Props) {
           <SectionTitle kicker={t.people.kicker} title={t.people.title} text={t.people.intro} />
           <Button onClick={scrollToPrereg} className="mt-8">{t.common.ui.joinList}</Button>
         </div>
-        <div className="relative grid place-items-center overflow-hidden">
-          <img decoding="async" src={HERO_STANDARD} alt="Simply tarjeta, app y dashboard" className="w-full h-auto object-contain transition duration-700 hover:scale-[1.02]" loading="lazy" />
+        <div className="relative aspect-[4/5] w-full max-w-[480px] mx-auto rounded-[2rem] overflow-hidden border border-zinc-800/60 shadow-[0_35px_120px_rgba(37,99,235,0.18)]">
+          <img decoding="async" src={PERSONAS_CAFE} alt="Simply en uso cotidiano" className="absolute inset-0 w-full h-full object-cover object-center transition duration-700 hover:scale-[1.03]" loading="lazy" />
         </div>
       </section>
       <section className="max-w-7xl mx-auto px-6 pb-14">

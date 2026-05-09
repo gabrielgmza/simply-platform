@@ -19,35 +19,15 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-img[src="/assets/logo-simply.webp"] {
-  background: transparent !important;
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-img[src="/assets/app-home.webp"] {
-  content: url('/assets/use-case-daily-money.svg');
+.animate-page-in {
+  animation: pageIn 320ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-img[src="/assets/app-cards.webp"] {
-  content: url('/assets/use-case-card-payment.svg');
-}
-
-img[src="/assets/app-analytics.webp"] {
-  content: url('/assets/use-case-business-analytics.svg');
-}
-
-img[src="/assets/app-onboarding.webp"] {
-  content: url('/assets/use-case-multiplatform.svg');
-}
-
-img[src="/assets/app-home.webp"],
-img[src="/assets/app-cards.webp"],
-img[src="/assets/app-analytics.webp"],
-img[src="/assets/app-onboarding.webp"] {
-  width: 100%;
-  height: 100%;
-  object-fit: cover !important;
-  object-position: center;
-  background: #050505 !important;
-  border-radius: 1.75rem;
-  box-shadow: 0 28px 90px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.08);
+@media (prefers-reduced-motion: reduce) {
+  .animate-page-in { animation: none; }
 }
