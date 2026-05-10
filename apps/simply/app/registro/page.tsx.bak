@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Mail, ShieldCheck, ArrowLeft, Lock } from "lucide-react";
+import { ArrowRight, Mail, ShieldCheck, ArrowLeft } from "lucide-react";
 import {
   Button,
   CardElevated,
@@ -10,9 +10,8 @@ import {
   Input,
   useSession,
 } from "@simply/ui";
-import PasswordInput, { isPasswordValid } from "@/components/PasswordInput";
 
-type Step = "email" | "otp" | "password";
+type Step = "email" | "otp";
 
 const KYC_STEPS_REMAINING: Record<string, string> = {
   LEAD: "/registro/datos",
@@ -28,9 +27,6 @@ export default function RegistroPage() {
   const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [verifiedCustomer, setVerifiedCustomer] = useState<any>(null); // se setea tras OTP OK
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
@@ -88,7 +84,6 @@ export default function RegistroPage() {
     setError(null);
     setLoading(true);
     try {
-      // 1. Verificar OTP
       const res = await fetch("/api/auth/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -98,22 +93,6 @@ export default function RegistroPage() {
       if (!res.ok) throw new Error(data.message || "Código incorrecto");
 
       const customer = data.customer;
-      setVerifiedCustomer(customer);
-
-      // 2. ¿Ya tiene password configurado?
-      const checkRes = await fetch(
-        `/api/auth/password/has-password?customerId=${customer.id}`,
-      );
-      const checkData = await checkRes.json();
-
-      if (!checkData.hasPassword) {
-        // Forzar setup de password antes de continuar
-        setStep("password");
-        setInfo(null);
-        return;
-      }
-
-      // 3. Si ya tiene password, loguear y redirigir
       login({
         customerId: customer.id,
         email: customer.email,
@@ -123,59 +102,12 @@ export default function RegistroPage() {
         accountLevel: customer.accountLevel,
       } as any);
 
+      // Redirigir según el progreso del KYC
       const next = KYC_STEPS_REMAINING[customer.profileStatus] || "/registro/datos";
       router.push(next);
     } catch (e: any) {
       setError(e.message);
       setCode("");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleSetupPassword(e?: React.FormEvent) {
-    e?.preventDefault();
-    setError(null);
-    if (!verifiedCustomer) return;
-
-    if (!isPasswordValid(password)) {
-      setError("El password no cumple los requisitos");
-      return;
-    }
-    if (password !== passwordConfirm) {
-      setError("Los passwords no coinciden");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const res = await fetch("/api/auth/password/setup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          customerId: verifiedCustomer.id,
-          password,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message || "No pudimos guardar tu password");
-      }
-
-      // Loguear y continuar
-      login({
-        customerId: verifiedCustomer.id,
-        email: verifiedCustomer.email,
-        firstName: verifiedCustomer.firstName,
-        lastName: verifiedCustomer.lastName,
-        profileStatus: verifiedCustomer.profileStatus,
-        accountLevel: verifiedCustomer.accountLevel,
-      } as any);
-
-      const next = KYC_STEPS_REMAINING[verifiedCustomer.profileStatus] || "/registro/datos";
-      router.push(next);
-    } catch (e: any) {
-      setError(Array.isArray(e.message) ? e.message.join(", ") : e.message);
     } finally {
       setLoading(false);
     }
@@ -187,21 +119,17 @@ export default function RegistroPage() {
         <div className="w-12 h-12 rounded-2xl bg-accent-500/15 mx-auto flex items-center justify-center">
           {step === "email" ? (
             <Mail className="w-6 h-6 text-accent-400" />
-          ) : step === "otp" ? (
-            <ShieldCheck className="w-6 h-6 text-accent-400" />
           ) : (
-            <Lock className="w-6 h-6 text-accent-400" />
+            <ShieldCheck className="w-6 h-6 text-accent-400" />
           )}
         </div>
         <h1 className="text-2xl font-semibold">
-          {step === "email" && "Identificate"}
-          {step === "otp" && "Verificá tu email"}
-          {step === "password" && "Creá tu password"}
+          {step === "email" ? "Identificate" : "Verificá tu email"}
         </h1>
         <p className="text-sm text-white/60">
-          {step === "email" && "Tu email para empezar el registro."}
-          {step === "otp" && "Ingresá el código de 6 dígitos que te enviamos."}
-          {step === "password" && "Lo vas a usar para acceder a tu cuenta de PaySur Simply."}
+          {step === "email"
+            ? "Tu email para empezar el registro."
+            : "Ingresá el código de 6 dígitos que te enviamos."}
         </p>
       </div>
 
@@ -308,58 +236,6 @@ export default function RegistroPage() {
                   : "Reenviar código"}
               </button>
             </div>
-          </CardElevated>
-        </form>
-      )}
-
-      {step === "password" && (
-        <form onSubmit={handleSetupPassword}>
-          <CardElevated className="space-y-4">
-            <PasswordInput
-              label="Password"
-              value={password}
-              onChange={setPassword}
-              placeholder="Mínimo 10 caracteres"
-              autoFocus
-              showRules
-            />
-
-            <PasswordInput
-              label="Repetí el password"
-              value={passwordConfirm}
-              onChange={setPasswordConfirm}
-              placeholder="Confirmá el password"
-              showRules={false}
-            />
-
-            {passwordConfirm.length > 0 && password !== passwordConfirm && (
-              <p className="text-xs text-amber-300">
-                Los passwords no coinciden todavía
-              </p>
-            )}
-
-            {error && (
-              <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
-                {error}
-              </div>
-            )}
-
-            <Button
-              type="submit"
-              loading={loading}
-              disabled={
-                !isPasswordValid(password) ||
-                password !== passwordConfirm ||
-                loading
-              }
-              rightIcon={<ArrowRight className="w-5 h-5" />}
-            >
-              Crear password y continuar
-            </Button>
-
-            <p className="text-[11px] text-white/40 text-center leading-relaxed">
-              Guardá tu password en un lugar seguro. Si lo olvidás, podés recuperarlo con el email.
-            </p>
           </CardElevated>
         </form>
       )}
