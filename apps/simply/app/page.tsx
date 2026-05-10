@@ -26,6 +26,7 @@ import {
   isCombinationSupported,
 } from "@/lib/assets";
 import AssetSelector from "@/components/AssetSelector";
+import Tooltip from "@/components/Tooltip";
 
 const VERIFIED_STATUSES = ["VERIFIED_BASIC", "VERIFIED_FULL"];
 
@@ -205,21 +206,41 @@ export default function Home() {
 
             {showDetails && (
               <div className="mt-2 rounded-xl bg-black/40 border border-white/5 p-3 space-y-1.5 text-xs animate-fade-in">
-                <Row label="Tipo de cambio">
+                <Row label={
+                  <span className="inline-flex items-center gap-1">
+                    Tipo de cambio
+                    <Tooltip content="Es el rate al que se convierte tu moneda. Ya incluye el markup de Simply. Sin sorpresas escondidas." />
+                  </span>
+                }>
                   1 {sourceCode} = {quote.breakdown.finalRate?.toFixed(6)} {destCode}
                 </Row>
                 {quote.breakdown.providerFixedCost > 0 && (
-                  <Row label="Fee de red / envío">
+                  <Row label={
+                    <span className="inline-flex items-center gap-1">
+                      Fee de red / envío
+                      <Tooltip content="Costo cobrado por la red blockchain o el sistema bancario para procesar tu transferencia. No lo cobra Simply." />
+                    </span>
+                  }>
                     {quote.breakdown.providerFixedCost} {sourceCode}
                   </Row>
                 )}
                 {quote.breakdown.fixedFee > 0 && (
-                  <Row label="Cargo Simply">
+                  <Row label={
+                    <span className="inline-flex items-center gap-1">
+                      Cargo Simply
+                      <Tooltip content="Comisión fija de Simply por procesar tu operación. Se descuenta del monto a enviar." />
+                    </span>
+                  }>
                     <MoneyDisplay amount={quote.breakdown.fixedFee} currency={sourceCode} size="sm" />
                   </Row>
                 )}
                 <Row label="Tiempo estimado">{quote.estimatedDeliveryTime}</Row>
-                <Row label="Cotización válida hasta">
+                <Row label={
+                  <span className="inline-flex items-center gap-1">
+                    Cotización válida hasta
+                    <Tooltip content="Después de esta hora, los rates pueden cambiar. Si demorás, vas a ver una nueva cotización." />
+                  </span>
+                }>
                   {new Date(quote.validUntil).toLocaleTimeString("es-AR", {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -259,11 +280,11 @@ export default function Home() {
   );
 }
 
-function Row({ label, children }: { label: string; children: React.ReactNode }) {
+function Row({ label, children }: { label: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div className="flex justify-between items-center text-zinc-400">
-      <span className="text-zinc-500">{label}</span>
-      <span className="text-white">{children}</span>
+    <div className="flex justify-between items-center text-zinc-400 gap-3">
+      <span className="text-zinc-500 flex-shrink-0">{label}</span>
+      <span className="text-white text-right truncate">{children}</span>
     </div>
   );
 }

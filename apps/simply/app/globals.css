@@ -158,3 +158,33 @@ main select option {
   .skeleton { animation: none; background: rgba(255, 255, 255, 0.04); }
 }
 
+/* ─── Focus rings consistentes ─── */
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid rgb(59 130 246);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* ─── Selection color ─── */
+
+::selection {
+  background: rgba(59, 130, 246, 0.35);
+  color: white;
+}
+
+/* ─── Cards interactivas ─── */
+
+a[class*="rounded-2xl"]:hover,
+button[class*="rounded-2xl"]:hover {
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Tooltip animation ─── */
+
+[role="tooltip"] {
+  pointer-events: none;
+}
+
