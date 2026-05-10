@@ -114,14 +114,44 @@ export function validateAddress(address: string, network: string): { valid: bool
 export function isCombinationSupported(source: AssetMeta, dest: AssetMeta): { ok: boolean; reason?: string } {
   // Misma cosa = no tiene sentido
   if (assetId(source) === assetId(dest)) {
-    return { ok: false, reason: "Origen y destino son iguales" };
+    return { ok: false, reason: "Origen y destino no pueden ser iguales" };
   }
-  // Multi-hop crypto → fiat no-USD: no funciona aún
+
+  // Multi-hop crypto → fiat (excepto USD): no funciona aún
   if (source.kind === "crypto" && dest.kind === "fiat" && dest.currency !== "USD") {
     return {
       ok: false,
-      reason: `${source.symbol} → ${dest.currency} estará disponible pronto. Por ahora podés vender ${source.symbol} a USD.`,
+      reason: `Vender ${source.symbol} a ${dest.currency} estará disponible pronto. Por ahora podés vender ${source.symbol} a USD.`,
     };
   }
+
+  // Multi-hop fiat (no-USD) → crypto: tampoco funciona aún
+  if (source.kind === "fiat" && source.currency !== "USD" && dest.kind === "crypto") {
+    return {
+      ok: false,
+      reason: `Comprar ${dest.symbol} con ${source.currency} estará disponible pronto. Por ahora podés comprar con USD.`,
+    };
+  }
+
+  // Multi-hop fiat (no-USD) → fiat (no-USD) directo: tampoco
+  // (USD → ARS sí funciona porque /prices tiene esa par)
+  if (
+    source.kind === "fiat" && source.currency !== "USD" &&
+    dest.kind === "fiat" && dest.currency !== "USD"
+  ) {
+    return {
+      ok: false,
+      reason: `${source.currency} → ${dest.currency} estará disponible pronto. Probá pasando por USD.`,
+    };
+  }
+
+  // Crypto → crypto: por ahora no soportado (requiere swap interno)
+  if (source.kind === "crypto" && dest.kind === "crypto") {
+    return {
+      ok: false,
+      reason: `Cambiar entre cripto estará disponible pronto.`,
+    };
+  }
+
   return { ok: true };
 }
