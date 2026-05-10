@@ -136,12 +136,19 @@ export default function Home() {
           </label>
           <div className="grid grid-cols-[1fr_minmax(0,1.4fr)] gap-2">
             <Input
-              type="number"
+              type="text"
               inputMode="decimal"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => {
+                // Solo dígitos y un punto/coma (decimal)
+                const v = e.target.value.replace(/,/g, ".").replace(/[^0-9.]/g, "");
+                // Permitir solo un punto decimal
+                const parts = v.split(".");
+                const cleaned = parts.length > 2 ? parts[0] + "." + parts.slice(1).join("") : v;
+                setAmount(cleaned);
+              }}
               placeholder="0"
-              className="text-2xl font-semibold !py-3"
+              className="text-2xl font-semibold !py-[14px] !h-[58px]"
             />
             <AssetSelector value={source} onChange={setSource} excludeId={assetId(destination)} />
           </div>
@@ -165,7 +172,7 @@ export default function Home() {
             Recibe
           </label>
           <div className="grid grid-cols-[1fr_minmax(0,1.4fr)] gap-2">
-            <div className="px-3 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-2xl font-semibold text-white tabular-nums truncate">
+            <div className="px-3 rounded-xl bg-zinc-900 border border-zinc-800 text-2xl font-semibold text-white tabular-nums truncate flex items-center h-[58px]">
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin text-zinc-500" />
               ) : quote && support.ok ? (

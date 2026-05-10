@@ -188,3 +188,31 @@ button[class*="rounded-2xl"]:hover {
   pointer-events: none;
 }
 
+/* ─── Quitar flechitas del input number ─── */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ─── Inputs: padding y altura consistentes ─── */
+main input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
+  padding: 0.625rem 0.875rem !important;  /* py-2.5 px-3.5 */
+  min-height: 44px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* OTP / códigos: tipografía monoespacio centrada */
+input[inputmode="numeric"][maxlength="6"],
+input[inputmode="numeric"][maxlength="4"] {
+  text-align: center !important;
+  letter-spacing: 0.5em !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+}
+
