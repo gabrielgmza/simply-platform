@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Camera, ArrowRight, ShieldCheck, Info } from "lucide-react";
+import { Camera, ArrowRight, Info } from "lucide-react";
 import { Button, useSession } from "@simply/ui";
 import DocSideUploader, {
   DniSideUploadResult,
@@ -20,7 +20,6 @@ export default function RegistroDniPage() {
       router.replace("/registro");
       return;
     }
-    // Si todavía no completó datos personales, mandarlo allá
     const status = (session as any).profileStatus;
     if (!status || status === "LEAD" || status === "GUEST") {
       router.replace("/registro/datos");
@@ -32,12 +31,12 @@ export default function RegistroDniPage() {
   }
 
   const customerId = (session as any).customerId;
-  const bothOk = front?.crossCheck.ok && back?.crossCheck.ok;
-  const hasIssues =
-    (front && (!front.ok || !front.crossCheck.ok)) ||
-    (back && (!back.ok || !back.crossCheck.ok));
+  const frontOk = !!(front && front.ok && front.crossCheck.ok);
+  const backOk = !!(back && back.ok && back.crossCheck.ok);
+  const bothOk = frontOk && backOk;
 
   function handleContinue() {
+    if (!bothOk) return;
     router.push("/registro/selfie");
   }
 
@@ -59,8 +58,9 @@ export default function RegistroDniPage() {
           <p>Asegurate de:</p>
           <ul className="list-disc pl-4 space-y-0.5">
             <li>Buena iluminación, sin reflejos</li>
-            <li>Documento completo en cuadro</li>
+            <li>Documento completo en cuadro, sin recortes</li>
             <li>Foto nítida, sin movimiento</li>
+            <li>Fondo limpio, sin objetos extra</li>
           </ul>
         </div>
       </div>
@@ -82,18 +82,6 @@ export default function RegistroDniPage() {
         />
       </div>
 
-      {hasIssues && (
-        <div className="text-sm text-amber-300/90 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 flex gap-2">
-          <ShieldCheck className="w-5 h-5 flex-shrink-0" />
-          <div>
-            <p className="font-medium">Hay datos que no coinciden</p>
-            <p className="text-amber-200/70 text-xs mt-1">
-              Verificá que el documento sea el mismo que registraste y que la foto sea clara. Podés volver a tomarla.
-            </p>
-          </div>
-        </div>
-      )}
-
       <Button
         onClick={handleContinue}
         disabled={!bothOk}
@@ -101,6 +89,12 @@ export default function RegistroDniPage() {
       >
         Continuar
       </Button>
+
+      {!bothOk && (front || back) && (
+        <p className="text-center text-xs text-amber-400/80">
+          Para continuar, ambos lados deben coincidir con tus datos registrados.
+        </p>
+      )}
 
       {!front && !back && (
         <p className="text-center text-xs text-white/40">
