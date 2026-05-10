@@ -57,7 +57,7 @@ export default function Home() {
       } finally {
         setLoading(false);
       }
-    }, 500);
+    }, 800);
     return () => clearTimeout(t);
   }, [amount, sourceCurrency, destinationId, valid]);
 
