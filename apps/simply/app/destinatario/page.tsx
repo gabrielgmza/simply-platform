@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, User, Wallet, AlertTriangle } from "lucide-react";
 import { Button, CardElevated, FormField, Input, Select, useSession } from "@simply/ui";
+import { useKycGate } from "@/lib/hooks/useKycGate";
 import { validateCryptoAddress } from "@/lib/destinations";
 
 export default function DestinatarioPage() {
@@ -32,18 +33,17 @@ export default function DestinatarioPage() {
   });
   const [cryptoError, setCryptoError] = useState<string | null>(null);
 
+  // Gate KYC: redirige al paso faltante si profileStatus < VERIFIED_BASIC
+  const { ready: kycReady } = useKycGate();
+
   useEffect(() => {
-    if (!loaded) return;
-    if (!session) {
-      router.push("/");
-      return;
-    }
+    if (!kycReady) return;
     if (typeof window !== "undefined") {
       const p = sessionStorage.getItem("simply_pending_quote");
       if (!p) router.push("/");
       else setPending(JSON.parse(p));
     }
-  }, [loaded, session, router]);
+  }, [kycReady, router]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

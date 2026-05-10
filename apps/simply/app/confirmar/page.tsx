@@ -11,6 +11,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { Button, Card, MoneyDisplay, useSession } from "@simply/ui";
+import { useKycGate } from "@/lib/hooks/useKycGate";
 
 // Cargar gateway de pago una vez fuera del componente
 const stripePromise: Promise<Stripe | null> | null =
@@ -36,6 +37,9 @@ export default function ConfirmarPage() {
   const [error, setError] = useState<string | null>(null);
 
   // 1) Cargar datos del sessionStorage
+  // Gate KYC: bloquea esta ruta si profileStatus < VERIFIED_BASIC
+  useKycGate();
+
   useEffect(() => {
     if (!loaded) return;
     if (!session) {
