@@ -1,17 +1,45 @@
 "use client";
 
-import { Camera } from "lucide-react";
-import { CardElevated, useSession } from "@simply/ui";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Camera, ArrowRight, ShieldCheck, Info } from "lucide-react";
+import { Button, useSession } from "@simply/ui";
+import DocSideUploader, {
+  DniSideUploadResult,
+} from "@/components/registro/DocSideUploader";
 
 export default function RegistroDniPage() {
   const router = useRouter();
   const { session, loaded } = useSession();
+  const [front, setFront] = useState<DniSideUploadResult | null>(null);
+  const [back, setBack] = useState<DniSideUploadResult | null>(null);
 
   useEffect(() => {
-    if (loaded && !session) router.replace("/registro");
+    if (!loaded) return;
+    if (!session) {
+      router.replace("/registro");
+      return;
+    }
+    // Si todavía no completó datos personales, mandarlo allá
+    const status = (session as any).profileStatus;
+    if (!status || status === "LEAD" || status === "GUEST") {
+      router.replace("/registro/datos");
+    }
   }, [loaded, session, router]);
+
+  if (!loaded || !session) {
+    return <div className="text-center py-12 text-white/60">Cargando...</div>;
+  }
+
+  const customerId = (session as any).customerId;
+  const bothOk = front?.crossCheck.ok && back?.crossCheck.ok;
+  const hasIssues =
+    (front && (!front.ok || !front.crossCheck.ok)) ||
+    (back && (!back.ok || !back.crossCheck.ok));
+
+  function handleContinue() {
+    router.push("/registro/selfie");
+  }
 
   return (
     <div className="space-y-6 animate-page-in">
@@ -21,20 +49,64 @@ export default function RegistroDniPage() {
         </div>
         <h1 className="text-2xl font-semibold">Subí tu documento</h1>
         <p className="text-sm text-white/60">
-          Foto del frente y dorso del documento que registraste.
+          Necesitamos las dos caras de tu documento de identidad.
         </p>
       </div>
 
-      <CardElevated>
-        <div className="text-center py-8 space-y-3">
-          <p className="text-amber-300/90 text-sm">
-            🚧 Esta etapa estará disponible pronto.
-          </p>
-          <p className="text-white/50 text-xs">
-            Sprint 3 — captura de DNI con OCR
-          </p>
+      <div className="rounded-xl bg-blue-500/10 border border-blue-500/20 p-3 flex gap-2 text-xs text-blue-200/90">
+        <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
+        <div className="space-y-1">
+          <p>Asegurate de:</p>
+          <ul className="list-disc pl-4 space-y-0.5">
+            <li>Buena iluminación, sin reflejos</li>
+            <li>Documento completo en cuadro</li>
+            <li>Foto nítida, sin movimiento</li>
+          </ul>
         </div>
-      </CardElevated>
+      </div>
+
+      <div className="space-y-3">
+        <DocSideUploader
+          side="front"
+          title="Frente del documento"
+          hint="Lado con tu foto"
+          customerId={customerId}
+          onUploaded={setFront}
+        />
+        <DocSideUploader
+          side="back"
+          title="Dorso del documento"
+          hint="Lado con código de barras"
+          customerId={customerId}
+          onUploaded={setBack}
+        />
+      </div>
+
+      {hasIssues && (
+        <div className="text-sm text-amber-300/90 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 flex gap-2">
+          <ShieldCheck className="w-5 h-5 flex-shrink-0" />
+          <div>
+            <p className="font-medium">Hay datos que no coinciden</p>
+            <p className="text-amber-200/70 text-xs mt-1">
+              Verificá que el documento sea el mismo que registraste y que la foto sea clara. Podés volver a tomarla.
+            </p>
+          </div>
+        </div>
+      )}
+
+      <Button
+        onClick={handleContinue}
+        disabled={!bothOk}
+        rightIcon={<ArrowRight className="w-5 h-5" />}
+      >
+        Continuar
+      </Button>
+
+      {!front && !back && (
+        <p className="text-center text-xs text-white/40">
+          Tus documentos se guardan de forma segura y solo se usan para verificación.
+        </p>
+      )}
     </div>
   );
 }
