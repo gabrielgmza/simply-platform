@@ -4,20 +4,24 @@ const BACKEND =
   process.env.NEXT_PUBLIC_BACKEND_URL ||
   "https://simply-backend-888610796336.southamerica-east1.run.app/api/v1";
 
-// Catch-all proxy: GET/POST/DELETE /api/customer-book/[...path] → backend
-export async function GET(req: NextRequest, { params }: { params: { path: string[] } }) {
-  return proxy(req, params.path);
+type Ctx = { params: Promise<{ path: string[] }> };
+
+export async function GET(req: NextRequest, ctx: Ctx) {
+  const { path } = await ctx.params;
+  return proxy(req, path);
 }
-export async function POST(req: NextRequest, { params }: { params: { path: string[] } }) {
-  return proxy(req, params.path);
+export async function POST(req: NextRequest, ctx: Ctx) {
+  const { path } = await ctx.params;
+  return proxy(req, path);
 }
-export async function DELETE(req: NextRequest, { params }: { params: { path: string[] } }) {
-  return proxy(req, params.path);
+export async function DELETE(req: NextRequest, ctx: Ctx) {
+  const { path } = await ctx.params;
+  return proxy(req, path);
 }
 
 async function proxy(req: NextRequest, path: string[]) {
   const search = req.nextUrl.searchParams.toString();
-  const url = `${BACKEND}/customer-book/${path.join("/")}${search ? `?${search}` : ""}`;
+  const url = BACKEND + "/customer-book/" + path.join("/") + (search ? "?" + search : "");
 
   const init: RequestInit = {
     method: req.method,

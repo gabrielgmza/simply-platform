@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+export const dynamic = "force-dynamic";
+
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { User, BookOpen, Settings, LogOut, ShieldCheck, Mail, Phone, IdCard } from "lucide-react";
 import { Button, Card, CardElevated, useSession } from "@simply/ui";
@@ -9,7 +11,7 @@ import LibretaTab from "./LibretaTab";
 
 type Tab = "perfil" | "libreta" | "settings";
 
-export default function CuentaPage() {
+function CuentaContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { session, loaded } = useSession();
@@ -239,5 +241,14 @@ function SettingsTab({ onLogout }: { onLogout: () => void }) {
         </Button>
       </Card>
     </div>
+  );
+}
+
+// Wrapper con Suspense (necesario para useSearchParams en Next 15)
+export default function CuentaPage() {
+  return (
+    <Suspense fallback={<div className="text-center py-12 text-white/60">Cargando...</div>}>
+      <CuentaContent />
+    </Suspense>
   );
 }
