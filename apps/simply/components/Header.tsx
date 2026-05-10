@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useSession } from '@simply/ui';
+import { User } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -18,6 +20,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [lang, setLang] = useState<'es' | 'en' | 'pt'>('es');
   const pathname = usePathname();
+  const { session, loaded } = useSession();
   const isHome = pathname === '/';
 
   return (
@@ -64,12 +67,22 @@ export default function Header() {
             <option value="pt" className="bg-black">PT</option>
           </select>
 
-          <Link
-            href="/login"
-            className="hidden sm:block hover:text-white px-3 py-2 text-sm text-zinc-300 transition"
-          >
-            Ingresar
-          </Link>
+          {loaded && session ? (
+            <Link
+              href="/cuenta"
+              className="hidden sm:flex items-center gap-1.5 hover:text-white px-3 py-2 text-sm text-zinc-300 transition"
+            >
+              <User className="w-4 h-4" />
+              Mi cuenta
+            </Link>
+          ) : (
+            <Link
+              href="/registro"
+              className="hidden sm:block hover:text-white px-3 py-2 text-sm text-zinc-300 transition"
+            >
+              Ingresar
+            </Link>
+          )}
 
           <a
             href={`${LANDING_URL}/#preregistro`}
