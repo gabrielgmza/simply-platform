@@ -77,7 +77,7 @@ export default function Header() {
             </Link>
           ) : (
             <Link
-              href="/registro"
+              href="/login"
               className="hidden sm:block hover:text-white px-3 py-2 text-sm text-zinc-300 transition"
             >
               Ingresar
