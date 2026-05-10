@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Clock } from "lucide-react";
 import { Card, Button, StatusBadge, MoneyDisplay, useSession } from "@simply/ui";
+import StateCard from "@/components/registro/StateCard";
 
 export default function HistorialPage() {
   const router = useRouter();

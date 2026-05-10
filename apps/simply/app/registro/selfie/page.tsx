@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Smile, ArrowRight, Info, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { Button, useSession } from "@simply/ui";
 import LivenessCapture, {
+import StateCard from "@/components/registro/StateCard";
   LivenessChallenge,
   CapturedFrame,
 } from "@/components/registro/LivenessCapture";
@@ -176,35 +177,34 @@ export default function RegistroSelfiePage() {
         <div className="space-y-4">
           {result.ok ? (
             <>
-              <div className="rounded-2xl bg-green-500/10 border border-green-500/20 p-6 text-center space-y-2">
-                <CheckCircle2 className="w-12 h-12 text-green-400 mx-auto" />
-                <h2 className="text-lg font-semibold text-white">Identidad verificada</h2>
-                <p className="text-sm text-green-200/80">
-                  Coincidencia con DNI: {Math.round((result.faceMatch?.score || 0) * 100)}%
-                </p>
-              </div>
+              <StateCard
+                kind="verified"
+                title="¡Identidad verificada!"
+                description={`Tu documento e imagen coinciden al ${Math.round((result.faceMatch?.score || 0) * 100)}%. Listo para operar.`}
+              />
               <Button onClick={handleContinue} rightIcon={<ArrowRight className="w-5 h-5" />}>
                 Continuar a tu operación
               </Button>
             </>
           ) : (
             <>
-              <div className="rounded-2xl bg-amber-500/10 border border-amber-500/20 p-6 text-center space-y-2">
-                <AlertCircle className="w-12 h-12 text-amber-400 mx-auto" />
-                <h2 className="text-lg font-semibold text-white">No pudimos verificarte</h2>
-                {result.faceMatch && (
-                  <p className="text-sm text-amber-200/80">
-                    Coincidencia: {Math.round((result.faceMatch.score || 0) * 100)}%
-                  </p>
-                )}
+              <StateCard
+                kind="warning"
+                title="No pudimos verificarte"
+                description={
+                  result.faceMatch
+                    ? `Coincidencia con DNI: ${Math.round((result.faceMatch.score || 0) * 100)}%. Probá con mejor iluminación o sin lentes.`
+                    : "Probá nuevamente con buena iluminación y sin accesorios en la cara."
+                }
+              >
                 {result.warnings && result.warnings.length > 0 && (
-                  <ul className="text-xs text-amber-200/60 mt-2">
+                  <ul className="text-xs text-amber-200/60 space-y-0.5">
                     {result.warnings.map((w: string, i: number) => (
                       <li key={i}>• {w}</li>
                     ))}
                   </ul>
                 )}
-              </div>
+              </StateCard>
               <Button
                 onClick={() => {
                   setResult(null);
