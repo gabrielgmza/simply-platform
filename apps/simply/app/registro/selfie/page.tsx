@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import { Smile, ArrowRight, Info, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { Button, useSession } from "@simply/ui";
 import LivenessCapture, {
-import StateCard from "@/components/registro/StateCard";
   LivenessChallenge,
   CapturedFrame,
 } from "@/components/registro/LivenessCapture";
+import StateCard from "@/components/registro/StateCard";
 
 type Phase = "intro" | "challenges_loading" | "capturing" | "uploading" | "result";
 

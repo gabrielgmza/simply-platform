@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Camera, X, RotateCcw, Check } from "lucide-react";
 
 interface Props {
@@ -10,7 +10,9 @@ interface Props {
 }
 
 export default function CameraCapture({
-  onCapture, onClose, facingMode = "environment",
+  onCapture,
+  onClose,
+  facingMode = "environment",
 }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -18,63 +20,68 @@ export default function CameraCapture({
   const [error, setError] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [starting, setStarting] = useState(true);
+  const [streamKey, setStreamKey] = useState(0); // fuerza reinicio del stream
 
+  // Función centralizada para iniciar el stream
+  const startStream = useCallback(async () => {
+    setStarting(true);
+    setError(null);
+    try {
+      // Limpiar stream anterior
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+
+      if (!navigator.mediaDevices?.getUserMedia) {
+        throw new Error("Tu navegador no permite cámara. Usá 'Archivo' en su lugar.");
+      }
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: facingMode },
+          width: { ideal: 3840 },
+          height: { ideal: 2160 },
+        },
+        audio: false,
+      });
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play();
+      }
+      setStarting(false);
+    } catch (e: any) {
+      let msg = "No pudimos acceder a la cámara";
+      if (e.name === "NotAllowedError")
+        msg = "Necesitamos permiso para usar la cámara. Revisá los permisos del navegador.";
+      else if (e.name === "NotFoundError")
+        msg = "No encontramos una cámara conectada.";
+      else if (e.message) msg = e.message;
+      setError(msg);
+      setStarting(false);
+    }
+  }, [facingMode]);
+
+  // Iniciar al montar y cada vez que cambie streamKey (al "Repetir")
   useEffect(() => {
     let mounted = true;
-
-    async function start() {
-      try {
-        if (!navigator.mediaDevices?.getUserMedia) {
-          throw new Error("Tu navegador no permite cámara. Usá 'Archivo' en su lugar.");
-        }
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: { ideal: facingMode },
-            width: { ideal: 3840 },   // pedimos lo mejor que tenga la cam
-            height: { ideal: 2160 },
-          },
-          audio: false,
-        });
-        if (!mounted) {
-          stream.getTracks().forEach((t) => t.stop());
-          return;
-        }
-        streamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-        }
-        setStarting(false);
-      } catch (e: any) {
-        let msg = "No pudimos acceder a la cámara";
-        if (e.name === "NotAllowedError")
-          msg = "Necesitamos permiso para usar la cámara. Revisá los permisos del navegador.";
-        else if (e.name === "NotFoundError") msg = "No encontramos una cámara conectada.";
-        else if (e.message) msg = e.message;
-        setError(msg);
-        setStarting(false);
-      }
-    }
-    start();
-
+    (async () => {
+      if (mounted) await startStream();
+    })();
     return () => {
       mounted = false;
       streamRef.current?.getTracks().forEach((t) => t.stop());
       streamRef.current = null;
     };
-  }, [facingMode]);
+  }, [startStream, streamKey]);
 
   function handleShoot() {
     if (!videoRef.current || !canvasRef.current) return;
     const video = videoRef.current;
     const canvas = canvasRef.current;
-    // Capturar a la resolución nativa del video (sin redimensionar acá)
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    // Calidad alta (DocSideUploader luego produce HD final)
     const dataUrl = canvas.toDataURL("image/jpeg", 0.95);
     setPreviewUrl(dataUrl);
   }
@@ -85,6 +92,8 @@ export default function CameraCapture({
 
   function handleRetry() {
     setPreviewUrl(null);
+    // Forzar reinicio del stream para evitar cámara negra
+    setStreamKey((k) => k + 1);
   }
 
   return (
@@ -106,15 +115,27 @@ export default function CameraCapture({
         {error ? (
           <div className="text-center max-w-sm space-y-3">
             <p className="text-red-400 text-sm">{error}</p>
-            <button
-              onClick={onClose}
-              className="px-4 py-2 rounded-xl border border-white/15 text-white/80 hover:border-white/30 text-sm"
-            >
-              Cerrar y subir archivo
-            </button>
+            <div className="flex gap-2 justify-center">
+              <button
+                onClick={() => setStreamKey((k) => k + 1)}
+                className="px-4 py-2 rounded-xl border border-white/15 text-white/80 hover:border-white/30 text-sm"
+              >
+                Reintentar
+              </button>
+              <button
+                onClick={onClose}
+                className="px-4 py-2 rounded-xl border border-white/15 text-white/80 hover:border-white/30 text-sm"
+              >
+                Cerrar
+              </button>
+            </div>
           </div>
         ) : previewUrl ? (
-          <img src={previewUrl} alt="Captura" className="max-w-full max-h-full object-contain rounded-xl" />
+          <img
+            src={previewUrl}
+            alt="Captura"
+            className="max-w-full max-h-full object-contain rounded-xl"
+          />
         ) : (
           <div className="relative w-full max-w-3xl aspect-video">
             <video
