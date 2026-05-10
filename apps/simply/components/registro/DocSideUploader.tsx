@@ -8,8 +8,10 @@ import {
   AlertCircle,
   Loader2,
   RotateCcw,
+  ScanBarcode,
 } from "lucide-react";
 import CameraCapture from "./CameraCapture";
+import { tryReadPdf417 } from "@/lib/pdf417-reader";
 
 const MAX_PAYLOAD_BYTES = 3.5 * 1024 * 1024;
 const TARGET_LONG_SIDE = 1400;
@@ -62,8 +64,10 @@ export default function DocSideUploader({
   const [showWebcam, setShowWebcam] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingMsg, setLoadingMsg] = useState<string>("Procesando…");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<DniSideUploadResult | null>(null);
+  const [usedPdf417, setUsedPdf417] = useState(false);
 
   function openCamera() {
     if (isMobile()) cameraRef.current?.click();
@@ -92,16 +96,38 @@ export default function DocSideUploader({
   }
 
   async function processAndUpload(rawDataUrl: string) {
+    setUsedPdf417(false);
+
+    // 1. Intentar PDF417 (especialmente útil en el dorso)
+    let pdf417Text: string | null = null;
+    if (side === "back") {
+      setPreview(rawDataUrl);
+      setLoading(true);
+      setLoadingMsg("Buscando código de barras…");
+      try {
+        pdf417Text = await tryReadPdf417(rawDataUrl);
+        if (pdf417Text) {
+          setUsedPdf417(true);
+        }
+      } catch {
+        // ignoramos, seguimos con OCR
+      }
+    }
+
+    // 2. Comprimir + enhance para enviar al backend
     let processed: { dataUrl: string };
     try {
       processed = await compressAndEnhance(rawDataUrl);
     } catch (e: any) {
       setError(e.message || "No pudimos procesar la imagen");
+      setLoading(false);
+      setPreview(null);
       return;
     }
 
     setPreview(processed.dataUrl);
     setLoading(true);
+    setLoadingMsg(pdf417Text ? "Verificando código de barras…" : "Leyendo documento…");
 
     try {
       const base64 = processed.dataUrl.replace(/^data:image\/\w+;base64,/, "");
@@ -113,13 +139,14 @@ export default function DocSideUploader({
           side,
           imageBase64: base64,
           mimeType: "image/jpeg",
+          pdf417: pdf417Text || undefined,
         }),
       });
       const data = await res.json();
       if (!res.ok) {
         if (res.status === 413) {
           throw new Error(
-            "La foto es muy pesada incluso después de comprimir. Sacá una con menor resolución.",
+            "Foto demasiado pesada. Probá con la cámara o una imagen más liviana.",
           );
         }
         throw new Error(data.message || "Error procesando documento");
@@ -148,6 +175,7 @@ export default function DocSideUploader({
     setPreview(null);
     setResult(null);
     setError(null);
+    setUsedPdf417(false);
     if (cameraRef.current) cameraRef.current.value = "";
     if (fileRef.current) fileRef.current.value = "";
   }
@@ -166,6 +194,11 @@ export default function DocSideUploader({
           {successUI && (
             <span className="inline-flex items-center gap-1 text-xs text-green-400">
               <CheckCircle2 className="w-4 h-4" /> OK
+              {usedPdf417 && (
+                <span className="inline-flex items-center gap-0.5 text-blue-300 ml-1">
+                  <ScanBarcode className="w-3.5 h-3.5" />
+                </span>
+              )}
             </span>
           )}
           {warningUI && (
@@ -178,14 +211,10 @@ export default function DocSideUploader({
         <div className="aspect-[16/10] w-full rounded-xl border border-white/10 bg-black/40 overflow-hidden flex items-center justify-center relative">
           {preview ? (
             <>
-              <img
-                src={preview}
-                alt={title}
-                className="object-contain w-full h-full"
-              />
+              <img src={preview} alt={title} className="object-contain w-full h-full" />
               {loading && (
                 <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white/80 gap-2 text-sm">
-                  <Loader2 className="w-4 h-4 animate-spin" /> Procesando…
+                  <Loader2 className="w-4 h-4 animate-spin" /> {loadingMsg}
                 </div>
               )}
             </>
@@ -196,6 +225,12 @@ export default function DocSideUploader({
 
         {result && !loading && (
           <div className="rounded-xl bg-black/40 border border-white/5 p-3 text-xs space-y-1">
+            {usedPdf417 && (
+              <div className="flex items-center gap-1 text-blue-300 pb-1 border-b border-white/5 mb-1.5">
+                <ScanBarcode className="w-3.5 h-3.5" />
+                <span>Datos leídos del código de barras</span>
+              </div>
+            )}
             {(result.extracted.numero || result.extracted.dni) && (
               <div className="flex justify-between">
                 <span className="text-white/50">N° doc</span>
@@ -224,6 +259,12 @@ export default function DocSideUploader({
               <div className="flex justify-between">
                 <span className="text-white/50">Sexo</span>
                 <span>{result.extracted.sexo}</span>
+              </div>
+            )}
+            {result.extracted.cuil && (
+              <div className="flex justify-between">
+                <span className="text-white/50">CUIL</span>
+                <span className="font-mono">{result.extracted.cuil}</span>
               </div>
             )}
             {!result.crossCheck.ok && (

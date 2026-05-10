@@ -3,20 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 import { Camera, X, RotateCcw, Check } from "lucide-react";
 
+const TARGET_LONG_SIDE = 1400;
+
 interface Props {
-  /** Callback cuando se confirma la foto (data URL JPEG) */
   onCapture: (dataUrl: string) => void;
-  /** Callback al cerrar sin capturar */
   onClose: () => void;
-  /** 'environment' = trasera (recomendado para DNI), 'user' = frontal (para selfie) */
   facingMode?: "environment" | "user";
 }
 
-/**
- * Modal de cámara en vivo. Solo se monta cuando el usuario decide tomar foto.
- * Funciona en desktop con webcam y en móvil pidiendo permisos.
- */
-export default function CameraCapture({ onCapture, onClose, facingMode = "environment" }: Props) {
+export default function CameraCapture({
+  onCapture,
+  onClose,
+  facingMode = "environment",
+}: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -52,7 +51,8 @@ export default function CameraCapture({ onCapture, onClose, facingMode = "enviro
         setStarting(false);
       } catch (e: any) {
         let msg = "No pudimos acceder a la cámara";
-        if (e.name === "NotAllowedError") msg = "Necesitamos permiso para usar la cámara. Revisá los permisos del navegador.";
+        if (e.name === "NotAllowedError")
+          msg = "Necesitamos permiso para usar la cámara. Revisá los permisos del navegador.";
         else if (e.name === "NotFoundError") msg = "No encontramos una cámara conectada.";
         else if (e.message) msg = e.message;
         setError(msg);
@@ -71,13 +71,20 @@ export default function CameraCapture({ onCapture, onClose, facingMode = "enviro
   function handleShoot() {
     if (!videoRef.current || !canvasRef.current) return;
     const video = videoRef.current;
+
+    const longSide = Math.max(video.videoWidth, video.videoHeight);
+    const scale = longSide > TARGET_LONG_SIDE ? TARGET_LONG_SIDE / longSide : 1;
+    const w = Math.round(video.videoWidth * scale);
+    const h = Math.round(video.videoHeight * scale);
+
     const canvas = canvasRef.current;
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    canvas.width = w;
+    canvas.height = h;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
+    ctx.drawImage(video, 0, 0, w, h);
+
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
     setPreviewUrl(dataUrl);
   }
 
@@ -91,7 +98,6 @@ export default function CameraCapture({ onCapture, onClose, facingMode = "enviro
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/95 flex flex-col">
-      {/* Header */}
       <div className="flex items-center justify-between p-4">
         <h2 className="text-white font-medium flex items-center gap-2">
           <Camera className="w-5 h-5" /> Tomar foto
@@ -105,7 +111,6 @@ export default function CameraCapture({ onCapture, onClose, facingMode = "enviro
         </button>
       </div>
 
-      {/* Viewport */}
       <div className="flex-1 flex items-center justify-center p-4 overflow-hidden">
         {error ? (
           <div className="text-center max-w-sm space-y-3">
@@ -118,11 +123,7 @@ export default function CameraCapture({ onCapture, onClose, facingMode = "enviro
             </button>
           </div>
         ) : previewUrl ? (
-          <img
-            src={previewUrl}
-            alt="Captura"
-            className="max-w-full max-h-full object-contain rounded-xl"
-          />
+          <img src={previewUrl} alt="Captura" className="max-w-full max-h-full object-contain rounded-xl" />
         ) : (
           <div className="relative w-full max-w-3xl aspect-video">
             <video
@@ -136,7 +137,6 @@ export default function CameraCapture({ onCapture, onClose, facingMode = "enviro
                 Iniciando cámara…
               </div>
             )}
-            {/* Marco guía */}
             {!starting && (
               <div className="pointer-events-none absolute inset-x-8 inset-y-12 border-2 border-blue-400/60 rounded-2xl" />
             )}
@@ -145,7 +145,6 @@ export default function CameraCapture({ onCapture, onClose, facingMode = "enviro
         <canvas ref={canvasRef} className="hidden" />
       </div>
 
-      {/* Controles */}
       <div className="p-6 pb-10">
         {!error && (
           <div className="flex items-center justify-center gap-4">

@@ -13,6 +13,7 @@
     "@simply/ui": "workspace:*",
     "@stripe/react-stripe-js": "^6.3.0",
     "@stripe/stripe-js": "^9.4.0",
+    "@zxing/browser": "^0.2.0",
     "lucide-react": "^0.460.0",
     "next": "15.1.12",
     "react": "19.0.4",
