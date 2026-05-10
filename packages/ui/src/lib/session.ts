@@ -10,6 +10,11 @@ export interface Session {
   pendingQuote?: any;
   profileStatus?: 'LEAD' | 'GUEST' | 'REGISTERED' | 'VERIFIED_BASIC' | 'VERIFIED_FULL';
   accountLevel?: string;
+  country?: string;
+  documentType?: string;
+  documentNumber?: string;
+  phone?: string;
+  phoneCountryCode?: string;
 }
 
 export function getSession(): Session | null {
