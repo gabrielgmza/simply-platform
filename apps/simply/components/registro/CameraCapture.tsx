@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Camera, X, RotateCcw, Check } from "lucide-react";
 
-const TARGET_LONG_SIDE = 1400;
-
 interface Props {
   onCapture: (dataUrl: string) => void;
   onClose: () => void;
@@ -12,9 +10,7 @@ interface Props {
 }
 
 export default function CameraCapture({
-  onCapture,
-  onClose,
-  facingMode = "environment",
+  onCapture, onClose, facingMode = "environment",
 }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -34,8 +30,8 @@ export default function CameraCapture({
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode: { ideal: facingMode },
-            width: { ideal: 1920 },
-            height: { ideal: 1080 },
+            width: { ideal: 3840 },   // pedimos lo mejor que tenga la cam
+            height: { ideal: 2160 },
           },
           audio: false,
         });
@@ -71,20 +67,15 @@ export default function CameraCapture({
   function handleShoot() {
     if (!videoRef.current || !canvasRef.current) return;
     const video = videoRef.current;
-
-    const longSide = Math.max(video.videoWidth, video.videoHeight);
-    const scale = longSide > TARGET_LONG_SIDE ? TARGET_LONG_SIDE / longSide : 1;
-    const w = Math.round(video.videoWidth * scale);
-    const h = Math.round(video.videoHeight * scale);
-
     const canvas = canvasRef.current;
-    canvas.width = w;
-    canvas.height = h;
+    // Capturar a la resolución nativa del video (sin redimensionar acá)
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.drawImage(video, 0, 0, w, h);
-
-    const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // Calidad alta (DocSideUploader luego produce HD final)
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.95);
     setPreviewUrl(dataUrl);
   }
 

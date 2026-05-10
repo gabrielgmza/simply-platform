@@ -2,21 +2,13 @@
 
 import { useRef, useState } from "react";
 import {
-  Camera,
-  Upload,
-  CheckCircle2,
-  AlertCircle,
-  Loader2,
-  RotateCcw,
-  ScanBarcode,
+  Camera, Upload, CheckCircle2, AlertCircle, Loader2, RotateCcw, ScanBarcode,
 } from "lucide-react";
 import CameraCapture from "./CameraCapture";
 import { tryReadPdf417 } from "@/lib/pdf417-reader";
 
-const MAX_PAYLOAD_BYTES = 3.5 * 1024 * 1024;
-const TARGET_LONG_SIDE = 1400;
-const INITIAL_QUALITY = 0.78;
-const MIN_QUALITY = 0.5;
+const TARGET_LONG_SIDE_HD = 2400;
+const QUALITY_HD = 0.92;
 const MAX_INPUT_BYTES = 25 * 1024 * 1024;
 
 export interface DniExtractedData {
@@ -37,6 +29,7 @@ export interface DniSideUploadResult {
   extracted: DniExtractedData;
   warnings?: string[];
   crossCheck: { ok: boolean; message: string };
+  sizeBytes?: number;
 }
 
 interface Props {
@@ -53,11 +46,7 @@ function isMobile(): boolean {
 }
 
 export default function DocSideUploader({
-  side,
-  title,
-  hint,
-  onUploaded,
-  customerId,
+  side, title, hint, onUploaded, customerId,
 }: Props) {
   const cameraRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -97,27 +86,21 @@ export default function DocSideUploader({
 
   async function processAndUpload(rawDataUrl: string) {
     setUsedPdf417(false);
+    setPreview(rawDataUrl);
+    setLoading(true);
 
-    // 1. Intentar PDF417 (especialmente útil en el dorso)
     let pdf417Text: string | null = null;
     if (side === "back") {
-      setPreview(rawDataUrl);
-      setLoading(true);
       setLoadingMsg("Buscando código de barras…");
       try {
         pdf417Text = await tryReadPdf417(rawDataUrl);
-        if (pdf417Text) {
-          setUsedPdf417(true);
-        }
-      } catch {
-        // ignoramos, seguimos con OCR
-      }
+        if (pdf417Text) setUsedPdf417(true);
+      } catch {}
     }
 
-    // 2. Comprimir + enhance para enviar al backend
-    let processed: { dataUrl: string };
+    let hdBlob: Blob;
     try {
-      processed = await compressAndEnhance(rawDataUrl);
+      hdBlob = await produceHdJpeg(rawDataUrl);
     } catch (e: any) {
       setError(e.message || "No pudimos procesar la imagen");
       setLoading(false);
@@ -125,32 +108,40 @@ export default function DocSideUploader({
       return;
     }
 
-    setPreview(processed.dataUrl);
-    setLoading(true);
-    setLoadingMsg(pdf417Text ? "Verificando código de barras…" : "Leyendo documento…");
+    setPreview(URL.createObjectURL(hdBlob));
 
     try {
-      const base64 = processed.dataUrl.replace(/^data:image\/\w+;base64,/, "");
-      const res = await fetch("/api/auth/upload-dni", {
+      setLoadingMsg("Subiendo documento…");
+      const kind = side === "front" ? "dni_front" : "dni_back";
+      const signRes = await fetch("/api/auth/signed-upload-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ customerId, kind, mimeType: "image/jpeg" }),
+      });
+      const signData = await signRes.json();
+      if (!signRes.ok) throw new Error(signData.message || "No pudimos obtener URL de subida");
+
+      const putRes = await fetch(signData.uploadUrl, {
+        method: "PUT",
+        headers: { "Content-Type": "image/jpeg" },
+        body: hdBlob,
+      });
+      if (!putRes.ok) throw new Error(`Error subiendo a GCS: ${putRes.status}`);
+
+      setLoadingMsg(pdf417Text ? "Verificando código de barras…" : "Leyendo documento…");
+      const procRes = await fetch("/api/auth/process-dni", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           customerId,
           side,
-          imageBase64: base64,
+          gcsPath: signData.gcsPath,
           mimeType: "image/jpeg",
           pdf417: pdf417Text || undefined,
         }),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        if (res.status === 413) {
-          throw new Error(
-            "Foto demasiado pesada. Probá con la cámara o una imagen más liviana.",
-          );
-        }
-        throw new Error(data.message || "Error procesando documento");
-      }
+      const data = await procRes.json();
+      if (!procRes.ok) throw new Error(data.message || "Error procesando documento");
 
       const num = data.extracted?.numero || data.extracted?.dni;
       if (!num) {
@@ -160,7 +151,6 @@ export default function DocSideUploader({
         setPreview(null);
         return;
       }
-
       setResult(data);
       onUploaded(data);
     } catch (e: any) {
@@ -234,18 +224,14 @@ export default function DocSideUploader({
             {(result.extracted.numero || result.extracted.dni) && (
               <div className="flex justify-between">
                 <span className="text-white/50">N° doc</span>
-                <span className="font-mono">
-                  {result.extracted.numero || result.extracted.dni}
-                </span>
+                <span className="font-mono">{result.extracted.numero || result.extracted.dni}</span>
               </div>
             )}
             {(result.extracted.apellido || result.extracted.nombre) && (
               <div className="flex justify-between">
                 <span className="text-white/50">Nombre</span>
                 <span>
-                  {[result.extracted.nombre, result.extracted.apellido]
-                    .filter(Boolean)
-                    .join(" ")}
+                  {[result.extracted.nombre, result.extracted.apellido].filter(Boolean).join(" ")}
                 </span>
               </div>
             )}
@@ -265,6 +251,12 @@ export default function DocSideUploader({
               <div className="flex justify-between">
                 <span className="text-white/50">CUIL</span>
                 <span className="font-mono">{result.extracted.cuil}</span>
+              </div>
+            )}
+            {result.sizeBytes && (
+              <div className="flex justify-between text-white/30 pt-1 border-t border-white/5 mt-1">
+                <span>Archivo</span>
+                <span>{(result.sizeBytes / 1024).toFixed(0)} KB</span>
               </div>
             )}
             {!result.crossCheck.ok && (
@@ -347,11 +339,10 @@ function fileToDataUrl(file: File): Promise<string> {
   });
 }
 
-async function compressAndEnhance(dataUrl: string): Promise<{ dataUrl: string }> {
+async function produceHdJpeg(dataUrl: string): Promise<Blob> {
   const img = await loadImage(dataUrl);
-
   const longSide = Math.max(img.width, img.height);
-  const scale = longSide > TARGET_LONG_SIDE ? TARGET_LONG_SIDE / longSide : 1;
+  const scale = longSide > TARGET_LONG_SIDE_HD ? TARGET_LONG_SIDE_HD / longSide : 1;
   const w = Math.round(img.width * scale);
   const h = Math.round(img.height * scale);
 
@@ -360,38 +351,15 @@ async function compressAndEnhance(dataUrl: string): Promise<{ dataUrl: string }>
   canvas.height = h;
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Tu navegador no soporta canvas");
-
   ctx.drawImage(img, 0, 0, w, h);
 
-  try {
-    const imgData = ctx.getImageData(0, 0, w, h);
-    const data = imgData.data;
-    const contrast = 1.15;
-    const intercept = 128 * (1 - contrast);
-    for (let i = 0; i < data.length; i += 4) {
-      data[i] = clamp255(data[i] * contrast + intercept);
-      data[i + 1] = clamp255(data[i + 1] * contrast + intercept);
-      data[i + 2] = clamp255(data[i + 2] * contrast + intercept);
-    }
-    ctx.putImageData(imgData, 0, 0);
-  } catch {
-    /* noop */
-  }
-
-  let quality = INITIAL_QUALITY;
-  let out = canvas.toDataURL("image/jpeg", quality);
-  while (estimateBase64Bytes(out) > MAX_PAYLOAD_BYTES && quality > MIN_QUALITY) {
-    quality -= 0.08;
-    out = canvas.toDataURL("image/jpeg", quality);
-  }
-
-  if (estimateBase64Bytes(out) > MAX_PAYLOAD_BYTES) {
-    throw new Error(
-      "No pudimos reducir lo suficiente la imagen. Sacá una con menor resolución.",
+  return new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => blob ? resolve(blob) : reject(new Error("No pudimos generar el archivo final")),
+      "image/jpeg",
+      QUALITY_HD,
     );
-  }
-
-  return { dataUrl: out };
+  });
 }
 
 function loadImage(src: string): Promise<HTMLImageElement> {
@@ -401,14 +369,4 @@ function loadImage(src: string): Promise<HTMLImageElement> {
     i.onerror = () => reject(new Error("Imagen inválida"));
     i.src = src;
   });
-}
-
-function clamp255(v: number): number {
-  return v < 0 ? 0 : v > 255 ? 255 : v;
-}
-
-function estimateBase64Bytes(dataUrl: string): number {
-  const commaIdx = dataUrl.indexOf(",");
-  const b64Len = dataUrl.length - (commaIdx + 1);
-  return Math.floor((b64Len * 3) / 4);
 }
