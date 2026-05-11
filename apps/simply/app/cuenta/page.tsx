@@ -8,6 +8,7 @@ import { User, BookOpen, Settings, LogOut, ShieldCheck, Mail, Phone, IdCard } fr
 import { Button, Card, CardElevated, useSession } from "@simply/ui";
 import { clearSession } from "@simply/ui";
 import LibretaTab from "./LibretaTab";
+import SecuritySettingsTab from "./SecuritySettingsTab";
 
 type Tab = "perfil" | "libreta" | "settings";
 
@@ -89,7 +90,12 @@ function CuentaContent() {
       {/* Content */}
       {tab === "perfil" && <PerfilTab session={session} />}
       {tab === "libreta" && <LibretaTab customerId={session.customerId} />}
-      {tab === "settings" && <SettingsTab onLogout={handleLogout} />}
+      {tab === "settings" && (
+        <div className="space-y-6">
+          <SecuritySettingsTab customerId={session.customerId} />
+          <SettingsTab onLogout={handleLogout} />
+        </div>
+      )}
     </div>
   );
 }
