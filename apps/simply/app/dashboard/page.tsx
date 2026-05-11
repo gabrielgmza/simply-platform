@@ -7,6 +7,7 @@ import QuickActions from "./QuickActions";
 import FeaturedRecommendation from "./FeaturedRecommendation";
 import RecentActivity from "./RecentActivity";
 import ActiveProducts from "./ActiveProducts";
+import TierProgressCard from "./TierProgress";
 
 interface Session {
   customerId: string;
@@ -45,6 +46,7 @@ export default function DashboardPage() {
       <FeaturedRecommendation customerId={session.customerId} />
       <ActiveProducts customerId={session.customerId} />
       <RecentActivity customerId={session.customerId} />
+      <TierProgressCard customerId={session.customerId} />
     </div>
   );
 }
