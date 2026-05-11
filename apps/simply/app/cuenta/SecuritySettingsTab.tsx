@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ShieldCheck, Trash2, Smartphone, AlertCircle, Loader2 } from "lucide-react";
 import { Button, Card } from "@simply/ui";
 import { useStepUp } from "@/lib/use-step-up";
+import TotpSection from "./TotpSection";
 import {
   getSecuritySettings,
   updateSecuritySettings,
@@ -193,6 +194,8 @@ export default function SecuritySettingsTab({ customerId, email }: { customerId:
           </Button>
         </div>
       </Card>
+
+      <TotpSection customerId={customerId} />
 
       {/* ─── Trusted devices ─── */}
       <Card>

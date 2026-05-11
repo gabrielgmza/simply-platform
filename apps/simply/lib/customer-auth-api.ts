@@ -73,3 +73,57 @@ export async function revokeTrustedDevice(
   );
   return handle<{ ok: true }>(res);
 }
+
+
+// ─── TOTP (Google Authenticator) ───
+
+export interface TotpStatus {
+  enabled: boolean;
+  backupCodesRemaining: number;
+}
+
+export interface TotpSetupResult {
+  otpauthUri: string;
+  qrDataUrl: string;
+  secretBase32: string;
+}
+
+export interface TotpEnableResult {
+  ok: true;
+  backupCodes: string[];
+}
+
+export async function getTotpStatus(customerId: string): Promise<TotpStatus> {
+  const res = await fetch(`${BASE}/totp/status?customerId=${encodeURIComponent(customerId)}`);
+  return handle<TotpStatus>(res);
+}
+
+export async function setupTotp(customerId: string): Promise<TotpSetupResult> {
+  const res = await fetch(`${BASE}/totp/setup`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ customerId }),
+  });
+  return handle<TotpSetupResult>(res);
+}
+
+export async function enableTotp(customerId: string, code: string): Promise<TotpEnableResult> {
+  const res = await fetch(`${BASE}/totp/enable`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ customerId, code }),
+  });
+  return handle<TotpEnableResult>(res);
+}
+
+export async function disableTotp(
+  customerId: string,
+  currentPassword: string,
+): Promise<{ ok: true }> {
+  const res = await fetch(`${BASE}/totp/disable`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ customerId, currentPassword }),
+  });
+  return handle<{ ok: true }>(res);
+}
