@@ -6,6 +6,8 @@ import { ArrowRight, User, Wallet, AlertTriangle, Copy, Check, Info } from "luci
 import { Button, CardElevated, FormField, Input, Select, useSession } from "@simply/ui";
 import { useKycGate } from "@/lib/hooks/useKycGate";
 import { validateAddress } from "@/lib/assets";
+import SavedSelector from "@/components/SavedSelector";
+import type { SavedWallet, SavedBankAccount } from "@/lib/customer-book-api";
 
 export default function DestinatarioPage() {
   const router = useRouter();
@@ -181,6 +183,30 @@ export default function DestinatarioPage() {
           {/* ─── Form bancario (fiat→fiat o cripto→fiat) ─── */}
           {needsBankForm && (
             <>
+              {session && destAsset && (
+                <SavedSelector
+                  kind="bank"
+                  customerId={session.customerId}
+                  filter={{ country: destAsset.country, currency: destAsset.currency }}
+                  onPick={(b: SavedBankAccount) => {
+                    setBankForm({
+                      firstName: b.beneficiaryFirstName,
+                      lastName: b.beneficiaryLastName,
+                      documentType: b.documentType,
+                      documentNumber: b.documentNumber,
+                      bankCode: b.bankCode || "",
+                      accountType: b.accountType,
+                      accountNumber: b.accountNumber,
+                      routingNumber: b.routingNumber || "",
+                      email: b.beneficiaryEmail || "",
+                      phone: b.beneficiaryPhone || "",
+                      purpose: "EPTOUR",
+                      purposeComment: "",
+                    });
+                  }}
+                />
+              )}
+
               <div className="grid grid-cols-2 gap-3">
                 <FormField label="Nombre">
                   <Input
@@ -288,6 +314,22 @@ export default function DestinatarioPage() {
           {/* ─── Form cripto (fiat→cripto) ─── */}
           {needsCryptoAddressForm && (
             <>
+              {session && destAsset && (
+                <SavedSelector
+                  kind="wallet"
+                  customerId={session.customerId}
+                  filter={{ symbol: destAsset.symbol, network: destAsset.network }}
+                  onPick={(w: SavedWallet) => {
+                    setCryptoForm({
+                      address: w.address,
+                      label: w.label,
+                      confirmed: false,
+                    });
+                    setCryptoError(null);
+                  }}
+                />
+              )}
+
               <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 flex gap-3">
                 <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-amber-100/90 space-y-1">
