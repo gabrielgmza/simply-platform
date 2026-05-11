@@ -7,6 +7,7 @@ import { Button } from "@simply/ui";
 interface StepUpModalProps {
   email: string;
   operationLabel: string; // ej: "Revocar dispositivo"
+  method: "totp" | "email_otp";
   onVerify: (code: string) => Promise<void>; // throw si el código es inválido
   onCancel: () => void;
   onResend: () => Promise<void>;
@@ -15,6 +16,7 @@ interface StepUpModalProps {
 export default function StepUpModal({
   email,
   operationLabel,
+  method,
   onVerify,
   onCancel,
   onResend,
@@ -36,8 +38,16 @@ export default function StepUpModal({
   }, [resendCooldown]);
 
   async function handleSubmit() {
-    if (code.length !== 6) {
-      setError("Ingresá el código de 6 dígitos");
+    const minLen = method === "totp" ? 6 : 6;
+    const valid = method === "totp"
+      ? (/^\d{6}$/.test(code) || /^[A-Z0-9]{4}-?[A-Z0-9]{4}-?[A-Z0-9]{4}$/.test(code))
+      : /^\d{6}$/.test(code);
+    if (!valid) {
+      setError(
+        method === "totp"
+          ? "Ingresá un código de 6 dígitos o un código de respaldo"
+          : "Ingresá el código de 6 dígitos",
+      );
       return;
     }
     setLoading(true);
@@ -80,26 +90,35 @@ export default function StepUpModal({
         <div className="space-y-2">
           <p className="text-sm text-white/80">
             Para continuar con <span className="font-medium text-white">{operationLabel}</span>,
-            ingresá el código que enviamos a:
+            {method === "totp"
+              ? " ingresá el código de tu app autenticadora (o un código de respaldo)."
+              : " ingresá el código que enviamos a:"}
           </p>
-          <p className="text-sm text-white/60">{masked}</p>
+          {method === "email_otp" && (
+            <p className="text-sm text-white/60">{masked}</p>
+          )}
         </div>
 
         <div>
           <input
             ref={inputRef}
             type="text"
-            inputMode="numeric"
-            maxLength={6}
+            inputMode={method === "totp" ? "text" : "numeric"}
+            maxLength={method === "totp" ? 14 : 6}
             value={code}
             onChange={(e) => {
-              setCode(e.target.value.replace(/\D/g, "").slice(0, 6));
+              if (method === "totp") {
+                // Aceptar dígitos o backup code (alfanum + guiones)
+                setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 14));
+              } else {
+                setCode(e.target.value.replace(/\D/g, "").slice(0, 6));
+              }
               setError(null);
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") handleSubmit();
             }}
-            placeholder="123456"
+            placeholder={method === "totp" ? "123456" : "123456"}
             className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-center text-2xl tracking-widest font-mono"
             disabled={loading}
           />
@@ -123,15 +142,17 @@ export default function StepUpModal({
             )}
           </Button>
 
-          <button
-            onClick={handleResend}
-            disabled={resendCooldown > 0 || loading}
-            className="text-sm text-white/60 hover:text-white disabled:text-white/30 disabled:cursor-not-allowed py-2"
-          >
-            {resendCooldown > 0
-              ? `Reenviar código en ${resendCooldown}s`
-              : "Reenviar código"}
-          </button>
+          {method === "email_otp" && (
+            <button
+              onClick={handleResend}
+              disabled={resendCooldown > 0 || loading}
+              className="text-sm text-white/60 hover:text-white disabled:text-white/30 disabled:cursor-not-allowed py-2"
+            >
+              {resendCooldown > 0
+                ? `Reenviar código en ${resendCooldown}s`
+                : "Reenviar código"}
+            </button>
+          )}
         </div>
       </div>
     </div>

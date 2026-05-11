@@ -11,6 +11,7 @@ interface StepUpRequest {
 
 interface PendingState extends StepUpRequest {
   resolve: (ok: boolean) => void;
+  method: "totp" | "email_otp";
 }
 
 /**
@@ -55,20 +56,36 @@ export function useStepUp(customerId: string, email: string) {
           return true; // no requiere OTP
         }
 
-        // 2. Disparar envío de OTP
-        const otpRes = await fetch("/api/auth/send-otp", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        });
-        if (!otpRes.ok) {
-          const err = await otpRes.json().catch(() => ({}));
-          throw new Error(err.message || "No pudimos enviar el código");
+        // 2. Detectar método: ¿el customer tiene TOTP activado?
+        let method: "totp" | "email_otp" = "email_otp";
+        try {
+          const statusRes = await fetch(
+            `/api/customer-auth/totp/status?customerId=${encodeURIComponent(customerId)}`,
+          );
+          if (statusRes.ok) {
+            const statusData = await statusRes.json();
+            if (statusData.enabled) method = "totp";
+          }
+        } catch {
+          // Si falla la consulta, fallback a email
         }
 
-        // 3. Abrir modal y esperar resolución
+        // 3. Si email_otp: enviar el código. Si totp: el usuario lo lee de su app.
+        if (method === "email_otp") {
+          const otpRes = await fetch("/api/auth/send-otp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          });
+          if (!otpRes.ok) {
+            const err = await otpRes.json().catch(() => ({}));
+            throw new Error(err.message || "No pudimos enviar el código");
+          }
+        }
+
+        // 4. Abrir modal y esperar resolución
         return await new Promise<boolean>((resolve) => {
-          setPending({ ...req, resolve });
+          setPending({ ...req, resolve, method });
         });
       } catch (e) {
         console.error("step-up request failed", e);
@@ -79,17 +96,30 @@ export function useStepUp(customerId: string, email: string) {
   );
 
   async function handleVerify(code: string) {
-    const res = await fetch("/api/auth/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, code }),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.message || "Código incorrecto");
+    if (!pending) return;
+    const trimmed = code.trim();
+    if (pending.method === "totp") {
+      const res = await fetch("/api/customer-auth/totp/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ customerId, code: trimmed }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.message || "Código incorrecto");
+      }
+    } else {
+      const res = await fetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code: trimmed }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Código incorrecto");
+      }
     }
-    // OK
-    pending?.resolve(true);
+    pending.resolve(true);
     setPending(null);
   }
 
@@ -116,6 +146,7 @@ export function useStepUp(customerId: string, email: string) {
       <StepUpModal
         email={email}
         operationLabel={pending.operationLabel}
+        method={pending.method}
         onVerify={handleVerify}
         onCancel={handleCancel}
         onResend={handleResend}
