@@ -44,6 +44,7 @@ export default function LoginPage() {
   const [code, setCode] = useState("");
   const [rememberDevice, setRememberDevice] = useState(true);
   const [verifiedCustomer, setVerifiedCustomer] = useState<any>(null);
+  const [twoFactorMethod, setTwoFactorMethod] = useState<"totp" | "email_otp">("email_otp");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
@@ -112,21 +113,29 @@ export default function LoginPage() {
         return;
       }
 
-      // Caso 2: pedir OTP como 2do factor
-      // Disparar envío de OTP
-      const otpRes = await fetch("/api/auth/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim().toLowerCase() }),
-      });
-      if (!otpRes.ok) {
-        const otpErr = await otpRes.json();
-        throw new Error(otpErr.message || "No pudimos enviar el código");
+      // Caso 2: pedir 2do factor (TOTP o email OTP)
+      const method: "totp" | "email_otp" = data.twoFactorMethod || "email_otp";
+      setTwoFactorMethod(method);
+
+      if (method === "email_otp") {
+        // Disparar envío de OTP por email
+        const otpRes = await fetch("/api/auth/send-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email.trim().toLowerCase() }),
+        });
+        if (!otpRes.ok) {
+          const otpErr = await otpRes.json();
+          throw new Error(otpErr.message || "No pudimos enviar el código");
+        }
+        setInfo(`Te enviamos un código a ${email} para confirmar tu identidad.`);
+        setResendCooldown(60);
+      } else {
+        // TOTP: no enviamos nada, el usuario lee el código de su app
+        setInfo("Ingresá el código de 6 dígitos de tu app autenticadora (o un código de respaldo).");
       }
 
       setStep("otp");
-      setInfo(`Te enviamos un código a ${email} para confirmar tu identidad.`);
-      setResendCooldown(60);
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -140,15 +149,30 @@ export default function LoginPage() {
     if (!verifiedCustomer) return;
     setLoading(true);
     try {
-      // 1. Verificar OTP via email-otp
-      const otpRes = await fetch("/api/auth/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim().toLowerCase(), code }),
-      });
-      const otpData = await otpRes.json();
-      if (!otpRes.ok) {
-        throw new Error(otpData.message || "Código incorrecto");
+      // 1. Verificar 2do factor (TOTP o email OTP)
+      if (twoFactorMethod === "totp") {
+        const totpRes = await fetch("/api/customer-auth/totp/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            customerId: verifiedCustomer.id,
+            code: code.trim(),
+          }),
+        });
+        const totpData = await totpRes.json();
+        if (!totpRes.ok) {
+          throw new Error(totpData.message || "Código incorrecto");
+        }
+      } else {
+        const otpRes = await fetch("/api/auth/verify-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email.trim().toLowerCase(), code }),
+        });
+        const otpData = await otpRes.json();
+        if (!otpRes.ok) {
+          throw new Error(otpData.message || "Código incorrecto");
+        }
       }
 
       // 2. Completar login y obtener trust token si rememberDevice
