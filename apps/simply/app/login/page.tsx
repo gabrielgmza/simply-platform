@@ -78,7 +78,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const trustToken = getTrustToken();
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch("/api/customer-auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -152,7 +152,7 @@ export default function LoginPage() {
       }
 
       // 2. Completar login y obtener trust token si rememberDevice
-      const compRes = await fetch("/api/auth/login/complete-2fa", {
+      const compRes = await fetch("/api/customer-auth/complete-2fa", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
