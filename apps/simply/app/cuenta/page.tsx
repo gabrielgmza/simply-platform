@@ -4,13 +4,14 @@ export const dynamic = "force-dynamic";
 
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { User, BookOpen, Settings, LogOut, ShieldCheck, Mail, Phone, IdCard } from "lucide-react";
+import { User, BookOpen, Settings, LogOut, ShieldCheck, Mail, Phone, IdCard, Receipt } from "lucide-react";
 import { Button, Card, CardElevated, useSession } from "@simply/ui";
 import { clearSession } from "@simply/ui";
 import LibretaTab from "./LibretaTab";
+import OperacionesTab from "./OperacionesTab";
 import SecuritySettingsTab from "./SecuritySettingsTab";
 
-type Tab = "perfil" | "libreta" | "settings";
+type Tab = "perfil" | "libreta" | "operaciones" | "settings";
 
 function CuentaContent() {
   const router = useRouter();
@@ -82,6 +83,9 @@ function CuentaContent() {
         <TabButton active={tab === "libreta"} onClick={() => handleTabChange("libreta")} icon={<BookOpen className="w-4 h-4" />}>
           Libreta
         </TabButton>
+        <TabButton active={tab === "operaciones"} onClick={() => handleTabChange("operaciones")} icon={<Receipt className="w-4 h-4" />}>
+          Operaciones
+        </TabButton>
         <TabButton active={tab === "settings"} onClick={() => handleTabChange("settings")} icon={<Settings className="w-4 h-4" />}>
           Ajustes
         </TabButton>
@@ -90,6 +94,7 @@ function CuentaContent() {
       {/* Content */}
       {tab === "perfil" && <PerfilTab session={session} />}
       {tab === "libreta" && <LibretaTab customerId={session.customerId} />}
+      {tab === "operaciones" && <OperacionesTab customerId={session.customerId} />}
       {tab === "settings" && (
         <div className="space-y-6">
           <SecuritySettingsTab customerId={session.customerId} email={session.email} />
