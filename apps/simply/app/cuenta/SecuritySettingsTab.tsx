@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ShieldCheck, Trash2, Smartphone, AlertCircle, Loader2 } from "lucide-react";
 import { Button, Card } from "@simply/ui";
+import { useStepUp } from "@/lib/use-step-up";
 import {
   getSecuritySettings,
   updateSecuritySettings,
@@ -12,13 +13,15 @@ import {
   type TrustedDevice,
 } from "@/lib/customer-auth-api";
 
-export default function SecuritySettingsTab({ customerId }: { customerId: string }) {
+export default function SecuritySettingsTab({ customerId, email }: { customerId: string; email: string }) {
   const [settings, setSettings] = useState<SecuritySettings | null>(null);
   const [devices, setDevices] = useState<TrustedDevice[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const { request: stepUp, modal: stepUpModal } = useStepUp(customerId, email);
 
   // Inputs editables (separados del settings para detectar dirty)
   const [alwaysOtp, setAlwaysOtp] = useState(false);
@@ -78,6 +81,12 @@ export default function SecuritySettingsTab({ customerId }: { customerId: string
     if (!confirm("¿Revocar este dispositivo? Tendrá que volver a iniciar sesión con código.")) {
       return;
     }
+    // Step-up auth: pedir OTP fresco antes de revocar
+    const confirmed = await stepUp({
+      operationType: "revoke_device",
+      operationLabel: "Revocar dispositivo",
+    });
+    if (!confirmed) return;
     try {
       await revokeTrustedDevice(customerId, deviceId);
       setDevices((prev) => prev.filter((d) => d.id !== deviceId));
@@ -232,6 +241,8 @@ export default function SecuritySettingsTab({ customerId }: { customerId: string
           )}
         </div>
       </Card>
+
+      {stepUpModal()}
     </div>
   );
 }

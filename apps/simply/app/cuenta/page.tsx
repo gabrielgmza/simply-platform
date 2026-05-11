@@ -92,7 +92,7 @@ function CuentaContent() {
       {tab === "libreta" && <LibretaTab customerId={session.customerId} />}
       {tab === "settings" && (
         <div className="space-y-6">
-          <SecuritySettingsTab customerId={session.customerId} />
+          <SecuritySettingsTab customerId={session.customerId} email={session.email} />
           <SettingsTab onLogout={handleLogout} />
         </div>
       )}
