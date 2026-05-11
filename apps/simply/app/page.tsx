@@ -39,6 +39,15 @@ export default function Home() {
   const router = useRouter();
   const { session, loaded } = useSession();
 
+  // Si está logueado y verificado, mandar al dashboard
+  useEffect(() => {
+    if (!loaded) return;
+    const status = (session as any)?.profileStatus;
+    if (status === "VERIFIED_BASIC" || status === "VERIFIED_FULL") {
+      router.push("/dashboard");
+    }
+  }, [loaded, session, router]);
+
   const [amount, setAmount] = useState<string>("100");
   const [source, setSource] = useState<AssetMeta>(DEFAULT_SOURCE);
   const [destination, setDestination] = useState<AssetMeta>(DEFAULT_DEST);

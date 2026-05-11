@@ -19,8 +19,8 @@ const REDIRECT_AFTER_LOGIN: Record<string, string> = {
   LEAD: "/registro/datos",
   GUEST: "/registro/datos",
   REGISTERED: "/registro/dni",
-  VERIFIED_BASIC: "/",
-  VERIFIED_FULL: "/",
+  VERIFIED_BASIC: "/dashboard",
+  VERIFIED_FULL: "/dashboard",
 };
 
 function getTrustToken(): string | undefined {
