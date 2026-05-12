@@ -72,7 +72,7 @@ export default function RecentActivity({ customerId }: { customerId: string }) {
       ) : ops.length === 0 ? (
         <Card>
           <div className="p-6 text-center text-xs text-white/40">
-            Tus operaciones van a aparecer acá.
+            Cuando hagas tu primera operación, vas a verla acá.
           </div>
         </Card>
       ) : (

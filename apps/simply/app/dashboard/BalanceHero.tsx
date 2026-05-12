@@ -52,7 +52,7 @@ export default function BalanceHero({ customerId, firstName }: { customerId: str
       </div>
       {!data?.linked && !loading && (
         <div className="mt-3 text-xs text-white/50">
-          Aún no creaste tu cuenta Simply. Verificá tu identidad para activarla.
+          Cargá saldo para empezar a operar.
         </div>
       )}
     </div>
