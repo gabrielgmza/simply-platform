@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import NotificationBell from "./NotificationBell";
 import { getBalances, type BalancesResponse } from "@/lib/balances-api";
 
 export default function BalanceHero({ customerId, firstName }: { customerId: string; firstName?: string }) {
@@ -31,8 +32,11 @@ export default function BalanceHero({ customerId, firstName }: { customerId: str
 
   return (
     <div className="bg-gradient-to-br from-blue-600/30 via-violet-600/20 to-emerald-600/20 ring-1 ring-white/10 rounded-3xl p-6">
-      <div className="text-sm text-white/70">
-        Hola{firstName ? `, ${firstName}` : ""} 👋
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-white/70">
+          Hola{firstName ? `, ${firstName}` : ""} 👋
+        </div>
+        <NotificationBell customerId={customerId} />
       </div>
       <div className="text-xs text-white/50 mt-3 uppercase tracking-wide">Saldo total</div>
       <div className="flex items-baseline gap-2 mt-1">

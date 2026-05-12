@@ -12,6 +12,7 @@ import LibretaTab from "./LibretaTab";
 import OperacionesTab from "./OperacionesTab";
 import ParaVosTab from "./ParaVosTab";
 import SecuritySettingsTab from "./SecuritySettingsTab";
+import NotificationPrefsTab from "./NotificationPrefsTab";
 
 type Tab = "perfil" | "libreta" | "operaciones" | "para-vos" | "settings";
 
@@ -104,6 +105,7 @@ function CuentaContent() {
       {tab === "settings" && (
         <div className="space-y-6">
           <SecuritySettingsTab customerId={session.customerId} email={session.email} />
+          <NotificationPrefsTab customerId={session.customerId} />
           <SettingsTab onLogout={handleLogout} />
         </div>
       )}
