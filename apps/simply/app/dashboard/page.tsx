@@ -9,6 +9,7 @@ import RecentActivity from "./RecentActivity";
 import ActiveProducts from "./ActiveProducts";
 import TierProgressCard from "./TierProgress";
 import WelcomeCard from "./WelcomeCard";
+import FxQuotes from "./FxQuotes";
 import { getBalances } from "@/lib/balances-api";
 import { listOperations } from "@/lib/operations-api";
 
@@ -60,6 +61,7 @@ export default function DashboardPage() {
     <div className="space-y-5 animate-page-in">
       <BalanceHero customerId={session.customerId} firstName={session.firstName || undefined} />
       <QuickActions />
+      <FxQuotes />
       {isNew && (
         <WelcomeCard
           profileStatus={session.profileStatus || "REGISTERED"}
