@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { User, BookOpen, Settings, LogOut, ShieldCheck, Mail, Phone, IdCard, Receipt, Sparkles } from "lucide-react";
 import { Button, Card, CardElevated, useSession } from "@simply/ui";
 import { clearSession } from "@simply/ui";
+import PerfilTab from "./PerfilTab";
 import LibretaTab from "./LibretaTab";
 import OperacionesTab from "./OperacionesTab";
 import ParaVosTab from "./ParaVosTab";
@@ -158,112 +159,25 @@ function KycBadge({ status }: { status?: string }) {
   );
 }
 
-function PerfilTab({ session }: { session: any }) {
-  return (
-    <div className="space-y-3">
-      <Card className="space-y-3">
-        <div className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-          Datos personales
-        </div>
-
-        <DataRow icon={<Mail className="w-4 h-4" />} label="Email" value={session.email} />
-
-        {(session.firstName || session.lastName) && (
-          <DataRow
-            icon={<User className="w-4 h-4" />}
-            label="Nombre"
-            value={`${session.firstName || ""} ${session.lastName || ""}`.trim()}
-          />
-        )}
-
-        {session.phone && (
-          <DataRow
-            icon={<Phone className="w-4 h-4" />}
-            label="Teléfono"
-            value={`${session.phoneCountryCode || ""} ${session.phone}`.trim()}
-          />
-        )}
-
-        {session.documentNumber && (
-          <DataRow
-            icon={<IdCard className="w-4 h-4" />}
-            label="Documento"
-            value={`${session.documentType || ""} ${session.documentNumber}`.trim()}
-          />
-        )}
-      </Card>
-
-      {/* Estado KYC */}
-      <Card className="space-y-2">
-        <div className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-          Verificación de identidad
-        </div>
-        {session.profileStatus === "VERIFIED_FULL" || session.profileStatus === "VERIFIED_BASIC" ? (
-          <div className="flex items-center gap-2 text-sm text-green-300">
-            <ShieldCheck className="w-5 h-5" />
-            Tu identidad está verificada
-          </div>
-        ) : (
-          <>
-            <p className="text-sm text-white/70">
-              Verificá tu identidad para acceder a todos los productos PaySur.
-            </p>
-            <a href="/registro" className="inline-block">
-              <Button variant="secondary" fullWidth={false}>
-                Completar verificación
-              </Button>
-            </a>
-          </>
-        )}
-      </Card>
-    </div>
-  );
-}
-
-function DataRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
-  return (
-    <div className="flex items-center gap-3 py-2 border-b border-white/5 last:border-0">
-      <div className="text-zinc-500">{icon}</div>
-      <div className="flex-1 min-w-0">
-        <div className="text-[10px] uppercase tracking-wider text-zinc-500">{label}</div>
-        <div className="text-sm text-white truncate">{value}</div>
-      </div>
-    </div>
-  );
-}
-
 function SettingsTab({ onLogout }: { onLogout: () => void }) {
   return (
-    <div className="space-y-3">
-      <Card className="space-y-3">
-        <div className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-          Seguridad
-        </div>
-        <p className="text-sm text-white/60">
-          Las opciones de password y 2FA estarán disponibles próximamente.
-        </p>
-      </Card>
-
-      <Card className="space-y-3">
+    <Card>
+      <div className="p-4 space-y-2">
         <div className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
           Sesión
         </div>
-        <Button
-          variant="secondary"
-          onClick={onLogout}
-          leftIcon={<LogOut className="w-4 h-4" />}
-        >
+        <Button onClick={onLogout} variant="secondary" className="w-full">
+          <LogOut className="w-4 h-4 mr-2" />
           Cerrar sesión
         </Button>
-      </Card>
-    </div>
+      </div>
+    </Card>
   );
 }
 
-// Wrapper con Suspense (necesario para useSearchParams en Next 15)
-export default function CuentaPage() {
+export default function Page() {
   return (
-    <Suspense fallback={<div className="text-center py-12 text-white/60">Cargando...</div>}>
+    <Suspense fallback={null}>
       <CuentaContent />
     </Suspense>
   );
