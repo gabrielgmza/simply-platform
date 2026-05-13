@@ -76,11 +76,13 @@ export default function RegistroSelfiePage() {
       if (!putRes.ok) throw new Error(`Error subiendo a GCS: ${putRes.status}`);
 
       // 3. Pedir al backend que procese (face-match + liveness)
-      const procRes = await fetch("/api/auth/process-selfie", {
+      // Bypass del proxy Next porque el body con livenessFrames excede 1MB.
+      // CORS ya permite app.gosimply.xyz.
+      const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || "https://simply-backend-888610796336.southamerica-east1.run.app";
+      const procRes = await fetch(`${BACKEND}/api/v1/identity/customers/${customerId}/process-uploaded-selfie`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customerId,
           gcsPath: signData.gcsPath,
           mimeType: "image/jpeg",
           livenessFrames: payload.frames,
