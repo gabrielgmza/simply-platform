@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import NotificationBell from "./NotificationBell";
 import { getBalances, type BalancesResponse } from "@/lib/balances-api";
+import { getTierTheme } from "@/lib/tier-theme";
 
-export default function BalanceHero({ customerId, firstName }: { customerId: string; firstName?: string }) {
+export default function BalanceHero({ customerId, firstName, accountLevel }: { customerId: string; firstName?: string; accountLevel?: string }) {
+  const theme = getTierTheme(accountLevel);
   const [data, setData] = useState<BalancesResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [hidden, setHidden] = useState(false);
@@ -31,7 +33,7 @@ export default function BalanceHero({ customerId, firstName }: { customerId: str
   const totalArs = parseFloat(data?.totalArsEquivalent || "0");
 
   return (
-    <div className="bg-gradient-to-br from-blue-600/30 via-violet-600/20 to-emerald-600/20 ring-1 ring-white/10 rounded-3xl p-6">
+    <div className={`${theme.heroGradient} ${theme.heroRing} rounded-3xl p-6`}>
       <div className="flex items-center justify-between">
         <div className="text-sm text-white/70">
           Hola{firstName ? `, ${firstName}` : ""} 👋
