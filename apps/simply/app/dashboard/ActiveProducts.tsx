@@ -23,7 +23,6 @@ interface ProductCard {
 // 4 features "próximamente"
 const COMING_SOON: Array<{ feature: FeatureKey; label: string; subtitle: string; icon: any; iconColor: string }> = [
   { feature: "cards",       label: "Tarjetas",     subtitle: "Física + virtuales + uso único",   icon: CreditCard, iconColor: "text-pink-300" },
-  { feature: "services",    label: "Servicios",    subtitle: "Pagos, recargas y suscripciones",  icon: Receipt,    iconColor: "text-cyan-300" },
   { feature: "investments", label: "Inversiones",  subtitle: "Hacé rendir tu plata",             icon: TrendingUp, iconColor: "text-violet-300" },
   { feature: "loans",       label: "Préstamos",    subtitle: "Crédito personal flexible",        icon: Banknote,   iconColor: "text-emerald-300" },
 ];
@@ -59,6 +58,13 @@ export default function ActiveProducts({ customerId }: { customerId: string }) {
           icon: Bitcoin, iconColor: "text-amber-400", href: "/crypto",
         });
       }
+
+      // Servicios disponibles para todos
+      cards.push({
+        key: "services", label: "Servicios",
+        subtitle: "Pagar facturas y recargas",
+        icon: Receipt, iconColor: "text-cyan-300", href: "/servicios",
+      });
 
       setActive(cards);
       setWaitlist(new Set(wl));
