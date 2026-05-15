@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AuthLayoutShell from '@/components/layout/AuthLayoutShell';
+import { ToastProvider } from '@/components/toast/Toast';
 import './globals.css';
 
 const inter = Inter({
@@ -42,7 +43,9 @@ export default function RootLayout({
         <div className="relative z-10 min-h-screen flex flex-col">
           <Header />
           <main className="flex-1 pt-24 md:pt-28 px-6 pb-16">
-            <AuthLayoutShell>{children}</AuthLayoutShell>
+            <ToastProvider>
+              <AuthLayoutShell>{children}</AuthLayoutShell>
+            </ToastProvider>
           </main>
           <Footer />
         </div>

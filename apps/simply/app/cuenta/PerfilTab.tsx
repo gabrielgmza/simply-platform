@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useToast } from "@/components/toast/Toast";
 import { Mail, Phone, User, IdCard, ShieldCheck, Camera, Loader2, AlertCircle, Check } from "lucide-react";
 import { Card, Button } from "@simply/ui";
 import { getCustomer, updateCustomer, uploadAvatar, type CustomerProfile } from "@/lib/customer-api";
@@ -11,13 +12,14 @@ export default function PerfilTab({ session }: { session: any }) {
   const [saving, setSaving] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const toast = useToast();
 
   async function load() {
     setLoading(true);
@@ -37,31 +39,14 @@ export default function PerfilTab({ session }: { session: any }) {
 
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [session.customerId]);
 
-  const isDirty =
-    profile !== null &&
-    (firstName !== (profile.firstName || "") ||
-      lastName !== (profile.lastName || "") ||
-      email !== (profile.email || ""));
-
-  async function handleSave() {
+  async function saveFields(opts: { silent?: boolean } = {}) {
+    if (!profile) return;
     setSaving(true);
     setError(null);
-    setSuccess(false);
     try {
-      const emailChanged = profile?.email !== email;
-      if (emailChanged) {
-        const ok = window.confirm(
-          "Vas a cambiar tu email. Vas a tener que confirmar el nuevo email. ¿Continuar?",
-        );
-        if (!ok) {
-          setSaving(false);
-          return;
-        }
-      }
       const updated = await updateCustomer(session.customerId, {
         firstName: firstName || null as any,
         lastName: lastName || null as any,
-        email,
       });
       setProfile(updated);
       // Refrescar simply_session en localStorage
@@ -69,22 +54,36 @@ export default function PerfilTab({ session }: { session: any }) {
         try {
           const raw = localStorage.getItem("simply_session");
           if (raw) {
-            const s = JSON.parse(raw);
-            s.firstName = updated.firstName;
-            s.lastName = updated.lastName;
-            s.email = updated.email;
-            localStorage.setItem("simply_session", JSON.stringify(s));
+            const sess = JSON.parse(raw);
+            sess.firstName = updated.firstName;
+            sess.lastName = updated.lastName;
+            localStorage.setItem("simply_session", JSON.stringify(sess));
           }
         } catch {}
       }
-      setSuccess(true);
-      setTimeout(() => setSuccess(false), 2500);
+      if (!opts.silent) toast.success("Guardado");
     } catch (e: any) {
       setError(e.message || "Error guardando");
+      toast.error(e.message || "Error guardando");
     } finally {
       setSaving(false);
     }
   }
+
+  // Auto-save con debounce de 800ms al modificar nombre/apellido
+  useEffect(() => {
+    if (!profile) return;
+    const dirty = firstName !== (profile.firstName || "") || lastName !== (profile.lastName || "");
+    if (!dirty) return;
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      saveFields();
+    }, 800);
+    return () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [firstName, lastName]);
 
   async function handleAvatarPick(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -99,8 +98,10 @@ export default function PerfilTab({ session }: { session: any }) {
       const url = await uploadAvatar(session.customerId, file);
       const updated = await updateCustomer(session.customerId, { photoUrl: url });
       setProfile(updated);
+      toast.success("Foto actualizada");
     } catch (e: any) {
       setError(e.message || "Error subiendo la foto");
+      toast.error(e.message || "Error subiendo la foto");
     } finally {
       setUploadingAvatar(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -195,13 +196,12 @@ export default function PerfilTab({ session }: { session: any }) {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm"
-              placeholder="email@ejemplo.com"
+              readOnly
+              className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-white/70 text-sm cursor-not-allowed"
             />
-            {profile?.emailVerified === false && (
-              <p className="text-[10px] text-amber-400 mt-1">Email sin verificar</p>
-            )}
+            <p className="text-[10px] text-white/40 mt-1">
+              Para cambiar tu email contactá a soporte (próximamente flow autoservicio).
+            </p>
           </div>
 
           {error && (
@@ -210,16 +210,9 @@ export default function PerfilTab({ session }: { session: any }) {
               <span>{error}</span>
             </div>
           )}
-          {success && (
-            <div className="flex items-center gap-2 text-sm text-emerald-400">
-              <Check className="w-4 h-4" />
-              Cambios guardados
-            </div>
+          {saving && (
+            <div className="text-xs text-white/40">Guardando...</div>
           )}
-
-          <Button onClick={handleSave} disabled={!isDirty || saving} className="w-full">
-            {saving ? "Guardando..." : "Guardar cambios"}
-          </Button>
         </div>
       </Card>
 

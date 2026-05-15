@@ -60,7 +60,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-5 animate-page-in">
       <BalanceHero customerId={session.customerId} firstName={session.firstName || undefined} accountLevel={session.accountLevel} />
-      <QuickActions />
+      <QuickActions customerId={session.customerId} firstName={session.firstName || undefined} />
       <FxQuotes />
       {isNew && (
         <WelcomeCard
