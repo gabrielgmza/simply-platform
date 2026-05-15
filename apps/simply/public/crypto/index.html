@@ -1,0 +1,2515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simply Crypto - Intercambia Cripto y Fiat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: splashFadeOut 500ms ease-out 2.5s forwards;
+    }
+
+    .splash-content {
+      text-align: center;
+      animation: splashScaleIn 800ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .splash-logo {
+      font-size: 80px;
+      margin-bottom: 20px;
+      animation: splashFloat 2s ease-in-out;
+    }
+
+    .splash-text {
+      font-size: 48px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -1px;
+      animation: splashTextFade 1s ease-out 0.3s backwards, splashTextSlide 800ms cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s;
+    }
+
+    .splash-subtitle {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      animation: splashTextFade 1s ease-out 0.6s backwards;
+    }
+
+    @keyframes splashScaleIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes splashFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes splashTextFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes splashTextSlide {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes splashFadeOut {
+      from { opacity: 1; visibility: visible; }
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes slideDown {
+      from { max-height: 0; opacity: 0; }
+      to { max-height: 200px; opacity: 1; }
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status {
+      font-size: 12px;
+      font-weight: 600;
+      color: #10b981;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .main-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .card-container {
+      width: 100%;
+      max-width: 520px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      animation: slideUp 500ms ease-out;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .progress-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px 24px;
+      color: white;
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 6px;
+    }
+
+    .step-dot {
+      flex: 1;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 2px;
+      transition: all 300ms;
+    }
+
+    .step-dot.active {
+      background: white;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+    }
+
+    .step-dot.completed {
+      background: white;
+    }
+
+    .progress-label {
+      font-size: 11px;
+      opacity: 0.9;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-content {
+      padding: 32px 24px;
+      position: relative;
+    }
+
+    .error-message {
+      background: #fef2f2;
+      border: 2px solid #fecaca;
+      color: #dc2626;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      font-weight: 500;
+      animation: slideDown 300ms ease-out;
+    }
+
+    .success-banner {
+      background: #ecfdf5;
+      border: 2px solid #6ee7b7;
+      color: #065f46;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .card-title {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+
+    .step {
+      display: none;
+      animation: fadeIn 300ms ease-out;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .currency-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .currency-section {
+      margin-bottom: 24px;
+    }
+
+    .currency-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #667eea;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .currency-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+      margin: 24px 0;
+    }
+
+    .currency-card {
+      padding: 20px 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 16px;
+      background: white;
+      cursor: pointer;
+      transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-align: center;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 140px;
+    }
+
+    .currency-card:hover {
+      border-color: #667eea;
+      background: linear-gradient(135deg, #f8f6ff 0%, #faf5ff 100%);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 28px rgba(102, 126, 234, 0.25);
+    }
+
+    .currency-card.active {
+      border-color: #667eea;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      box-shadow: 0 12px 28px rgba(102, 126, 234, 0.4);
+      color: white;
+    }
+
+    .currency-card.active::after {
+      content: '✓';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      background: white;
+      color: #667eea;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .currency-icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .currency-label {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .currency-type {
+      font-size: 10px;
+      opacity: 0.7;
+      margin-top: 4px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .currency-card.active .currency-type {
+      opacity: 0.9;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .amount-input-section {
+      background: linear-gradient(135deg, #f8f6ff 0%, #faf5ff 100%);
+      border: 2px solid #667eea;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .amount-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #667eea;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .amount-input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .amount-input {
+      flex: 1;
+      padding: 16px 14px;
+      border: 2px solid white;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      color: #667eea;
+      background: white;
+      transition: all 250ms;
+    }
+
+    .amount-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    }
+
+    .amount-suffix {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 14px;
+      background: white;
+      border: 2px white;
+      border-radius: 12px;
+      font-weight: 800;
+      color: #667eea;
+      font-size: 18px;
+      min-width: 80px;
+      white-space: nowrap;
+    }
+
+    .rate-refresh-info {
+      background: #ecfdf5;
+      border: 1px solid #d1fae5;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 11px;
+      color: #065f46;
+      text-align: center;
+    }
+
+    .rate-lock-timer {
+      background: #dbeafe;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 11px;
+      color: #0369a1;
+      text-align: center;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .payment-methods-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .payment-card {
+      padding: 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 14px;
+      background: white;
+      cursor: pointer;
+      transition: all 250ms ease;
+      text-align: center;
+      position: relative;
+    }
+
+    .payment-card:hover {
+      border-color: #667eea;
+      background: #f8f6ff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(102, 126, 234, 0.15);
+    }
+
+    .payment-card.active {
+      border-color: #667eea;
+      background: linear-gradient(135deg, #f8f6ff, #faf5ff);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
+    }
+
+    .payment-card.active::after {
+      content: '✓';
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 22px;
+      height: 22px;
+      background: #667eea;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .payment-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .payment-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .payment-fee {
+      font-size: 11px;
+      color: #10b981;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #111827;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: inherit;
+      transition: all 250ms;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      background: #fafafe;
+    }
+
+    .input.error {
+      border-color: #ef4444;
+      background: #fef2f2;
+    }
+
+    .input-error-msg {
+      font-size: 11px;
+      color: #dc2626;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    .input-success-msg {
+      font-size: 11px;
+      color: #10b981;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    .review-box {
+      background: linear-gradient(135deg, #f8f6ff 0%, #faf5ff 100%);
+      border: 2px solid #e9d5ff;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .review-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .review-row label {
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .review-row strong {
+      color: #111827;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .review-total {
+      border-top: 2px solid #e9d5ff;
+      padding-top: 10px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .review-total-amount {
+      color: #667eea;
+    }
+
+    .spread-info {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .spread-value {
+      color: #667eea;
+      font-weight: 600;
+      font-family: monospace;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      animation: fadeIn 300ms ease-out;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 20px;
+      padding: 32px 28px;
+      width: 90%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideUp 300ms ease-out;
+      position: relative;
+    }
+
+    .modal-header {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+
+    .modal-subtitle {
+      font-size: 13px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      background: #f3f4f6;
+      border: none;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 250ms;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      background: #e5e7eb;
+    }
+
+    .modal-content {
+      margin-bottom: 24px;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 250ms;
+      background: white;
+    }
+
+    .checkbox-group:hover {
+      border-color: #667eea;
+      background: #f8f6ff;
+    }
+
+    .checkbox-group.checked {
+      border-color: #667eea;
+      background: linear-gradient(135deg, #f8f6ff 0%, #faf5ff 100%);
+    }
+
+    .checkbox-input {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      cursor: pointer;
+      accent-color: #667eea;
+      margin-top: 2px;
+    }
+
+    .checkbox-label {
+      font-size: 13px;
+      color: #111827;
+      font-weight: 500;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    .checkbox-label a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 2px solid #667eea;
+    }
+
+    .checkbox-label a:hover {
+      opacity: 0.8;
+    }
+
+    .summary-box {
+      background: linear-gradient(135deg, #f8f6ff 0%, #faf5ff 100%);
+      border: 2px solid #e9d5ff;
+      padding: 20px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+    }
+
+    .summary-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #667eea;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 13px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .summary-row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .summary-row label {
+      color: #6b7280;
+      font-weight: 600;
+    }
+
+    .summary-row strong {
+      color: #111827;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .summary-row.total {
+      border-top: 2px solid #e9d5ff;
+      padding-top: 12px;
+      margin-top: 12px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .summary-row.total strong {
+      color: #667eea;
+    }
+
+    .payment-data-box {
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .payment-data-section {
+      margin-bottom: 12px;
+    }
+
+    .payment-data-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .payment-data-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #667eea;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .payment-data-value {
+      font-size: 13px;
+      color: #111827;
+      font-weight: 600;
+    }
+
+    .qr-box {
+      background: #f3f4f6;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      margin: 8px 0;
+    }
+
+    .qr-icon {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .qr-text {
+      font-size: 10px;
+      color: #6b7280;
+      font-weight: 600;
+    }
+
+    .data-box {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 12px;
+      color: #667eea;
+      word-break: break-all;
+      margin-top: 8px;
+    }
+
+    .blockchain-select {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .blockchain-option {
+      padding: 8px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: all 250ms;
+    }
+
+    .blockchain-option:hover {
+      border-color: #667eea;
+      background: #f8f6ff;
+    }
+
+    .blockchain-option.active {
+      border-color: #667eea;
+      background: #667eea;
+      color: white;
+    }
+
+    .success-screen {
+      text-align: center;
+    }
+
+    .success-icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+      animation: successPulse 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes successPulse {
+      0% { transform: scale(0.5) rotateZ(-45deg); opacity: 0; }
+      70% { transform: scale(1.1); }
+      100% { transform: scale(1) rotateZ(0); opacity: 1; }
+    }
+
+    .success-title {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    .success-text {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+
+    .tx-details {
+      background: #f3f4f6;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .tx-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .tx-row label {
+      color: #6b7280;
+      font-weight: 600;
+    }
+
+    .tx-row strong {
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .tx-value {
+      font-family: 'Courier New', monospace;
+      color: #667eea;
+      font-size: 12px;
+      word-break: break-all;
+      font-weight: 600;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 250ms;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      flex: 1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-back {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      background: #f3f4f6;
+      color: #667eea;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .btn-back:hover {
+      background: #e5e7eb;
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #667eea;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #e5e7eb;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 768px) {
+      .currency-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .two-column {
+        grid-template-columns: 1fr;
+      }
+      
+      .payment-methods-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="splash-screen">
+    <div class="splash-content">
+      <div class="splash-logo">💎</div>
+      <div class="splash-text">Simply</div>
+      <div class="splash-subtitle">Crypto</div>
+    </div>
+  </div>
+
+  <!-- KYC MODAL PARA TARJETA -->
+  <div class="modal-overlay" id="kycModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeKycModal()">✕</button>
+      <div class="modal-header">
+        <div class="modal-title">Verificación de Identidad</div>
+        <div class="modal-subtitle">Requerido para usar tarjeta de crédito/débito</div>
+      </div>
+
+      <div class="modal-content">
+        <div id="kycErrorMessage"></div>
+
+        <div class="form-group">
+          <label class="form-label">Nombre Completo</label>
+          <input type="text" id="kycName" class="input" placeholder="Juan Pérez García" oninput="validateKycForm()" />
+          <div class="input-error-msg" id="kycNameError" style="display: none;"></div>
+        </div>
+
+        <div class="two-column">
+          <div class="form-group">
+            <label class="form-label">DNI/Documento</label>
+            <input type="text" id="kycDni" class="input" placeholder="12345678" oninput="validateKycForm()" />
+            <div class="input-error-msg" id="kycDniError" style="display: none;"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Teléfono</label>
+            <input type="tel" id="kycPhone" class="input" placeholder="+54 9 11 2345678" oninput="validateKycForm()" />
+            <div class="input-error-msg" id="kycPhoneError" style="display: none;"></div>
+          </div>
+        </div>
+
+        <div style="background: #f0f9ff; border: 2px solid #0ea5e9; border-radius: 12px; padding: 14px; margin-bottom: 20px; font-size: 12px; color: #0369a1; font-weight: 500;">
+          💳 Los datos de tu tarjeta serán procesados de forma segura por Stripe. No almacenamos números de tarjeta.
+        </div>
+
+        <label class="checkbox-group" id="kycDataCheckbox">
+          <input type="checkbox" class="checkbox-input" id="kycDataCheck" oninput="validateKycForm()" />
+          <span class="checkbox-label">
+            Confirmo que mis datos son correctos y autorizo a Simply para procesar mi KYC
+          </span>
+        </label>
+      </div>
+
+      <div style="display: flex; gap: 10px;">
+        <button class="btn btn-secondary" onclick="closeKycModal()" style="flex: 1;">Cancelar</button>
+        <button class="btn btn-primary" onclick="completeKyc()" id="kycSubmitBtn" style="opacity: 0.5; cursor: not-allowed;">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo"><span>💎</span><span>Simply Crypto</span></div>
+      <div class="status">Live</div>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <div class="card-container">
+      <div class="progress-section">
+        <div class="progress-steps">
+          <div class="step-dot active" id="dot0"></div>
+          <div class="step-dot" id="dot1"></div>
+          <div class="step-dot" id="dot2"></div>
+          <div class="step-dot" id="dot3"></div>
+          <div class="step-dot" id="dot4"></div>
+        </div>
+        <div class="progress-label" id="progressLabel">Paso 1 de 5</div>
+      </div>
+
+      <div class="card-content">
+        <!-- PASO 1 -->
+        <div class="step active" id="step0">
+          <div class="card-title">¿Qué querés recibir?</div>
+          <div class="card-subtitle">Selecciona la moneda</div>
+
+          <div class="currency-section">
+            <div class="currency-section-label">💵 Dinero Fiduciario</div>
+            <div class="currency-grid" id="currencyGridFiat"></div>
+          </div>
+
+          <div class="currency-divider"></div>
+
+          <div class="currency-section">
+            <div class="currency-section-label">🔗 Criptomonedas</div>
+            <div class="currency-grid" id="currencyGridCrypto"></div>
+          </div>
+
+          <div class="button-group">
+            <button class="btn btn-primary" onclick="nextStep()" style="opacity: 0.5; cursor: not-allowed;" id="step1Btn">Continuar</button>
+          </div>
+        </div>
+
+        <!-- PASO 2 -->
+        <div class="step" id="step1">
+          <div class="card-title">¿Cómo quieres pagar?</div>
+          <div class="card-subtitle">Selecciona monto y método</div>
+
+          <div id="step2ErrorMessage"></div>
+
+          <div class="amount-input-section">
+            <label class="amount-label">Monto a pagar</label>
+            <div class="amount-input-group">
+              <input type="number" id="amountInput" class="amount-input" placeholder="1000" min="1" step="100" value="1000" oninput="validateAmount()" />
+              <div class="amount-suffix" id="amountSuffix">USD</div>
+            </div>
+            <div class="rate-refresh-info" id="rateRefreshInfo">
+              🔄 Cotizaciones actualizadas en tiempo real
+            </div>
+            <div class="rate-lock-timer hidden" id="rateLockTimer"></div>
+          </div>
+
+          <label class="form-label" style="margin-bottom: 12px;">Elige tu método</label>
+          <div class="payment-methods-grid" id="paymentMethods"></div>
+
+          <div class="spread-info">
+            <div style="margin-bottom: 6px; font-size: 11px; color: #667eea; font-weight: 600;">Spread actual:</div>
+            <div class="spread-value" id="spreadDisplay">-</div>
+          </div>
+
+          <div class="review-box">
+            <div class="review-row">
+              <label>Pagas:</label>
+              <strong id="finalAmount">-</strong>
+            </div>
+            <div class="review-row">
+              <label>Comisión:</label>
+              <strong id="finalCommission">-</strong>
+            </div>
+            <div class="review-row">
+              <label>Cotización:</label>
+              <strong id="finalRate">-</strong>
+            </div>
+            <div class="review-total">
+              <label>Recibirás:</label>
+              <span class="review-total-amount" id="finalReceive">-</span>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button class="btn btn-back" onclick="prevStep()">←</button>
+            <button class="btn btn-primary" onclick="nextStep()" id="step2Btn" style="opacity: 0.5; cursor: not-allowed;">Continuar</button>
+          </div>
+        </div>
+
+        <!-- PASO 3 -->
+        <div class="step" id="step2">
+          <div class="card-title">Cómo envías</div>
+          <div class="card-subtitle">Datos para tu envío</div>
+
+          <div class="review-box" style="padding: 16px; background: white; border: 2px solid #e5e7eb;">
+            <div style="font-size: 13px; font-weight: 600; color: #667eea; margin-bottom: 14px;">📤 TÚ NOS ENVÍAS A</div>
+            <div id="paymentDataDisplay"></div>
+          </div>
+
+          <div class="button-group">
+            <button class="btn btn-back" onclick="prevStep()">←</button>
+            <button class="btn btn-primary" onclick="nextStep()">Continuar</button>
+          </div>
+        </div>
+
+        <!-- PASO 4 -->
+        <div class="step" id="step3">
+          <div class="card-title">Dónde recibes</div>
+          <div class="card-subtitle">Datos de recepción</div>
+
+          <div id="step4ErrorMessage"></div>
+
+          <div class="review-box" style="padding: 16px; background: white; border: 2px solid #e5e7eb;">
+            <div style="font-size: 13px; font-weight: 600; color: #667eea; margin-bottom: 14px;">📥 NOSOTROS TE ENVIAMOS A</div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label">Tu wallet/cuenta para recibir</label>
+              <input type="text" id="receiveAddress" class="input" placeholder="Tu dirección o cuenta" oninput="validateReceiveAddress()" />
+              <div class="input-error-msg" id="receiveAddressError" style="display: none;"></div>
+              <div class="input-success-msg" id="receiveAddressSuccess" style="display: none;"></div>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button class="btn btn-back" onclick="prevStep()">←</button>
+            <button class="btn btn-primary" onclick="nextStep()" id="step4Btn">Continuar</button>
+          </div>
+        </div>
+
+        <!-- PASO 5 -->
+        <div class="step" id="step4">
+          <div class="card-title">Confirmar operación</div>
+          <div class="card-subtitle">Revisa los datos y confirma</div>
+
+          <div id="step5ErrorMessage"></div>
+
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" id="emailInput" class="input" placeholder="tu@email.com" oninput="validateForm()" />
+            <div class="input-error-msg" id="emailError" style="display: none;">Email inválido</div>
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">📋 Resumen de tu operación</div>
+            
+            <div class="summary-row">
+              <label>Moneda a recibir:</label>
+              <strong id="summaryOutput">-</strong>
+            </div>
+
+            <div class="summary-row">
+              <label>Monto a pagar:</label>
+              <strong id="summaryAmount">-</strong>
+            </div>
+
+            <div class="summary-row">
+              <label>Comisión:</label>
+              <strong id="summaryCommission">-</strong>
+            </div>
+
+            <div class="summary-row">
+              <label>Cotización:</label>
+              <strong id="summaryRate">-</strong>
+            </div>
+
+            <div class="summary-row">
+              <label>Método de pago:</label>
+              <strong id="summaryMethod">-</strong>
+            </div>
+
+            <div class="summary-row total">
+              <label>Recibirás:</label>
+              <strong id="summaryTotal">-</strong>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <label class="checkbox-group" id="termsCheckbox">
+              <input type="checkbox" class="checkbox-input" id="termsInput" oninput="validateForm()" />
+              <span class="checkbox-label">
+                Acepto los <a href="#" onclick="event.preventDefault()">términos y condiciones</a> de Simply Crypto
+              </span>
+            </label>
+
+            <label class="checkbox-group" id="dataCheckbox">
+              <input type="checkbox" class="checkbox-input" id="dataInput" oninput="validateForm()" />
+              <span class="checkbox-label">
+                Confirmo que mis datos son correctos y autorizo la operación
+              </span>
+            </label>
+          </div>
+
+          <div class="button-group">
+            <button class="btn btn-back" onclick="prevStep()">←</button>
+            <button class="btn btn-primary" onclick="processPayment()" id="step5Btn" disabled>
+              Confirmar operación
+            </button>
+          </div>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="step" id="stepSuccess">
+          <div class="success-screen">
+            <div class="success-icon">✅</div>
+            <div class="success-title">¡Operación Creada!</div>
+            <div class="success-text">Tu ticket ha sido generado</div>
+
+            <div class="tx-details">
+              <div class="tx-row">
+                <label>Ticket #:</label>
+                <strong class="tx-value" id="ticketNumber">-</strong>
+              </div>
+              <div class="tx-row">
+                <label>Email:</label>
+                <strong id="successEmail">-</strong>
+              </div>
+              <div class="tx-row">
+                <label>Pagas:</label>
+                <strong id="successAmount">-</strong>
+              </div>
+              <div class="tx-row">
+                <label>Recibirás:</label>
+                <strong id="successReceive">-</strong>
+              </div>
+              <div class="tx-row">
+                <label>Método:</label>
+                <strong id="successMethod">-</strong>
+              </div>
+            </div>
+
+            <div style="background: #d1fae5; border: 1px solid #6ee7b7; color: #065f46; padding: 12px; border-radius: 10px; font-size: 12px; margin-bottom: 16px;">
+              ✓ Todos los detalles se enviarán a tu email<br/>
+              <span style="margin-top: 6px; display: block; font-size: 11px; opacity: 0.9;" id="successKycMsg"></span>
+            </div>
+
+            <div class="button-group" style="flex-direction: column; gap: 10px;">
+              <button class="btn btn-primary" onclick="location.reload()">Nueva operación</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // CONFIG - Conectar a Core Banking aquí
+    // ═══════════════════════════════════════════════════════════════════════════════
+    
+    const CONFIG = {
+      // PaySur Core - Identity Service
+      API_BASE_URL: 'https://simply-backend-888610796336.southamerica-east1.run.app',
+
+      ENDPOINTS: {
+        IDENTITY: '/api/v1/identity/find-or-create',      // POST - Crear/enriquecer cliente
+        OPERATIONS: '/api/v1/operations',                 // POST - Registrar operacion
+        GET_RATES: '/api/v1/crypto/rates',                // GET  - Obtener cotizaciones (pendiente)
+        MAGIC_LINK: '/api/v1/auth/crypto/magic-link'      // GET  - Validar magic link (pendiente)
+      },
+      
+      // Timeouts
+      API_TIMEOUT: 30000,              // 30 segundos
+      RATE_REFRESH_INTERVAL: 5 * 60,   // 5 minutos
+      RATE_LOCK_DURATION: 30,          // 30 segundos
+      
+      // Limits
+      MIN_AMOUNT: 100,
+      MAX_AMOUNT: 100000
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // STATE MANAGEMENT
+    // ═══════════════════════════════════════════════════════════════════════════════
+    
+    let currentStep = 0;
+    let isProcessing = false;
+    let lockedRate = null;
+    let lockTimestamp = null;
+
+    let state = {
+      outputCurrency: null,
+      paymentMethod: null,
+      inputType: null,
+      amount: 0,
+      kycCompleted: false,
+      kycData: null,
+      stripeToken: null,
+      blockchain: null,
+      receiveAddress: null,
+    };
+
+    let rates = {};
+    let commissions = { pix: 2.0, transfer: 5.5, card: 5.9, wallet: 0 };
+
+    const fiatCurrencies = ['USD', 'EUR', 'ARS', 'BRL', 'CLP', 'PEN'];
+    const cryptoCurrencies = ['USDT', 'USDC', 'BTC', 'ETH', 'BNB', 'SOL'];
+    const symbols = { 
+      USD: '$', EUR: '€', ARS: '$', BRL: 'R$', CLP: '$', PEN: 'S/', 
+      USDT: '◉', USDC: 'Ⓒ', BTC: '₿', ETH: 'Ξ', BNB: '⬟', SOL: '◎' 
+    };
+    const currencyType = { 
+      USD: 'Fiat', EUR: 'Fiat', ARS: 'Fiat', BRL: 'Fiat', CLP: 'Fiat', PEN: 'Fiat',
+      USDT: 'Crypto', USDC: 'Crypto', BTC: 'Crypto', ETH: 'Crypto', BNB: 'Crypto', SOL: 'Crypto' 
+    };
+    
+    // Rates default (backup si API falla)
+    const defaultRates = {
+      'USD-USD': 1.0,
+      'USD-EUR': 0.909, 'EUR-USD': 1.1,
+      'USD-ARS': 1356.26, 'ARS-USD': 0.000737,
+      'USD-BRL': 4.991, 'BRL-USD': 0.2004,
+      'USD-CLP': 887.33, 'CLP-USD': 0.001127,
+      'USD-PEN': 3.4387, 'PEN-USD': 0.2908,
+      'EUR-ARS': 1597.81, 'EUR-BRL': 5.54, 'EUR-CLP': 980.00, 'EUR-PEN': 3.78,
+      'USD-USDT': 1.0, 'USD-USDC': 1.0,
+      'USD-BTC': 0.0000141, 'USD-ETH': 0.000464, 'USD-BNB': 0.001556, 'USD-SOL': 0.01109,
+      'USDT-USD': 1.0, 'USDT-EUR': 0.909, 'USDT-ARS': 1356.26, 'USDT-BRL': 4.991, 'USDT-CLP': 887.33, 'USDT-PEN': 3.4387,
+      'USDT-USDC': 1.0, 'USDT-BTC': 0.0000141, 'USDT-ETH': 0.000464, 'USDT-BNB': 0.001556, 'USDT-SOL': 0.01109,
+      'USDC-USD': 1.0, 'USDC-EUR': 0.909, 'USDC-USDT': 1.0, 'USDC-ARS': 1356.26, 'USDC-BRL': 4.991, 'USDC-CLP': 887.33, 'USDC-PEN': 3.4387,
+      'USDC-BTC': 0.0000141, 'USDC-ETH': 0.000464, 'USDC-BNB': 0.001556, 'USDC-SOL': 0.01109,
+      'BTC-USD': 70661, 'BTC-EUR': 64200, 'BTC-USDT': 70661, 'BTC-USDC': 70661, 'BTC-ETH': 32.72, 'BTC-BNB': 109.84, 'BTC-SOL': 784.89,
+      'ETH-USD': 2158.64, 'ETH-EUR': 1963, 'ETH-USDT': 2158.64, 'ETH-USDC': 2158.64, 'ETH-BTC': 0.0305, 'ETH-BNB': 3.358, 'ETH-SOL': 23.96,
+      'BNB-USD': 643.10, 'BNB-EUR': 585, 'BNB-USDT': 643.10, 'BNB-USDC': 643.10, 'BNB-BTC': 0.00910, 'BNB-ETH': 0.2978, 'BNB-SOL': 7.145,
+      'SOL-USD': 90.189, 'SOL-EUR': 82, 'SOL-USDT': 90.189, 'SOL-USDC': 90.189, 'SOL-BTC': 0.001276, 'SOL-ETH': 0.04180, 'SOL-BNB': 0.1402,
+    };
+
+    rates = { ...defaultRates };
+
+    const spreads = {
+      'USD-USDT': { bid: 0.9995, ask: 1.0005 },
+      'USD-USDC': { bid: 1.0000, ask: 1.0005 },
+      'USDT-USD': { bid: 0.9995, ask: 1.0005 },
+      'USDC-USD': { bid: 1.0000, ask: 1.0005 },
+      'BTC-USD': { bid: 70600, ask: 70700 },
+      'ETH-USD': { bid: 2155, ask: 2162 },
+      'BNB-USD': { bid: 641, ask: 645 },
+      'SOL-USD': { bid: 89, ask: 91.5 },
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // UTILITY FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════════════════════
+
+    function showError(message, containerId = null) {
+      try {
+        const container = containerId ? document.getElementById(containerId) : document.querySelector('.card-content');
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = '⚠️ ' + message;
+        container.insertBefore(errorDiv, container.firstChild);
+        setTimeout(() => errorDiv.remove(), 5000);
+        console.error('[APP ERROR]', message);
+      } catch (e) {
+        console.error('[SHOW ERROR FAILED]', e);
+        alert(message);
+      }
+    }
+
+    function clearErrors(containerId) {
+      const container = document.getElementById(containerId);
+      if (container) {
+        container.innerHTML = '';
+      }
+    }
+
+    function isValidEmail(email) {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(email);
+    }
+
+    function validateDNI(dni) {
+      const cleaned = dni.replace(/\D/g, '');
+      
+      // Argentina: 7-8 dígitos
+      if (cleaned.length < 7 || cleaned.length > 8) {
+        return { valid: false, error: 'DNI debe tener 7-8 dígitos' };
+      }
+      
+      if (!/^\d{7,8}$/.test(cleaned)) {
+        return { valid: false, error: 'DNI solo debe contener números' };
+      }
+      
+      return { valid: true };
+    }
+
+    function validatePhone(phone) {
+      const cleaned = phone.replace(/\D/g, '');
+      
+      // Argentina: 10 dígitos
+      if (cleaned.length !== 10) {
+        return { valid: false, error: 'Teléfono debe tener 10 dígitos' };
+      }
+      
+      return { valid: true };
+    }
+
+    function validateCryptoAddress(address, blockchain) {
+      if (!address || !address.trim()) {
+        return { valid: false, error: 'Dirección requerida' };
+      }
+      
+      // EVM chains (Ethereum, Polygon, Arbitrum, Base, Optimism)
+      if (['ethereum', 'polygon', 'arbitrum', 'base', 'optimism'].includes(blockchain)) {
+        if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
+          return { valid: false, error: 'Dirección EVM inválida (0x...)' };
+        }
+      }
+      
+      return { valid: true };
+    }
+
+    function validateCBU(cbu) {
+      if (!cbu || !cbu.trim()) {
+        return { valid: false, error: 'CBU requerido' };
+      }
+      
+      const cleaned = cbu.replace(/\s/g, '');
+      if (!/^\d{22}$/.test(cleaned)) {
+        return { valid: false, error: 'CBU debe tener 22 dígitos' };
+      }
+      
+      return { valid: true };
+    }
+
+    function getSpread(pair) {
+      return spreads[pair] || { bid: (rates[pair] || 1) * 0.9998, ask: (rates[pair] || 1) * 1.0002 };
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // API CALLS - CONECTAR AL CORE BANKING
+    // ═══════════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Obtener cotizaciones en tiempo real del Core Banking
+     * ENDPOINT: GET /api/v1/crypto/rates
+     */
+    async function fetchRates() {
+      try {
+        const url = CONFIG.API_BASE_URL + CONFIG.ENDPOINTS.GET_RATES;
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
+
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal
+        });
+
+        clearTimeout(timeout);
+
+        if (!response.ok) {
+          console.warn('[RATES API] Fallo, usando valores locales');
+          return; // Fallback a rates default
+        }
+
+        const data = await response.json();
+        
+        // Mapear respuesta del Core a formato local
+        if (data.rates) {
+          rates = { ...defaultRates, ...data.rates };
+        }
+        
+        console.log('[RATES API] Actualizado OK');
+        
+        if (state.outputCurrency && state.paymentMethod) {
+          updateFinalRate();
+        }
+        
+      } catch (error) {
+        console.error('[RATES API ERROR]', error.message);
+        // Usar rates default sin mostrar error al usuario
+      }
+    }
+
+    /**
+     * Registrar una operacion en PaySur Core Operations module.
+     * Se llama DESPUES de crear/encontrar el customer.
+     */
+    async function registerOperation(customerId, cryptoType) {
+      try {
+        const op = state.pendingOperation || {};
+        const payload = {
+          customerId,
+          module: 'crypto',
+          type: cryptoType, // 'crypto_buy' o 'crypto_sell'
+          status: 'pending',
+          amount: String(op.amount || 0),
+          currency: op.inputCurrency || 'USD',
+          metadata: {
+            paymentMethod: op.paymentMethod,
+            outputCurrency: op.outputCurrency,
+            outputAmount: op.finalReceive,
+            commissionPercent: op.commissionPercent,
+            exchangeRate: op.exchangeRate,
+            receiveAddress: op.receiveAddress,
+            blockchain: op.blockchain,
+            stripeToken: op.stripeToken || undefined,
+            userAgent: navigator.userAgent,
+            referrer: document.referrer
+          }
+        };
+
+        const url = CONFIG.API_BASE_URL + CONFIG.ENDPOINTS.OPERATIONS;
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        const data = await response.json();
+        console.log('[PaySur Core] Operation registrada:', data.id);
+        return data;
+      } catch (err) {
+        console.warn('[PaySur Core] Error registrando operacion (no bloqueante):', err);
+        return null;
+      }
+    }
+
+    /**
+     * Crear operación de prospect (Pix, Transfer, Wallet)
+     * ENDPOINT: POST /api/v1/crypto/leads
+     */
+    async function createLead() {
+      try {
+        clearErrors('step5ErrorMessage');
+        
+        const email = document.getElementById('emailInput').value.trim();
+        
+        if (!isValidEmail(email)) {
+          showError('Email inválido', 'step5ErrorMessage');
+          return null;
+        }
+
+        const inputCurr = state.inputType === 'fiat' ? 'USD' : 'USDT';
+        const rateKey = `${inputCurr}-${state.outputCurrency}`;
+        const rate = rates[rateKey] || 1;
+        const commission = commissions[state.paymentMethod];
+        const finalAmount = state.amount - (state.amount * commission / 100);
+
+        // Guardamos los datos de la operacion en state para persistirlos cuando exista el Operations module
+        state.pendingOperation = {
+          outputCurrency: state.outputCurrency,
+          paymentMethod: state.paymentMethod,
+          inputCurrency: inputCurr,
+          amount: state.amount,
+          commissionPercent: commission,
+          finalAmount: finalAmount,
+          exchangeRate: rate,
+          finalReceive: finalAmount * rate,
+          receiveAddress: state.receiveAddress,
+          blockchain: state.blockchain
+        };
+
+        // Payload al Identity Service del Core (solo identidad)
+        const payload = {
+          email,
+          source: 'crypto'
+        };
+
+        const url = CONFIG.API_BASE_URL + CONFIG.ENDPOINTS.IDENTITY;
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+
+        clearTimeout(timeout);
+
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({ message: 'Error desconocido' }));
+          throw new Error(error.message || `HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        // Registrar operacion en Core (no bloqueante)
+        if (data && data.id) await registerOperation(data.id, 'crypto_buy');
+        return data;
+
+      } catch (error) {
+        showError('Error creando operación: ' + error.message, 'step5ErrorMessage');
+        console.error('[CREATE LEAD ERROR]', error);
+        return null;
+      }
+    }
+
+    /**
+     * Crear customer con KYC (Tarjeta)
+     * ENDPOINT: POST /api/v1/crypto/customers
+     */
+    async function createCustomer() {
+      try {
+        clearErrors('step5ErrorMessage');
+        
+        const email = document.getElementById('emailInput').value.trim();
+        
+        if (!isValidEmail(email)) {
+          showError('Email inválido', 'step5ErrorMessage');
+          return null;
+        }
+
+        if (!state.kycData || !state.stripeToken) {
+          showError('Datos de KYC o Stripe incompletos', 'step5ErrorMessage');
+          return null;
+        }
+
+        const inputCurr = state.inputType === 'fiat' ? 'USD' : 'USDT';
+        const rateKey = `${inputCurr}-${state.outputCurrency}`;
+        const rate = rates[rateKey] || 1;
+        const commission = commissions[state.paymentMethod];
+        const finalAmount = state.amount - (state.amount * commission / 100);
+
+        // Guardamos datos de la operacion + stripe para persistir cuando exista el Operations module
+        state.pendingOperation = {
+          stripeToken: state.stripeToken,
+          outputCurrency: state.outputCurrency,
+          paymentMethod: state.paymentMethod,
+          inputCurrency: inputCurr,
+          amount: state.amount,
+          commissionPercent: commission,
+          finalAmount: finalAmount,
+          exchangeRate: rate,
+          finalReceive: finalAmount * rate,
+          receiveAddress: state.receiveAddress,
+          blockchain: state.blockchain
+        };
+
+        // Parsear nombre completo en firstName + lastName
+        const nameParts = (state.kycData.name || '').trim().split(/\s+/);
+        const firstName = nameParts[0] || undefined;
+        const lastName = nameParts.slice(1).join(' ') || undefined;
+
+        // Payload al Identity Service (identidad + datos KYC basicos -> sube a GUEST/VERIFIED_BASIC)
+        const payload = {
+          email,
+          source: 'crypto',
+          firstName,
+          lastName,
+          phone: state.kycData.phone,
+          dni: state.kycData.dni
+        };
+
+        const url = CONFIG.API_BASE_URL + CONFIG.ENDPOINTS.IDENTITY;
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+
+        clearTimeout(timeout);
+
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({ message: 'Error desconocido' }));
+          throw new Error(error.message || `HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        // Registrar operacion en Core (no bloqueante)
+        if (data && data.id) await registerOperation(data.id, 'crypto_buy');
+        return data;
+
+      } catch (error) {
+        showError('Error creando cuenta: ' + error.message, 'step5ErrorMessage');
+        console.error('[CREATE CUSTOMER ERROR]', error);
+        return null;
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // UI INITIALIZATION & STEP FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════════════════════
+
+    function initStep0() {
+      const fiatGrid = document.getElementById('currencyGridFiat');
+      fiatGrid.innerHTML = '';
+      fiatCurrencies.forEach(curr => {
+        const card = document.createElement('div');
+        card.className = 'currency-card';
+        card.innerHTML = `
+          <span class="currency-icon">${symbols[curr]}</span>
+          <span class="currency-label">${curr}</span>
+          <span class="currency-type">${currencyType[curr]}</span>
+        `;
+        card.onclick = () => selectOutput(curr);
+        fiatGrid.appendChild(card);
+      });
+
+      const cryptoGrid = document.getElementById('currencyGridCrypto');
+      cryptoGrid.innerHTML = '';
+      cryptoCurrencies.forEach(curr => {
+        const card = document.createElement('div');
+        card.className = 'currency-card';
+        card.innerHTML = `
+          <span class="currency-icon">${symbols[curr]}</span>
+          <span class="currency-label">${curr}</span>
+          <span class="currency-type">${currencyType[curr]}</span>
+        `;
+        card.onclick = () => selectOutput(curr);
+        cryptoGrid.appendChild(card);
+      });
+    }
+
+    function selectOutput(curr) {
+      try {
+        state.outputCurrency = curr;
+        document.querySelectorAll('.currency-card').forEach(c => c.classList.remove('active'));
+        event.target.closest('.currency-card').classList.add('active');
+        document.getElementById('step1Btn').style.opacity = '1';
+        document.getElementById('step1Btn').style.cursor = 'pointer';
+      } catch (e) {
+        console.error('[SELECT OUTPUT ERROR]', e);
+      }
+    }
+
+    function initStep1() {
+      const grid = document.getElementById('paymentMethods');
+      grid.innerHTML = '';
+      
+      const methods = [
+        { id: 'pix', icon: '💳', label: 'Pix', fee: '2%' },
+        { id: 'transfer', icon: '🏦', label: 'Transfer', fee: '5.5%' },
+        { id: 'card', icon: '🎯', label: 'Tarjeta', fee: '5.9%' },
+        { id: 'wallet', icon: '🔗', label: cryptoCurrencies.includes(state.outputCurrency) ? 'Wallet (Cambio)' : 'Wallet', fee: '0%' },
+      ];
+
+      methods.forEach(m => {
+        const card = document.createElement('div');
+        card.className = 'payment-card';
+        card.innerHTML = `
+          <div class="payment-icon">${m.icon}</div>
+          <div class="payment-label">${m.label}</div>
+          <div class="payment-fee">${m.fee}</div>
+        `;
+        card.onclick = () => selectPayment(m.id);
+        grid.appendChild(card);
+      });
+      
+      clearErrors('step2ErrorMessage');
+      document.getElementById('amountInput').value = '1000';
+      validateAmount();
+    }
+
+    function selectPayment(method) {
+      try {
+        state.paymentMethod = method;
+        state.kycCompleted = false;
+        
+        if (method === 'card') {
+          openKycModal();
+          return;
+        }
+
+        state.inputType = method === 'wallet' ? 'crypto' : 'fiat';
+        document.getElementById('amountSuffix').textContent = state.inputType === 'fiat' ? 'USD' : 'USDT';
+        document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
+        event.target.closest('.payment-card').classList.add('active');
+        document.getElementById('step2Btn').style.opacity = '1';
+        document.getElementById('step2Btn').style.cursor = 'pointer';
+        updateFinalRate();
+      } catch (e) {
+        console.error('[SELECT PAYMENT ERROR]', e);
+      }
+    }
+
+    function openKycModal() {
+      try {
+        document.getElementById('kycModal').classList.add('active');
+        document.getElementById('kycDataCheck').checked = false;
+        document.getElementById('kycName').value = '';
+        document.getElementById('kycDni').value = '';
+        document.getElementById('kycPhone').value = '';
+        clearErrors('kycErrorMessage');
+        validateKycForm();
+      } catch (e) {
+        console.error('[OPEN KYC MODAL ERROR]', e);
+      }
+    }
+
+    function closeKycModal() {
+      try {
+        document.getElementById('kycModal').classList.remove('active');
+        state.kycCompleted = false;
+        document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
+      } catch (e) {
+        console.error('[CLOSE KYC MODAL ERROR]', e);
+      }
+    }
+
+    function validateKycForm() {
+      try {
+        const name = document.getElementById('kycName').value.trim();
+        const dni = document.getElementById('kycDni').value.trim();
+        const phone = document.getElementById('kycPhone').value.trim();
+        const checked = document.getElementById('kycDataCheck').checked;
+        const btn = document.getElementById('kycSubmitBtn');
+
+        // Validar DNI
+        let dniValid = true;
+        if (!dni) {
+          document.getElementById('kycDniError').textContent = 'DNI requerido';
+          document.getElementById('kycDniError').style.display = 'block';
+          dniValid = false;
+        } else {
+          const dniValidation = validateDNI(dni);
+          if (!dniValidation.valid) {
+            document.getElementById('kycDniError').textContent = dniValidation.error;
+            document.getElementById('kycDniError').style.display = 'block';
+            dniValid = false;
+          } else {
+            document.getElementById('kycDniError').style.display = 'none';
+          }
+        }
+
+        // Validar teléfono
+        let phoneValid = true;
+        if (!phone) {
+          document.getElementById('kycPhoneError').textContent = 'Teléfono requerido';
+          document.getElementById('kycPhoneError').style.display = 'block';
+          phoneValid = false;
+        } else {
+          const phoneValidation = validatePhone(phone);
+          if (!phoneValidation.valid) {
+            document.getElementById('kycPhoneError').textContent = phoneValidation.error;
+            document.getElementById('kycPhoneError').style.display = 'block';
+            phoneValid = false;
+          } else {
+            document.getElementById('kycPhoneError').style.display = 'none';
+          }
+        }
+
+        // Validar nombre
+        document.getElementById('kycNameError').style.display = !name ? 'block' : 'none';
+        if (!name) {
+          document.getElementById('kycNameError').textContent = 'Nombre requerido';
+        }
+
+        document.getElementById('kycDataCheckbox').classList.toggle('checked', checked);
+
+        const isValid = name && dni && phone && dniValid && phoneValid && checked;
+        btn.disabled = !isValid;
+        btn.style.opacity = isValid ? '1' : '0.5';
+        btn.style.cursor = isValid ? 'pointer' : 'not-allowed';
+      } catch (e) {
+        console.error('[VALIDATE KYC FORM ERROR]', e);
+      }
+    }
+
+    function completeKyc() {
+      try {
+        const name = document.getElementById('kycName').value.trim();
+        const dni = document.getElementById('kycDni').value.trim();
+        const phone = document.getElementById('kycPhone').value.trim();
+
+        // Validaciones finales
+        const nameValid = name.length > 0;
+        const dniValid = validateDNI(dni).valid;
+        const phoneValid = validatePhone(phone).valid;
+
+        if (!nameValid || !dniValid || !phoneValid) {
+          showError('Por favor completa todos los datos correctamente', 'kycErrorMessage');
+          return;
+        }
+
+        state.kycData = { name, dni, phone };
+        state.kycCompleted = true;
+        state.inputType = 'fiat';
+
+        document.getElementById('amountSuffix').textContent = 'USD';
+        document.querySelectorAll('.payment-card').forEach(c => {
+          if (c.textContent.includes('Tarjeta')) c.classList.add('active');
+        });
+
+        document.getElementById('step2Btn').style.opacity = '1';
+        document.getElementById('step2Btn').style.cursor = 'pointer';
+
+        closeKycModal();
+        updateFinalRate();
+      } catch (e) {
+        console.error('[COMPLETE KYC ERROR]', e);
+        showError('Error guardando datos KYC', 'kycErrorMessage');
+      }
+    }
+
+    function validateAmount() {
+      try {
+        clearErrors('step2ErrorMessage');
+        const amount = parseFloat(document.getElementById('amountInput').value) || 0;
+
+        if (amount < CONFIG.MIN_AMOUNT || amount > CONFIG.MAX_AMOUNT) {
+          showError(`Monto debe estar entre ${CONFIG.MIN_AMOUNT} y ${CONFIG.MAX_AMOUNT}`, 'step2ErrorMessage');
+          return;
+        }
+
+        updateFinalRate();
+      } catch (e) {
+        console.error('[VALIDATE AMOUNT ERROR]', e);
+      }
+    }
+
+    function updateFinalRate() {
+      try {
+        if (!state.paymentMethod) return;
+
+        const amount = parseFloat(document.getElementById('amountInput').value) || 0;
+        state.amount = amount;
+
+        if (amount < CONFIG.MIN_AMOUNT || amount > CONFIG.MAX_AMOUNT) {
+          return;
+        }
+
+        const inputCurr = state.inputType === 'fiat' ? 'USD' : 'USDT';
+        const rateKey = `${inputCurr}-${state.outputCurrency}`;
+        const rate = rates[rateKey] || 1;
+        const commission = commissions[state.paymentMethod] || 0;
+        const commissionAmount = (amount * commission) / 100;
+        const netAmount = amount - commissionAmount;
+        const finalReceive = netAmount * rate;
+
+        const spread = getSpread(rateKey);
+        const spreadDisplay = `${spread.ask.toFixed(inputCurr === 'USD' || inputCurr === 'USDT' ? 4 : 2)} ${inputCurr} - ${(spread.bid * rate).toFixed(state.outputCurrency === 'BTC' ? 8 : 4)} ${state.outputCurrency}`;
+        document.getElementById('spreadDisplay').textContent = spreadDisplay;
+
+        document.getElementById('finalAmount').textContent = `${amount.toFixed(0)} ${inputCurr}`;
+        document.getElementById('finalCommission').textContent = `${commission}% = ${commissionAmount.toFixed(0)} ${inputCurr}`;
+        document.getElementById('finalRate').textContent = `1 ${inputCurr} = ${rate.toFixed(state.outputCurrency === 'BTC' ? 8 : 4)} ${state.outputCurrency}`;
+        document.getElementById('finalReceive').textContent = `${finalReceive.toFixed(2)} ${state.outputCurrency}`;
+
+        updateSummary();
+        displayPaymentData();
+      } catch (e) {
+        console.error('[UPDATE FINAL RATE ERROR]', e);
+      }
+    }
+
+    function displayPaymentData() {
+      try {
+        const display = document.getElementById('paymentDataDisplay');
+        
+        if (state.paymentMethod === 'pix') {
+          display.innerHTML = `
+            <div class="payment-data-section">
+              <span class="payment-data-label">QR Pix</span>
+              <div class="qr-box">
+                <div class="qr-icon">📱</div>
+                <div class="qr-text">Escanea este código</div>
+              </div>
+            </div>
+            <div class="payment-data-section">
+              <span class="payment-data-label">Clave Pix</span>
+              <div class="data-box">00020126580014br.gov.bcb.pix0136xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx520400005303986540510.005802BR5913SIMPLY6009SAO PAULO62410503***63041D3D</div>
+            </div>
+          `;
+        } else if (state.paymentMethod === 'transfer') {
+          display.innerHTML = `
+            <div class="payment-data-section">
+              <span class="payment-data-label">QR CBU</span>
+              <div class="qr-box">
+                <div class="qr-icon">🏦</div>
+                <div class="qr-text">Código QR CBU</div>
+              </div>
+            </div>
+            <div class="payment-data-section">
+              <span class="payment-data-label">Número CBU</span>
+              <div class="data-box">0070070778000123456789</div>
+            </div>
+            <div class="payment-data-section">
+              <span class="payment-data-label">Banco</span>
+              <div class="payment-data-value">Simply Bank Argentina</div>
+            </div>
+          `;
+        } else if (state.paymentMethod === 'card') {
+          display.innerHTML = `
+            <div style="background: #f0f9ff; border: 2px solid #0ea5e9; border-radius: 12px; padding: 14px; margin-bottom: 16px; font-size: 12px; color: #0369a1; font-weight: 500;">
+              ✓ KYC completado<br/>
+              💳 Datos de tarjeta procesados por Stripe de forma segura
+            </div>
+            <div class="payment-data-section">
+              <span class="payment-data-label">Verificación completada</span>
+              <div style="background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 10px; padding: 12px; color: #065f46; font-size: 12px; font-weight: 600;">
+                ✓ ${state.kycData?.name || 'Cliente'}<br/>
+                ✓ DNI: ${state.kycData?.dni || '-'}
+              </div>
+            </div>
+          `;
+        } else if (state.paymentMethod === 'wallet') {
+          display.innerHTML = `
+            <div class="payment-data-section">
+              <span class="payment-data-label">Nuestra wallet</span>
+              <div class="data-box">0x1234567890abcdef1234567890abcdef12345678</div>
+            </div>
+            <div class="payment-data-section">
+              <span class="payment-data-label">Selecciona red blockchain</span>
+              <div class="blockchain-select" id="paymentBlockchainSelect"></div>
+            </div>
+          `;
+          initBlockchainSelect('paymentBlockchainSelect');
+        }
+      } catch (e) {
+        console.error('[DISPLAY PAYMENT DATA ERROR]', e);
+      }
+    }
+
+    function initBlockchainSelect(containerId) {
+      try {
+        const networks = ['ethereum', 'polygon', 'arbitrum', 'base', 'optimism'];
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        
+        networks.forEach(net => {
+          const btn = document.createElement('div');
+          btn.className = 'blockchain-option';
+          btn.textContent = net.charAt(0).toUpperCase() + net.slice(1);
+          btn.onclick = () => {
+            container.querySelectorAll('.blockchain-option').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.blockchain = net;
+          };
+          container.appendChild(btn);
+        });
+        
+        if (container.firstChild) {
+          container.firstChild.classList.add('active');
+          state.blockchain = 'ethereum';
+        }
+      } catch (e) {
+        console.error('[INIT BLOCKCHAIN SELECT ERROR]', e);
+      }
+    }
+
+    function updateSummary() {
+      try {
+        const inputCurr = state.inputType === 'fiat' ? 'USD' : 'USDT';
+        const rateKey = `${inputCurr}-${state.outputCurrency}`;
+        const rate = rates[rateKey] || 1;
+        const commission = commissions[state.paymentMethod] || 0;
+        const commissionAmount = (state.amount * commission) / 100;
+        const netAmount = state.amount - commissionAmount;
+        const finalReceive = netAmount * rate;
+
+        document.getElementById('summaryOutput').textContent = state.outputCurrency;
+        document.getElementById('summaryAmount').textContent = `${state.amount.toFixed(0)} ${inputCurr}`;
+        document.getElementById('summaryCommission').textContent = `${commission}% (${commissionAmount.toFixed(0)} ${inputCurr})`;
+        document.getElementById('summaryRate').textContent = `1 ${inputCurr} = ${rate.toFixed(state.outputCurrency === 'BTC' ? 8 : 4)} ${state.outputCurrency}`;
+        document.getElementById('summaryMethod').textContent = state.paymentMethod === 'wallet' && cryptoCurrencies.includes(state.outputCurrency) ? 'Wallet (Cambio)' : (state.paymentMethod === 'card' ? 'Tarjeta' : state.paymentMethod.charAt(0).toUpperCase() + state.paymentMethod.slice(1));
+        document.getElementById('summaryTotal').textContent = `${finalReceive.toFixed(2)} ${state.outputCurrency}`;
+      } catch (e) {
+        console.error('[UPDATE SUMMARY ERROR]', e);
+      }
+    }
+
+    function validateReceiveAddress() {
+      try {
+        clearErrors('step4ErrorMessage');
+        const address = document.getElementById('receiveAddress').value.trim();
+        const errorDiv = document.getElementById('receiveAddressError');
+        const successDiv = document.getElementById('receiveAddressSuccess');
+
+        if (!address) {
+          errorDiv.style.display = 'none';
+          successDiv.style.display = 'none';
+          state.receiveAddress = null;
+          return;
+        }
+
+        let validation;
+        
+        if (state.paymentMethod === 'wallet') {
+          validation = validateCryptoAddress(address, state.blockchain || 'ethereum');
+        } else if (state.paymentMethod === 'transfer') {
+          validation = validateCBU(address);
+        } else {
+          // Pix o Wallet no requieren validación estricta
+          validation = { valid: true };
+          state.receiveAddress = address;
+        }
+
+        if (!validation.valid) {
+          errorDiv.textContent = validation.error;
+          errorDiv.style.display = 'block';
+          successDiv.style.display = 'none';
+        } else {
+          errorDiv.style.display = 'none';
+          successDiv.textContent = '✓ Dirección válida';
+          successDiv.style.display = 'block';
+          state.receiveAddress = address;
+        }
+      } catch (e) {
+        console.error('[VALIDATE RECEIVE ADDRESS ERROR]', e);
+      }
+    }
+
+    function validateForm() {
+      try {
+        const email = document.getElementById('emailInput').value.trim();
+        const emailError = document.getElementById('emailError');
+        const emailInput = document.getElementById('emailInput');
+        const termsChecked = document.getElementById('termsInput').checked;
+        const dataChecked = document.getElementById('dataInput').checked;
+        const btn = document.getElementById('step5Btn');
+
+        if (email && !isValidEmail(email)) {
+          emailInput.classList.add('error');
+          emailError.style.display = 'block';
+        } else {
+          emailInput.classList.remove('error');
+          emailError.style.display = 'none';
+        }
+
+        document.getElementById('termsCheckbox').classList.toggle('checked', termsChecked);
+        document.getElementById('dataCheckbox').classList.toggle('checked', dataChecked);
+
+        const isValid = email && isValidEmail(email) && termsChecked && dataChecked;
+        btn.disabled = !isValid;
+      } catch (e) {
+        console.error('[VALIDATE FORM ERROR]', e);
+      }
+    }
+
+    function lockRate() {
+      try {
+        if (lockedRate) return; // Ya está locked
+        
+        const inputCurr = state.inputType === 'fiat' ? 'USD' : 'USDT';
+        const rateKey = `${inputCurr}-${state.outputCurrency}`;
+        lockedRate = rates[rateKey];
+        lockTimestamp = Date.now();
+        showLockCountdown();
+      } catch (e) {
+        console.error('[LOCK RATE ERROR]', e);
+      }
+    }
+
+    function showLockCountdown() {
+      try {
+        const timerId = document.getElementById('rateLockTimer');
+        if (!timerId) return;
+
+        timerId.classList.remove('hidden');
+        
+        const updateCountdown = () => {
+          const elapsed = Math.floor((Date.now() - lockTimestamp) / 1000);
+          const remaining = CONFIG.RATE_LOCK_DURATION - elapsed;
+          
+          if (remaining <= 0) {
+            timerId.classList.add('hidden');
+            lockedRate = null;
+            lockTimestamp = null;
+            updateFinalRate();
+            return;
+          }
+          
+          timerId.textContent = `⏱️ Cotización fijada por ${remaining}s`;
+          setTimeout(updateCountdown, 1000);
+        };
+        
+        updateCountdown();
+      } catch (e) {
+        console.error('[SHOW LOCK COUNTDOWN ERROR]', e);
+      }
+    }
+
+    function goToStep(step) {
+      try {
+        currentStep = step;
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        const stepElement = document.getElementById('step' + step);
+        if (stepElement) {
+          stepElement.classList.add('active');
+        }
+
+        for (let i = 0; i < 5; i++) {
+          const dot = document.getElementById('dot' + i);
+          if (dot) {
+            dot.classList.remove('active', 'completed');
+            if (i < step) dot.classList.add('completed');
+            else if (i === step) dot.classList.add('active');
+          }
+        }
+
+        document.getElementById('progressLabel').textContent = `Paso ${step + 1} de 5`;
+
+        if (step === 1) initStep1();
+        if (step === 4) lockRate();
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (e) {
+        console.error('[GO TO STEP ERROR]', e);
+      }
+    }
+
+    function nextStep() {
+      try {
+        if (currentStep === 0 && !state.outputCurrency) {
+          showError('Selecciona una moneda');
+          return;
+        }
+        if (currentStep === 1 && !state.paymentMethod) {
+          showError('Selecciona un método de pago');
+          return;
+        }
+        if (currentStep === 1 && state.paymentMethod === 'card' && !state.kycCompleted) {
+          showError('Completa la verificación KYC');
+          return;
+        }
+        if (currentStep === 3 && !state.receiveAddress) {
+          showError('Ingresa una dirección de recepción válida');
+          return;
+        }
+        if (currentStep < 4) goToStep(currentStep + 1);
+      } catch (e) {
+        console.error('[NEXT STEP ERROR]', e);
+      }
+    }
+
+    function prevStep() {
+      try {
+        if (currentStep > 0) goToStep(currentStep - 1);
+      } catch (e) {
+        console.error('[PREV STEP ERROR]', e);
+      }
+    }
+
+    async function processPayment() {
+      try {
+        if (isProcessing) return;
+        isProcessing = true;
+
+        const btn = document.getElementById('step5Btn');
+        const originalText = btn.textContent;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner"></span> Procesando...';
+
+        const email = document.getElementById('emailInput').value.trim();
+        
+        if (!isValidEmail(email)) {
+          showError('Email inválido', 'step5ErrorMessage');
+          isProcessing = false;
+          btn.disabled = false;
+          btn.textContent = originalText;
+          return;
+        }
+
+        if (!state.receiveAddress) {
+          showError('Ingresa una dirección de recepción', 'step5ErrorMessage');
+          isProcessing = false;
+          btn.disabled = false;
+          btn.textContent = originalText;
+          return;
+        }
+
+        clearErrors('step5ErrorMessage');
+
+        // Llamar API según tipo de pago
+        let result;
+        if (state.paymentMethod === 'card') {
+          result = await createCustomer();
+        } else {
+          result = await createLead();
+        }
+
+        if (!result || !result.id) {
+          throw new Error('No se recibió confirmación del Core');
+        }
+        // Usar primeros 8 caracteres del customer.id como ticket visual
+        result.ticketNumber = result.id.substring(0, 8).toUpperCase();
+
+        // Mostrar success
+        const inputCurr = state.inputType === 'fiat' ? 'USD' : 'USDT';
+        const rateKey = `${inputCurr}-${state.outputCurrency}`;
+        const rate = rates[rateKey] || 1;
+        const commission = commissions[state.paymentMethod];
+        const finalReceive = (state.amount - (state.amount * commission / 100)) * rate;
+
+        document.getElementById('ticketNumber').textContent = result.ticketNumber;
+        document.getElementById('successEmail').textContent = email;
+        document.getElementById('successAmount').textContent = `${state.amount.toFixed(0)} ${inputCurr}`;
+        document.getElementById('successReceive').textContent = `${finalReceive.toFixed(2)} ${state.outputCurrency}`;
+        document.getElementById('successMethod').textContent = state.paymentMethod === 'card' ? 'Tarjeta' : state.paymentMethod.charAt(0).toUpperCase() + state.paymentMethod.slice(1);
+
+        if (state.paymentMethod === 'card' && state.kycData) {
+          document.getElementById('successKycMsg').textContent = `Tu cuenta en Simply by PaySur ha sido creada. Puedes ingresar con ${email}.`;
+        } else {
+          document.getElementById('successKycMsg').textContent = `Recibiste un magic link en ${email} para acceder a tu historial.`;
+        }
+
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        const successStep = document.getElementById('stepSuccess');
+        if (successStep) {
+          successStep.classList.add('active');
+        }
+
+      } catch (error) {
+        showError('Error procesando operación: ' + error.message, 'step5ErrorMessage');
+        console.error('[PROCESS PAYMENT ERROR]', error);
+      } finally {
+        isProcessing = false;
+        const btn = document.getElementById('step5Btn');
+        if (btn && !btn.classList.contains('hidden')) {
+          btn.disabled = false;
+          btn.textContent = 'Confirmar operación';
+        }
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // INITIALIZATION
+    // ═══════════════════════════════════════════════════════════════════════════════
+
+    // Event listeners KYC
+    document.getElementById('kycName').addEventListener('input', validateKycForm);
+    document.getElementById('kycDni').addEventListener('input', validateKycForm);
+    document.getElementById('kycPhone').addEventListener('input', validateKycForm);
+
+
+    // ───────────────────────────────────────────────────────────
+    // Auto-login via short-lived token (iframe integration)
+    // ───────────────────────────────────────────────────────────
+    const CORE_API_URL_AUTO = 'https://simply-backend-888610796336.southamerica-east1.run.app/api/v1';
+    async function verifyAndAutoLogin() {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get('token');
+      if (!token) return false;
+
+      try {
+        const res = await fetch(`${CORE_API_URL_AUTO}/customer-token/verify`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        });
+        if (!res.ok) {
+          console.warn('[AUTO_LOGIN] Token invalido o expirado');
+          return false;
+        }
+        const payload = await res.json();
+        // Guardar en window para uso global
+        window.__SIMPLY_AUTO_LOGIN__ = {
+          customerId: payload.sub,
+          email: payload.email,
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+          profileStatus: payload.profileStatus,
+          accountLevel: payload.accountLevel,
+        };
+        // Pre-llenar emailInput si existe (paso 5 de KYC)
+        document.addEventListener('DOMContentLoaded', () => {
+          const emailInput = document.getElementById('emailInput');
+          if (emailInput && payload.email) {
+            emailInput.value = payload.email;
+            emailInput.readOnly = true;
+          }
+          // Si tiene KYC completo, marcar state.kycCompleted = true
+          if (payload.profileStatus === 'VERIFIED_FULL' || payload.profileStatus === 'VERIFIED_BASIC') {
+            if (typeof state !== 'undefined') {
+              state.customerVerified = true;
+              state.customerId = payload.sub;
+            }
+          }
+        });
+        return true;
+      } catch (e) {
+        console.error('[AUTO_LOGIN] Error verificando token:', e);
+        return false;
+      }
+    }
+    // Ejecutar inmediatamente (antes del load handler) para que el state se setee a tiempo
+    verifyAndAutoLogin();
+
+        // Cargar rates al inicio
+    window.addEventListener('load', () => {
+      try {
+        initStep0();
+        fetchRates(); // Intentar cargar desde API
+        
+        // Actualizar rates cada 5 minutos
+        setInterval(fetchRates, CONFIG.RATE_REFRESH_INTERVAL * 1000);
+      } catch (e) {
+        console.error('[INIT ERROR]', e);
+      }
+    });
+  </script>
+</body>
+</html>

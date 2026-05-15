@@ -56,7 +56,7 @@ export default function ActiveProducts({ customerId }: { customerId: string }) {
         cards.push({
           key: "crypto", label: "Cripto",
           subtitle: `${cryptoOps.length} operacion${cryptoOps.length === 1 ? "" : "es"}`,
-          icon: Bitcoin, iconColor: "text-amber-400", href: "https://crypto.gosimply.xyz",
+          icon: Bitcoin, iconColor: "text-amber-400", href: "/crypto",
         });
       }
 

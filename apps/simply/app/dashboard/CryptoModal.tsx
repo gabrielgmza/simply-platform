@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { X, Loader2, AlertCircle, ExternalLink } from "lucide-react";
 import { getShortLivedToken } from "@/lib/customer-token-api";
 
-const CRYPTO_URL = "https://crypto.gosimply.xyz";
+const CRYPTO_URL = "/crypto";
 
 interface Props {
   customerId: string;
