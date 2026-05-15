@@ -50,15 +50,19 @@ export default function QuickActions({ customerId, firstName }: Props) {
           <span className="text-xs text-white/80">Cripto</span>
         </button>
 
-        <Link
-          href="/convertir"
-          className="flex flex-col items-center gap-1.5 bg-white/5 hover:bg-white/10 ring-1 ring-white/10 rounded-2xl p-3 transition-colors"
+        <button
+          disabled
+          className="flex flex-col items-center gap-1.5 bg-white/[0.03] ring-1 ring-white/5 rounded-2xl p-3 relative opacity-60 cursor-not-allowed"
+          title="Próximamente"
         >
           <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-violet-300">
             <Repeat className="w-5 h-5" />
           </div>
           <span className="text-xs text-white/80">Convertir</span>
-        </Link>
+          <span className="absolute top-1 right-1 text-[8px] uppercase tracking-wide text-white/40 bg-white/5 px-1 py-0.5 rounded">
+            Pronto
+          </span>
+        </button>
       </div>
 
       <ReceiveModal
