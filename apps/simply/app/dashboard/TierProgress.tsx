@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getTierTheme } from "@/lib/tier-theme";
 import { Award, Crown, Loader2 } from "lucide-react";
 import { getTierProgress, type TierProgress as TP } from "@/lib/tier-api";
 
@@ -19,7 +20,8 @@ function fmt(n: string | number): string {
   return "$" + num.toLocaleString("es-AR", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
-export default function TierProgressCard({ customerId }: { customerId: string }) {
+export default function TierProgressCard({ customerId, accountLevel }: { customerId: string; accountLevel?: string }) {
+  const theme = getTierTheme(accountLevel);
   const [data, setData] = useState<TP | null>(null);
   const [loading, setLoading] = useState(true);
 

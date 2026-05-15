@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getTierTheme } from "@/lib/tier-theme";
 import Link from "next/link";
 import { ArrowRight, Sparkles, Mail, Key, ShieldCheck, Smartphone, AlertTriangle, Clock, Repeat, TrendingUp, Award, BookOpen, CreditCard } from "lucide-react";
 import { listRecommendations, type Recommendation } from "@/lib/recommendations-api";
@@ -10,7 +11,8 @@ const ICONS: Record<string, any> = {
   Repeat, TrendingUp, Award, BookOpen, CreditCard, Sparkles,
 };
 
-export default function FeaturedRecommendation({ customerId }: { customerId: string }) {
+export default function FeaturedRecommendation({ customerId, accountLevel }: { customerId: string; accountLevel?: string }) {
+  const theme = getTierTheme(accountLevel);
   const [reco, setReco] = useState<Recommendation | null>(null);
   const [count, setCount] = useState(0);
 

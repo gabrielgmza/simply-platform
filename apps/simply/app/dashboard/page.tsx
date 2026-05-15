@@ -60,7 +60,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-5 animate-page-in">
       <BalanceHero customerId={session.customerId} firstName={session.firstName || undefined} accountLevel={session.accountLevel} />
-      <QuickActions customerId={session.customerId} firstName={session.firstName || undefined} />
+      <QuickActions customerId={session.customerId} firstName={session.firstName || undefined} accountLevel={session.accountLevel} />
       <FxQuotes />
       {isNew && (
         <WelcomeCard
@@ -69,10 +69,10 @@ export default function DashboardPage() {
           hasOps={false}
         />
       )}
-      <FeaturedRecommendation customerId={session.customerId} />
+      <FeaturedRecommendation customerId={session.customerId} accountLevel={session.accountLevel} />
       <ActiveProducts customerId={session.customerId} />
       <RecentActivity customerId={session.customerId} />
-      <TierProgressCard customerId={session.customerId} />
+      <TierProgressCard customerId={session.customerId} accountLevel={session.accountLevel} />
     </div>
   );
 }
