@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowUpRight, ArrowDownLeft, Bitcoin, Repeat } from "lucide-react";
 import ReceiveModal from "./ReceiveModal";
 import SendModal from "./SendModal";
+import CryptoModal from "./CryptoModal";
 
 interface Props {
   customerId: string;
@@ -14,6 +15,7 @@ interface Props {
 export default function QuickActions({ customerId, firstName }: Props) {
   const [receiveOpen, setReceiveOpen] = useState(false);
   const [sendOpen, setSendOpen] = useState(false);
+  const [cryptoOpen, setCryptoOpen] = useState(false);
 
   return (
     <>
@@ -38,17 +40,15 @@ export default function QuickActions({ customerId, firstName }: Props) {
           <span className="text-xs text-white/80">Recibir</span>
         </button>
 
-        <a
-          href="https://crypto.gosimply.xyz"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={() => setCryptoOpen(true)}
           className="flex flex-col items-center gap-1.5 bg-white/5 hover:bg-white/10 ring-1 ring-white/10 rounded-2xl p-3 transition-colors"
         >
           <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-amber-300">
             <Bitcoin className="w-5 h-5" />
           </div>
           <span className="text-xs text-white/80">Cripto</span>
-        </a>
+        </button>
 
         <Link
           href="/convertir"
@@ -70,6 +70,11 @@ export default function QuickActions({ customerId, firstName }: Props) {
       <SendModal
         open={sendOpen}
         onClose={() => setSendOpen(false)}
+      />
+      <CryptoModal
+        customerId={customerId}
+        open={cryptoOpen}
+        onClose={() => setCryptoOpen(false)}
       />
     </>
   );
