@@ -5,9 +5,11 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import NotificationBell from "./NotificationBell";
 import { getBalances, type BalancesResponse } from "@/lib/balances-api";
 import { getTierTheme } from "@/lib/tier-theme";
+import { useUserLocation } from "@/lib/use-user-location";
 
 export default function BalanceHero({ customerId, firstName, accountLevel }: { customerId: string; firstName?: string; accountLevel?: string }) {
   const theme = getTierTheme(accountLevel);
+  const { location } = useUserLocation({ askGps: false });
   const [data, setData] = useState<BalancesResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [hidden, setHidden] = useState(false);

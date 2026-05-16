@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useToast } from "@/components/toast/Toast";
+import EmailChangeModal from "./EmailChangeModal";
 import { Mail, Phone, User, IdCard, ShieldCheck, Camera, Loader2, AlertCircle, Check } from "lucide-react";
 import { Card, Button } from "@simply/ui";
 import { getCustomer, updateCustomer, uploadAvatar, type CustomerProfile } from "@/lib/customer-api";
@@ -20,6 +21,7 @@ export default function PerfilTab({ session }: { session: any }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const toast = useToast();
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
 
   async function load() {
     setLoading(true);
@@ -120,7 +122,8 @@ export default function PerfilTab({ session }: { session: any }) {
   const initials = `${(firstName || "?").charAt(0)}${(lastName || "").charAt(0)}`.toUpperCase();
 
   return (
-    <div className="space-y-3">
+    <>
+      <div className="space-y-3">
       {/* Avatar */}
       <Card>
         <div className="p-4 flex items-center gap-4">
@@ -193,15 +196,20 @@ export default function PerfilTab({ session }: { session: any }) {
 
           <div>
             <label className="text-xs text-white/50 block mb-1">Email</label>
-            <input
-              type="email"
-              value={email}
-              readOnly
-              className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-white/70 text-sm cursor-not-allowed"
-            />
-            <p className="text-[10px] text-white/40 mt-1">
-              Para cambiar tu email contactá a soporte (próximamente flow autoservicio).
-            </p>
+            <div className="flex gap-2 mt-1">
+              <input
+                type="email"
+                value={email}
+                readOnly
+                className="flex-1 bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-white/70 text-sm cursor-not-allowed"
+              />
+              <button
+                onClick={() => setEmailModalOpen(true)}
+                className="text-xs text-blue-300 hover:text-blue-200 px-3 py-2 bg-blue-500/10 ring-1 ring-blue-500/30 rounded-lg"
+              >
+                Cambiar
+              </button>
+            </div>
           </div>
 
           {error && (
@@ -268,6 +276,28 @@ export default function PerfilTab({ session }: { session: any }) {
         </div>
       </Card>
     </div>
+
+      <EmailChangeModal
+        customerId={session.customerId}
+        currentEmail={email}
+        open={emailModalOpen}
+        onClose={() => setEmailModalOpen(false)}
+        onSuccess={(newEmail) => {
+          setEmail(newEmail);
+          setProfile((p) => p ? { ...p, email: newEmail, emailVerified: true } : p);
+          if (typeof window !== "undefined") {
+            try {
+              const raw = localStorage.getItem("simply_session");
+              if (raw) {
+                const sess = JSON.parse(raw);
+                sess.email = newEmail;
+                localStorage.setItem("simply_session", JSON.stringify(sess));
+              }
+            } catch {}
+          }
+        }}
+      />
+    </>
   );
 }
 

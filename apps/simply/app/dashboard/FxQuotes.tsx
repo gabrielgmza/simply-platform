@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { DollarSign, Euro, Bitcoin, Loader2, RefreshCw } from "lucide-react";
-import { getFxRates, type RateResult } from "@/lib/fx-api";
+import { getFxRates, type RateResult } from "@/lib/fx-api"
+import { useUserLocation } from "@/lib/use-user-location"
+import { currencyInfo } from "@/lib/country-currency";
 
 // Orden y metadata visual de los pares
 const PAIRS_META: Array<{ pair: string; label: string; icon: any; color: string }> = [
@@ -38,6 +40,8 @@ function formatPair(pair: string, rate: number): { from: string; toAmount: strin
 }
 
 export default function FxQuotes() {
+  const { location } = useUserLocation({ askGps: true });
+  const localCurrency = location?.currency || 'ARS';
   const [data, setData] = useState<Record<string, RateResult | { error: string }> | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
