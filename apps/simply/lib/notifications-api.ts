@@ -13,6 +13,7 @@ export interface Notification {
   readAt: string | null;
   dismissedAt: string | null;
   createdAt: string;
+  isCritical?: boolean;
 }
 
 export interface NotificationPreference {
