@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Calendar, Loader2, Trash2, Pause, Play, Plus } from "lucide-react";
 import { useToast } from "@/components/toast/Toast";
+import SchedulePaymentModal from "./SchedulePaymentModal";
 import {
   listScheduled, updateScheduled, deleteScheduled,
   type ScheduledPayment,
@@ -12,6 +13,7 @@ export default function ProgramadosTab({ customerId }: { customerId: string }) {
   const [items, setItems] = useState<ScheduledPayment[]>([]);
   const [loading, setLoading] = useState(true);
   const toast = useToast();
+  const [modalOpen, setModalOpen] = useState(false);
 
   async function load() {
     setLoading(true);
@@ -58,6 +60,13 @@ export default function ProgramadosTab({ customerId }: { customerId: string }) {
 
   return (
     <div className="space-y-3">
+      <button
+        onClick={() => setModalOpen(true)}
+        className="w-full flex items-center justify-center gap-1.5 bg-emerald-500/10 hover:bg-emerald-500/15 ring-1 ring-emerald-500/30 text-emerald-200 rounded-lg py-2.5 text-sm font-medium"
+      >
+        <Plus className="w-4 h-4" />
+        Programar nuevo pago
+      </button>
       {items.length === 0 ? (
         <div className="text-center py-12 bg-white/5 ring-1 ring-white/10 rounded-2xl">
           <Calendar className="w-10 h-10 text-white/30 mx-auto mb-3" />
@@ -85,6 +94,12 @@ export default function ProgramadosTab({ customerId }: { customerId: string }) {
           </div>
         ))
       )}
+      <SchedulePaymentModal
+        customerId={customerId}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSuccess={load}
+      />
     </div>
   );
 }
