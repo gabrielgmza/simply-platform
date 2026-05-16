@@ -47,7 +47,7 @@ export default function BalanceHero({ customerId, firstName, accountLevel }: { c
         {loading ? (
           <Loader2 className="w-6 h-6 animate-spin text-white/60" />
         ) : hidden ? (
-          <span className="text-3xl font-bold text-white tracking-tight">$•••••••</span>
+          <span className="text-2xl sm:text-3xl font-bold text-white tracking-tight">$•••••••</span>
         ) : (
           <span className="text-3xl font-bold text-white tracking-tight">
             ${totalArs.toLocaleString("es-AR", { minimumFractionDigits: 2 })}
