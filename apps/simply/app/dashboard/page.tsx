@@ -70,7 +70,7 @@ export default function DashboardPage() {
         />
       )}
       <FeaturedRecommendation customerId={session.customerId} accountLevel={session.accountLevel} />
-      <ActiveProducts customerId={session.customerId} />
+      <ActiveProducts customerId={session.customerId} accountLevel={session.accountLevel} />
       <RecentActivity customerId={session.customerId} />
       <TierProgressCard customerId={session.customerId} accountLevel={session.accountLevel} />
     </div>

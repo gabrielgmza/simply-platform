@@ -29,14 +29,14 @@ export default function FeaturedRecommendation({ customerId, accountLevel }: { c
   const Icon = ICONS[reco.icon] || Sparkles;
 
   return (
-    <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/5 ring-1 ring-amber-500/20 rounded-2xl p-4">
+    <div className={`${theme.accentBg} ring-1 ${theme.accentRing} rounded-2xl p-4`}>
       <div className="flex items-start gap-3">
-        <div className="w-9 h-9 rounded-xl bg-amber-500/15 flex items-center justify-center text-amber-300 shrink-0">
+        <div className={`w-9 h-9 rounded-xl ${theme.accentBg} flex items-center justify-center ${theme.iconColor} shrink-0`}>
           <Icon className="w-5 h-5" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] uppercase tracking-wide text-amber-300/70">Para vos</span>
+            <span className={`text-[10px] uppercase tracking-wide ${theme.accentText} opacity-70`}>Para vos</span>
             {count > 1 && (
               <Link href="/cuenta?tab=para-vos" className="text-[10px] text-white/40 hover:text-white/70">
                 +{count - 1} más
@@ -49,7 +49,7 @@ export default function FeaturedRecommendation({ customerId, accountLevel }: { c
             href={reco.ctaHref}
             target={reco.ctaHref.startsWith("http") ? "_blank" : undefined}
             rel={reco.ctaHref.startsWith("http") ? "noopener noreferrer" : undefined}
-            className="inline-flex items-center gap-1 text-sm text-amber-300 hover:text-amber-200 font-medium mt-3"
+            className={`inline-flex items-center gap-1 text-sm ${theme.accentText} hover:opacity-80 font-medium mt-3`}
           >
             {reco.ctaLabel}
             <ArrowRight className="w-3.5 h-3.5" />

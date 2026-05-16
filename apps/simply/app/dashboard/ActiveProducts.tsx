@@ -10,6 +10,7 @@ import { Card } from "@simply/ui";
 import { getBalances } from "@/lib/balances-api";
 import { listOperations, type Operation } from "@/lib/operations-api";
 import { joinWaitlist, getWaitlist, type FeatureKey } from "@/lib/waitlist-api";
+import { getTierTheme } from "@/lib/tier-theme";
 
 interface ProductCard {
   key: string;
@@ -27,7 +28,8 @@ const COMING_SOON: Array<{ feature: FeatureKey; label: string; subtitle: string;
   { feature: "loans",       label: "Préstamos",    subtitle: "Crédito personal flexible",        icon: Banknote,   iconColor: "text-emerald-300" },
 ];
 
-export default function ActiveProducts({ customerId }: { customerId: string }) {
+export default function ActiveProducts({ customerId, accountLevel }: { customerId: string; accountLevel?: string }) {
+  const theme = getTierTheme(accountLevel);
   const [active, setActive] = useState<ProductCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [waitlist, setWaitlist] = useState<Set<FeatureKey>>(new Set());
@@ -101,7 +103,7 @@ export default function ActiveProducts({ customerId }: { customerId: string }) {
                 ? { href: p.href, target: "_blank", rel: "noopener noreferrer" }
                 : { href: p.href };
               return (
-                <Wrapper key={p.key} {...wrapperProps} className="block bg-white/5 hover:bg-white/10 ring-1 ring-white/10 rounded-2xl p-3 transition-colors">
+                <Wrapper key={p.key} {...wrapperProps} className={`block bg-white/5 hover:bg-white/10 ring-1 ${theme.accentRing} rounded-2xl p-3 transition-colors`}>
                   <div className="flex items-center gap-2">
                     <div className={`w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center ${p.iconColor}`}>
                       <Icon className="w-4 h-4" />
