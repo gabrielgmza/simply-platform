@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import OperationDetailModal from "@/components/operation/OperationDetailModal";
 import Link from "next/link";
 import { ArrowDownUp, Bitcoin, CreditCard, TrendingUp, Receipt, ArrowRight, Loader2 } from "lucide-react";
 import { Card } from "@simply/ui";
@@ -45,6 +46,7 @@ function timeAgo(d: string): string {
 }
 
 export default function RecentActivity({ customerId }: { customerId: string }) {
+  const [detailId, setDetailId] = useState<string | null>(null);
   const [ops, setOps] = useState<Operation[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -56,7 +58,8 @@ export default function RecentActivity({ customerId }: { customerId: string }) {
   }, [customerId]);
 
   return (
-    <div>
+    <>
+      <div>
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-sm font-semibold text-white">Actividad reciente</h3>
         {ops.length > 0 && (
@@ -79,7 +82,7 @@ export default function RecentActivity({ customerId }: { customerId: string }) {
         <Card>
           <div className="divide-y divide-white/5">
             {ops.map((op) => (
-              <div key={op.id} className="p-3 flex items-center gap-3">
+              <div key={op.id} onClick={() => setDetailId(op.id)} className="p-3 flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center shrink-0">
                   {moduleIcon(op.module)}
                 </div>
@@ -97,5 +100,12 @@ export default function RecentActivity({ customerId }: { customerId: string }) {
         </Card>
       )}
     </div>
+
+      <OperationDetailModal
+        operationId={detailId}
+        open={detailId !== null}
+        onClose={() => setDetailId(null)}
+      />
+    </>
   );
 }

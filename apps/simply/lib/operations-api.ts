@@ -48,3 +48,14 @@ export async function listOperations(
   const res = await fetch(`${BASE}?${params.toString()}`);
   return handle<Operation[]>(res);
 }
+
+export async function getOperation(id: string): Promise<Operation> {
+  const res = await fetch(`/api/operations/${encodeURIComponent(id)}`);
+  const text = await res.text();
+  if (!res.ok) {
+    let msg = `HTTP ${res.status}`;
+    try { const j = JSON.parse(text); msg = j.message || msg; } catch {}
+    throw new Error(msg);
+  }
+  return JSON.parse(text);
+}

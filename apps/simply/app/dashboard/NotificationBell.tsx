@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import OperationDetailModal from "@/components/operation/OperationDetailModal";
 import Link from "next/link";
 import { Bell, X, ArrowRight, CheckCheck, Loader2 } from "lucide-react";
 import {
@@ -31,6 +32,7 @@ const CATEGORY_COLOR: Record<string, string> = {
 };
 
 export default function NotificationBell({ customerId }: { customerId: string }) {
+  const [detailOpId, setDetailOpId] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [unread, setUnread] = useState(0);
   const [items, setItems] = useState<Notification[]>([]);
@@ -147,7 +149,8 @@ export default function NotificationBell({ customerId }: { customerId: string })
                 {items.map((n) => {
                   const isUnread = !n.readAt;
                   return (
-                    <div key={n.id} className={`p-3 flex items-start gap-2 ${isUnread ? "bg-blue-500/5" : ""}`}>
+                    <>
+      <div key={n.id} className={`p-3 flex items-start gap-2 ${isUnread ? "bg-blue-500/5" : ""}`}>
                       <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${isUnread ? "bg-blue-400" : "bg-transparent"}`} />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
@@ -163,6 +166,14 @@ export default function NotificationBell({ customerId }: { customerId: string })
                             href={n.ctaHref}
                             target={n.ctaHref.startsWith("http") ? "_blank" : undefined}
                             rel={n.ctaHref.startsWith("http") ? "noopener noreferrer" : undefined}
+                            onClick={(e) => {
+                              const opId = n.metadata?.operationId;
+                              if (opId && typeof opId === "string") {
+                                e.preventDefault();
+                                setDetailOpId(opId);
+                                setOpen(false);
+                              }
+                            }}
                             className="inline-flex items-center gap-1 text-xs text-blue-300 hover:text-blue-200 font-medium mt-1.5"
                           >
                             {n.ctaLabel}
@@ -178,7 +189,14 @@ export default function NotificationBell({ customerId }: { customerId: string })
                         <X className="w-3.5 h-3.5" />
                       </button>
                     </div>
-                  );
+                
+      <OperationDetailModal
+        operationId={detailOpId}
+        open={detailOpId !== null}
+        onClose={() => setDetailOpId(null)}
+      />
+    </>
+  );
                 })}
               </div>
             )}

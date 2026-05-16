@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import OperationDetailModal from "@/components/operation/OperationDetailModal";
 import { ArrowDownUp, Bitcoin, CreditCard, TrendingUp, Loader2, AlertCircle, Receipt, RefreshCw } from "lucide-react";
 import { Card } from "@simply/ui";
 import { listOperations, type Operation, type OperationModule, type OperationStatus } from "@/lib/operations-api";
@@ -67,6 +68,7 @@ function formatType(type: string) {
 }
 
 export default function OperacionesTab({ customerId }: { customerId: string }) {
+  const [detailId, setDetailId] = useState<string | null>(null);
   const [ops, setOps] = useState<Operation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -96,7 +98,8 @@ export default function OperacionesTab({ customerId }: { customerId: string }) {
   }, [customerId, moduleFilter, statusFilter]);
 
   return (
-    <div className="space-y-4">
+    <>
+      <div className="space-y-4">
       <div className="flex items-center gap-2 flex-wrap">
         <select
           value={moduleFilter}
@@ -149,7 +152,7 @@ export default function OperacionesTab({ customerId }: { customerId: string }) {
         <Card>
           <div className="divide-y divide-white/5">
             {ops.map((op) => (
-              <div key={op.id} className="p-4 flex items-center gap-3">
+              <div key={op.id} onClick={() => setDetailId(op.id)} className="p-4 flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center shrink-0">
                   {moduleIcon(op.module)}
                 </div>
@@ -172,5 +175,12 @@ export default function OperacionesTab({ customerId }: { customerId: string }) {
         </Card>
       )}
     </div>
+
+      <OperationDetailModal
+        operationId={detailId}
+        open={detailId !== null}
+        onClose={() => setDetailId(null)}
+      />
+    </>
   );
 }
