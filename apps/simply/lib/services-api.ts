@@ -34,6 +34,7 @@ export interface ServicePayment {
   currency: string;
   status: "pending" | "completed" | "failed" | "refunded";
   providerExternalId: string | null;
+  scheduledPaymentId: string | null;
   createdAt: string;
   completedAt: string | null;
 }
@@ -134,4 +135,20 @@ export async function deleteScheduled(customerId: string, id: string): Promise<v
   await fetch(`/api/customer/${encodeURIComponent(customerId)}/scheduled-payments/${encodeURIComponent(id)}`, {
     method: "DELETE",
   });
+}
+
+export interface ServicePaymentDetail extends ServicePayment {
+  biller: {
+    id: string;
+    name: string;
+    code: string;
+    category: string;
+    country: string;
+    referenceLabel: string;
+  } | null;
+}
+
+export async function getServicePayment(id: string): Promise<ServicePaymentDetail> {
+  const res = await fetch(`/api/service-payments/${encodeURIComponent(id)}`);
+  return handle<ServicePaymentDetail>(res);
 }

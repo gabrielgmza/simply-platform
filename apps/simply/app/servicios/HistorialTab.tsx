@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ServicePaymentDetailModal from "./ServicePaymentDetailModal";
 import { Receipt, CheckCircle, XCircle, Clock, Loader2 } from "lucide-react";
 import { listPayments, type ServicePayment } from "@/lib/services-api";
 
 export default function HistorialTab({ customerId }: { customerId: string }) {
+  const [detailId, setDetailId] = useState<string | null>(null);
   const [items, setItems] = useState<ServicePayment[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,7 +46,8 @@ export default function HistorialTab({ customerId }: { customerId: string }) {
           p.status === "failed" ? "text-red-300" :
           "text-amber-300";
         return (
-          <div key={p.id} className="bg-white/5 ring-1 ring-white/10 rounded-xl p-3 flex items-center gap-3">
+          <>
+      <div key={p.id} onClick={() => setDetailId(p.id)} className="bg-white/5 hover:bg-white/10 ring-1 ring-white/10 rounded-xl p-3 flex items-center gap-3 cursor-pointer transition-colors">
             <Icon className={`w-5 h-5 ${color} shrink-0`} />
             <div className="flex-1 min-w-0">
               <div className="text-sm text-white truncate font-mono">{p.reference}</div>
@@ -56,7 +59,14 @@ export default function HistorialTab({ customerId }: { customerId: string }) {
               ${p.amount.toLocaleString("es-AR", { minimumFractionDigits: 2 })}
             </div>
           </div>
-        );
+      
+      <ServicePaymentDetailModal
+        paymentId={detailId}
+        open={detailId !== null}
+        onClose={() => setDetailId(null)}
+      />
+    </>
+  );
       })}
     </div>
   );
