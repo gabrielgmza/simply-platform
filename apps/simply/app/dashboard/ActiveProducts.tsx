@@ -24,7 +24,6 @@ interface ProductCard {
 // 4 features "próximamente"
 const COMING_SOON: Array<{ feature: FeatureKey; label: string; subtitle: string; icon: any; iconColor: string }> = [
   { feature: "cards",       label: "Tarjetas",     subtitle: "Física + virtuales + uso único",   icon: CreditCard, iconColor: "text-pink-300" },
-  { feature: "investments", label: "Inversiones",  subtitle: "Hacé rendir tu plata",             icon: TrendingUp, iconColor: "text-violet-300" },
   { feature: "loans",       label: "Préstamos",    subtitle: "Crédito personal flexible",        icon: Banknote,   iconColor: "text-emerald-300" },
 ];
 

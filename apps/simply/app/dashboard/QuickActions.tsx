@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, ArrowDownLeft, Bitcoin, Repeat } from "lucide-react";
+import { ArrowUpRight, ArrowDownLeft, Bitcoin, TrendingUp } from "lucide-react";
+import { useRouter } from "next/navigation";
 import ReceiveModal from "./ReceiveModal";
 import SendModal from "./SendModal";
 import CryptoModal from "./CryptoModal";
@@ -19,6 +20,7 @@ export default function QuickActions({ customerId, firstName, accountLevel }: Pr
   const [receiveOpen, setReceiveOpen] = useState(false);
   const [sendOpen, setSendOpen] = useState(false);
   const [cryptoOpen, setCryptoOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -54,17 +56,13 @@ export default function QuickActions({ customerId, firstName, accountLevel }: Pr
         </button>
 
         <button
-          disabled
-          className="flex flex-col items-center gap-1.5 bg-white/[0.03] ring-1 ring-white/5 rounded-2xl p-3 relative opacity-60 cursor-not-allowed"
-          title="Próximamente"
+          onClick={() => router.push("/inversiones")}
+          className={`flex flex-col items-center gap-1.5 bg-white/5 hover:bg-white/10 rounded-2xl p-2 sm:p-3 transition-colors ${theme.accentRing} ring-1`}
         >
           <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/5 flex items-center justify-center text-violet-300">
-            <Repeat className="w-5 h-5" />
+            <TrendingUp className="w-5 h-5" />
           </div>
-          <span className="text-xs text-white/80">Convertir</span>
-          <span className="absolute top-1 right-1 text-[8px] uppercase tracking-wide text-white/40 bg-white/5 px-1 py-0.5 rounded">
-            Pronto
-          </span>
+          <span className="text-xs text-white/80">Invertir</span>
         </button>
       </div>
 
