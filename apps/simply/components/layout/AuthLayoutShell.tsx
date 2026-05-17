@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useSession } from '@simply/ui';
+import PreferencesProvider from "./PreferencesProvider";
 
 /**
  * Decide el ancho del container según contexto:
@@ -26,5 +27,5 @@ export default function AuthLayoutShell({ children }: { children: React.ReactNod
     ? 'max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto w-full'
     : 'max-w-md mx-auto';
 
-  return <div className={containerClass}>{children}</div>;
+  return <div className={containerClass}><PreferencesProvider>{children}</PreferencesProvider></div>;
 }

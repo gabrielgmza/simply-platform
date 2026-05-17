@@ -226,3 +226,33 @@ input[inputmode="numeric"][maxlength="4"] {
 .animate-shake {
   animation: shake 0.6s ease-in-out 2;
 }
+
+
+/* ═══ Accesibilidad: text size ═══ */
+html[data-text-size="small"] { font-size: 14px; }
+html[data-text-size="normal"] { font-size: 16px; }
+html[data-text-size="large"] { font-size: 18px; }
+html[data-text-size="xlarge"] { font-size: 20px; }
+
+/* ═══ Accesibilidad: alto contraste ═══ */
+html.high-contrast {
+  filter: contrast(1.2);
+}
+html.high-contrast body {
+  background: #000 !important;
+}
+html.high-contrast .text-white\/40,
+html.high-contrast .text-white\/50,
+html.high-contrast .text-white\/60 {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* ═══ Accesibilidad: reducir movimiento ═══ */
+html.reduced-motion *,
+html.reduced-motion *::before,
+html.reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

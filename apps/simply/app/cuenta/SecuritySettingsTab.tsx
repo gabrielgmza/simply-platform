@@ -5,6 +5,7 @@ import { ShieldCheck, Trash2, Smartphone, AlertCircle, Loader2 } from "lucide-re
 import { Button, Card } from "@simply/ui";
 import { useStepUp } from "@/lib/use-step-up";
 import TotpSection from "./TotpSection";
+import PreferencesSection from "./PreferencesSection";
 import {
   getSecuritySettings,
   updateSecuritySettings,
@@ -194,6 +195,8 @@ export default function SecuritySettingsTab({ customerId, email }: { customerId:
           </Button>
         </div>
       </Card>
+
+      <PreferencesSection customerId={customerId} />
 
       <TotpSection customerId={customerId} />
 
